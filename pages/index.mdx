@@ -1,0 +1,147 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Lumiflex } from 'uvcanvas'
+import { Button } from "../components/ui/button"
+import { MoveRight } from "lucide-react"
+
+import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ModelPerformanceChart from '../components/static_performance';
+import KendallTauDistanceChart from '../components/interactive_static_correlation';
+
+import { Hero } from "@/components/hero";
+import { GradioEmbed } from "@/components/gradio";
+
+import { Callout } from 'nextra/components'
+
+<Hero />
+
+# Introduction
+As AI Assistants' capability expands beyond text into other modalities like audio,
+they enable new forms of interactions between humans and AI. On the other hand,
+most benchmarks for audio processing primarily focus on transcribing and analyzing user speech.
+We introduce **Talk Arena**, an interactive open platform to evaluate Large Audio Models through *interactions with
+users in real-world settings*. It helps to assess whether previous static benchmarks are valuable measures of model quality,
+or whether there is need for a new evaluation paradigm for Large Audio Models.
+We evaluate large audio models using *18 speech comprehension datasets* and **Talk Arena**.
+
+<GradioEmbed />
+
+# How Talk Arena differs from existing audio benchmarks
+
+Recent efforts towards creating multimodal models have resulted in LLMs capable of processing audio inputs such as speech. Speech is a low-friction interface which expands social and phonetic interaction opportunities with end users. Prior work has benchmarked audio models on a set of disjoint static audio tests such as sarcasm or humor detection. However such static benchmarks lack the complex dynamics of real user interactions and preferences. Inspired by arena-style evaluations for text LLMs we introduce Talk Arena, an open platform for evaluating Large Audio Models with pairwise human preferences. Talk Arena helps to reveal insights on:
+
+* What use cases users are exploring with large audio models? We can analyze user queries from the wild and compare the use case difference with traditional use cases of text LLMs.
+* Which Large Language Model users prefer the most? Users vote their preferences with self-initiated prompts, which better reflects the actual user experience.
+* Are static speech comprehension benchmarks predictive user preferences in interactive settings? It helps to reveal the gap between the mainstream evaluation method for audio models and actual user preferences.
+
+# Static Evaluation
+
+## Tasks and Datasets
+
+We select 18 speech comprehension benchmark and perform evaluation for 10 different large audio models.
+
+A wide range of tasks are covered, which include Humor Detection, Sarcasm Detection, Intent Detection, Relationship Classification, Gender Classification, Age Classification, Accent Classification, Speech Grounding, Language Identification, Speech Entity Recognition, Speech Question Answering, and Speech Instruction Following. They can be categorized into three broad categories of Speaker Cognitive State, Speaker Identity, and Speech Content Understanding.
+## Static Evaluation
+
+
+| Task | Dataset | Task | Dataset | Task | Dataset |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Humor Detection** | [URFUNNY](https://aclanthology.org/D19-1211/) | **Language Identification** | [Covost2](https://arxiv.org/abs/2007.10310) | **Speech Grounding** | [Librispeech](https://ieeexplore.ieee.org/document/7178964) |
+| **Sarcasm Detection** | [MUSTARD](https://aclanthology.org/P19-1455/) | **Relationship Classification** | [CallHome](https://aclanthology.org/L18-1592/) | **Speech Entity Recognition** | [SLURP](https://aclanthology.org/2020.emnlp-main.588/) |
+| **Intent Detection** | [SLURP](https://aclanthology.org/2020.emnlp-main.588/) | **Accent Classification** | [Commonvoice](https://arxiv.org/abs/1912.06670) | **Instruction Following** | [Alpaca](https://crfm.stanford.edu/2023/03/13/alpaca.html), [Openhermes](https://huggingface.co/datasets/teknium/OpenHermes-2.5) |
+| **Age/Gender Classification** | [Commonvoice](https://arxiv.org/abs/1912.06670), [FairSpeech](https://arxiv.org/abs/2408.12734) | **Emotion Recognition** | [IEMOCAP](https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf), [MELD](https://arxiv.org/abs/1810.02508) | **Speech QA** | [CN-College-Listen](https://arxiv.org/abs/2406.16020), [Public_sg_speech](https://arxiv.org/abs/2406.16020) |
+
+## Result Analysis
+To ensure robustness, we report the average of model performance using three different prompt variations.
+For `public_sg_speech`, `openhermes`, and `alpaca` datasets, we report the
+<a href="https://arxiv.org/html/2402.11161v4">cfm</a> metric. For other tasks, we report the macro F1 scores.
+
+In general, close sourced models like <a href="https://arxiv.org/abs/2312.11805">Gemini</a> and
+<a href="https://arxiv.org/abs/2312.11805">GPT4o</a> generally top the leaderboard:
+<a href="https://arxiv.org/abs/2312.11805">Gemini</a> has the highest performance on SLURP intent classification,
+MELD emotion recognition, CN_college_listen and <a href="https://arxiv.org/abs/2312.11805">GPT4o</a>
+performs the best on MUSTARD, IEMOCAP, CallHome, Fairspeech (age classification), and
+Commonvoice (accent classification) datasets. They also perform relatively well despite not achieving best
+performance, showing <b>good generalization and transferability in them</b>.
+
+Among the open-sourced models, <Link href="https://arxiv.org/abs/2407.10759">Qwen2-Audio</Link> demonstrates outstanding
+performance on SpeechQA and Gender/Age classification tasks and <a href="https://arxiv.org/abs/2410.02678">DiVA</a>
+shows excellent humor detection and speech instruction following capability that outperforms all other models.
+They also show relatively good performance on other tasks, demonstrating <b>good generalizability</b>.
+<a href="https://arxiv.org/pdf/2309.05519">NextGPT</a> and <a href="https://arxiv.org/abs/2305.16355">PandaGPT</a>
+perform relatively worse, especially for tasks like intent and emotion recognition, accent recognition,
+and instruction following. They share similar encoder architecture (ImageBind) and this suggests
+<b>the limitation of using ImageBind for encoding audio features</b>.
+
+We also perform evaluation for the sequential pipeline of <a href="https://arxiv.org/abs/2212.04356">Whisper</a>
+plus <a href="https://arxiv.org/abs/2407.21783">Llama3-8B-Instruct</a>.
+It shows relatively good performance for tasks like emotion recognition and speech QA, which means some of the data
+instances can be inferred from content only. However, for each and every task there are speech models outperforming
+the whisper+llama3 pipeline. This suggests that some information like emotion, relationship, and sarcasm can be
+<b>embedded in vocal cues</b> and <b>requires understanding beyond content</b>.
+
+
+<ModelPerformanceChart />
+
+## Interactive Evaluation
+
+### User Preference
+
+As an initial effort, we collected a total 5000 votes using Talk Arena for pairwise comparisons among GPT4o,
+Gemini-1.5-pro, Typhoon, Qwen2-Audio and DiVA, which are top performing models from the results of static evaluation.
+For each of the ten combinations, we collect 500 votes from more than 50 different crowdworkers.
+
+![User Study](/user_study_2.png)
+
+We applied Bradley Terry model to pariwise voting results to get a ranking for the five models tested.
+The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
+(most preferred to less preferred).
+
+### Comparison with Static Evaluation
+
+We compare the user preference result in interactive evaluation to that of static evaluation by computing the top-k Kendall Tau Distance between rank in static evaluation and that in interactive evaluation:
+
+<KendallTauDistanceChart />
+
+Here are some observations:
+1) None of the static bench reflects exactly the same rank in interactive eval
+2) Rank on emotion recognition and language detection benchmark is most similar to that in interactive eval
+3) Rank on gender detection and nuanced intent (humor, sarcasm) detection are not so correlated with that in interactive eval
+
+### User Queries
+
+We also perform qualitative analysis for user voice queries and obtained some insights:
+
+Topics of user queries.
+We identify three common types of user queries:
+1. Pragmatic queries like resume building tips, weather and time checking. These queries are mostly short (one sentence only). It usually requires the audio model to ask more about the context to provide a personalized response.
+2. Knowledge expansion questions like asking about theory of relativity. These queries need the audio model to be well equipped with a diverse and comprehensive knowledge base to provide factual and detailed information across a wide range of topics.
+3. Personal sharing on recent dilemma, personal opinions and habits. These queries are often longer and more elaborated. To provide good responses, the voice assistant may need to make inferences about the users' tone and capture details well enough.
+
+Difference from text queries.
+Unlike how users interact with text-only LLMs through typing, we found some unique aspects in speech interaction:
+1. Background noises such as conversations in crowded or outdoor settings. This brings about new challenges for AI models, as they need to effectively process spoken input while distinguishing the user's voice from surrounding noises to ensure accurate interpretation and seamless interaction.
+2. Vocal cues like pauses, laghter, tone, pitch, and accent. These features deliver social information about the speaker's emotion and identity beyond words.
+
+<Callout type="info">
+Ethics and Disclosure
+
+This study has been approved by the Institutional Review Board (IRB) at the researchers' institution, and we obtained participant consent with a standard institutional consent form.
+
+</Callout>
+
+## Cite us
+
+If you find this work useful, please cite us:
+
+```bibtex
+  @misc{li2024talkarena,
+      title={Talk Arena: Interactive Evaluation of Large Audio Models}, 
+      author={Minzhi Li and Will Held and Michael Ryan and Hao Zhu and Diyi Yang},
+      year={2024}
+  }
+```
+	
