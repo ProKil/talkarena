@@ -37,7 +37,7 @@ const CustomTooltip: React.FC<any> = ({ active, payload }) => {
     if (active && payload && payload.length) {
         const data = payload[0].payload;
         return (
-            <div className="bg-white p-2 border rounded shadow-sm">
+            <div className="bg-background p-2 border rounded shadow-sm">
                 <p className="font-medium">{data.Dataset}</p>
                 <p className="text-sm">Task: {data.Task}</p>
                 <p className="text-sm">Distance: {data.KendallTauDistance.toFixed(3)}</p>
