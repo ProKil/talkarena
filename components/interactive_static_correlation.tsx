@@ -1,7 +1,8 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, Cell, Legend, Tooltip, XAxis, YAxis } from "recharts"
+import { Payload } from "recharts/types/component/DefaultLegendContent"
 
 import {
   Card,
@@ -31,8 +32,19 @@ type Task =
   | "Gender Classification"
   | "Entity Recognition";
 
-type TaskColors = {
-  [key in Task]: string;
+// Custom tooltip component
+const CustomTooltip: React.FC<any> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        return (
+            <div className="bg-white p-2 border rounded shadow-sm">
+                <p className="font-medium">{data.Dataset}</p>
+                <p className="text-sm">Task: {data.Task}</p>
+                <p className="text-sm">Distance: {data.KendallTauDistance.toFixed(3)}</p>
+            </div>
+        );
+    }
+    return null;
 };
 
 type DataItem = {
@@ -63,35 +75,61 @@ const data: DataItem[] = [
     { Dataset: "cvgender", KendallTauDistance: 0.52, Task: "Gender Classification", fill: "var(--color-gender-classification)" },
 ] as const;
 
-// const taskColors: TaskColors = {
-//   "Emotion Recognition": "hsl(var(--chart-1))",
-//   "Language Detection": "hsl(var(--chart-2))",
-//   "Intent Classification": "hsl(var(--chart-3))",
-//   "Age Classification": "hsl(var(--chart-4))",
-//   "Instruction Following": "hsl(var(--chart-5))",
-//   "Speech QA": "hsl(var(--chart-6))",
-//   "Accent Classification": "hsl(var(--chart-7))",
-//   "Speech Grounding": "hsl(var(--chart-8))",
-//   "Relation Classification": "hsl(var(--chart-9))",
-//   "Gender Classification": "hsl(var(--chart-10))",
-//   "Entity Recognition": "hsl(var(--chart-11))"
-// }
+const uniqueTasks = data.reduce<Payload[]>((acc, item) => {
+    if (!acc.some(task => task.value === item.Task)) {
+        acc.push({
+            id: item.Task,
+            value: item.Task,
+            color: item.fill,
+            type: "square"
+        });
+    }
+    return acc;
+}, []);
 
-const config: ChartConfig = {
-    KendallTauDistance: { label: "Kendall Tau Distance" },
-    "emotion-recognition": { label: "Emotion Recognition", color: "var(--chart-1)" },
-    "language-detection": { label: "Language Detection", color: "var(--chart-2)" },
-    "intent-classification": { label: "Intent Classification", color: "var(--chart-3)" },
-    "age-classification": { label: "Age Classification", color: "var(--chart-4)" },
-    "instruction-following": { label: "Instruction Following", color: "var(--chart-5)" },
-    "speech-qa": { label: "Speech QA", color: "var(--chart-6)" },
-    "accent-classification": { label: "Accent Classification", color: "var(--chart-7)" },
-    "speech-grounding": { label: "Speech Grounding", color: "var(--chart-8)" },
-    "relation-classification": { label: "Relation Classification", color: "var(--chart-9)" },
-    "gender-classification": { label: "Gender Classification", color: "var(--chart-10)" },
-    "entity-recognition": { label: "Entity Recognition", color: "var(--chart-11)" },
+// Add type for legend payload
+type LegendPayload = {
+    id: string;
+    value: string;
+    color: string;
+    type: string;
 };
 
+type CustomLegendProps = {
+    payload?: Payload[];
+};
+
+
+const config: ChartConfig = {
+    "emotion-recognition": { label: "Emotion Recognition", color: "hsl(var(--chart-1))" },
+    "language-detection": { label: "Language Detection", color: "hsl(var(--chart-2))" },
+    "intent-classification": { label: "Intent Classification", color: "hsl(var(--chart-3))" },
+    "age-classification": { label: "Age Classification", color: "hsl(var(--chart-4))" },
+    "instruction-following": { label: "Instruction Following", color: "hsl(var(--chart-5))" },
+    "speech-qa": { label: "Speech QA", color: "hsl(var(--chart-5))" },
+    "accent-classification": { label: "Accent Classification", color: "hsl(var(--chart-2))" },
+    "speech-grounding": { label: "Speech Grounding", color: "hsl(var(--chart-5))" },
+    "relation-classification": { label: "Relation Classification", color: "hsl(var(--chart-5))" },
+    "gender-classification": { label: "Gender Classification", color: "hsl(var(--chart-4))" },
+    "entity-recognition": { label: "Entity Recognition", color: "hsl(var(--chart-5))" },
+};
+
+
+const CustomLegend: React.FC<CustomLegendProps> = ({ payload = [] }) => {
+    return (
+        <div className="grid grid-cols-2 gap-2 text-sm mt-4">
+            {payload.map((entry, index) => (
+                <div key={`item-${index}`} className="flex items-center">
+                    <div 
+                        className="w-3 h-3 mr-2"
+                        style={{ backgroundColor: entry.color }}
+                    />
+                    <span>{entry.value}</span>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 
 export default function KendallTauDistanceChart() {
@@ -109,9 +147,39 @@ export default function KendallTauDistanceChart() {
                 <BarChart
                     accessibilityLayer
                     data={data}
-                ></BarChart>
+                >
+                    <XAxis
+                        dataKey="Dataset"
+                        type="category"
+                        tickLine={false}
+                        tickMargin={10}
+                        axisLine={false}
+                    />
+                    <YAxis
+                        dataKey="KendallTauDistance"
+                        tickLine={false}
+                        tickMargin={10}
+                        axisLine={false}
+                    />
+                    <Bar 
+                        dataKey="KendallTauDistance"
+                        fillOpacity={0.8}
+                    >
+                        {
+                            data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))
+                        }
+                    </Bar>
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend 
+                        content={<CustomLegend />}
+                        payload={uniqueTasks}
+                    />
+                </BarChart>
 
             </ChartContainer>
+            
           </CardContent>
         </Card>
         </div>
