@@ -7,6 +7,9 @@ export function Hero() {
                 Ella Minzhi Li<sup>* †</sup>, Will Held<sup>* †</sup>, Michael J. Ryan<sup>†</sup>, Hao Zhu<sup>†</sup>, Kunat Pipatanakul<sup>^</sup>, Potsawee Manakul<sup>^</sup>, Diyi Yang<sup>†</sup>
         </div>
         <div className="text-slate-600 text-center dark:text-slate-400 p-4">
+                <sup>*</sup>Equal Contribution
+        </div>
+        <div className="text-slate-600 text-center dark:text-slate-400 p-4">
                 <sup>†</sup>Stanford University,<sup>^</sup>SCB 10X
         </div></>
     )
