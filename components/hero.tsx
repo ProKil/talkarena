@@ -4,7 +4,7 @@ export function Hero() {
             Interactive Evaluation of Large Audio Models
         </div>
         <div className="text-slate-600 text-center dark:text-slate-400 p-4">
-                Comparing Large Audio Models through user-directed interaction.
+                Ella Minzhi Li<sup>* †</sup>, Will Held<sup>* †</sup>,
         </div></>
     )
 }
