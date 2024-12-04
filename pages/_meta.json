@@ -7,9 +7,9 @@
             "typesetting": "article"
         }
     },
-    "introduction": {
+    "background": {
         "type": "page",
-        "title": "Introduction",
+        "title": "Background",
         "theme": {
             "toc": true,
             "typesetting": "article"
