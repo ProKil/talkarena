@@ -1,105 +1,135 @@
-export function TableHero() {
-    return (
-        <><div style="text-align: center;">
-            <style type="text/css">
-            .tg  {border-collapse:collapse;border-spacing:0;}
-            .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-            overflow:hidden;padding:10px 5px;word-break:normal;}
-            .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-            font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-            .tg .tg-jz12{background-color:#efefef;border-color:inherit;color:#333333;text-align:center;vertical-align:middle}
-            .tg .tg-yj5y{background-color:#efefef;border-color:inherit;text-align:center;vertical-align:top}
-            .tg .tg-34fe{background-color:#c0c0c0;border-color:inherit;text-align:center;vertical-align:top}
-            .tg .tg-zlqz{background-color:#c0c0c0;border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
-            .tg .tg-qbk9{background-color:#efefef;border-color:inherit;font-weight:bold;text-align:center;vertical-align:middle}
-            </style>
-            <table class="tg"><thead>
-            <tr>
-                <th class="tg-34fe"><span style="font-weight:bold">Category</span></th>
-                <th class="tg-34fe"><span style="font-weight:bold">Task</span></th>
-                <th class="tg-34fe"><span style="font-weight:bold">Dataset</span></th>
-                <th class="tg-34fe"><span style="font-weight:bold">Size</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Category</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Task</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Dataset</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Size</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Category</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Task</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Dataset</span></th>
-                <th class="tg-zlqz"><span style="font-weight:bold">Size</span></th>
-            </tr></thead>
-            <tbody>
-            <tr>
-                <td class="tg-qbk9" rowspan="5">Cognitive State</td>
-                <td class="tg-yj5y"><span style="color:black">Humor Detection</span></td>
-                <td class="tg-yj5y"><a href="https://aclanthology.org/D19-1211/" target="_blank" rel="noopener noreferrer">URFUNNY</a></td>
-                <td class="tg-yj5y">994</td>
-                <td class="tg-jz12" rowspan="6"><span style="font-weight:bold;font-style:normal">Speaker Identity</span></td>
-                <td class="tg-yj5y"><span style="color:black">Language Identification</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2402.07729" target="_blank" rel="noopener noreferrer">Covost2-lan</a></td>
-                <td class="tg-yj5y">1000</td>
-                <td class="tg-jz12" rowspan="6"><span style="font-weight:bold">Speech Content</span></td>
-                <td class="tg-yj5y"><span style="color:black">Speech Grounding</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2402.07729" target="_blank" rel="noopener noreferrer">Librispeech-grounding</a></td>
-                <td class="tg-yj5y">1000</td>
+import React from 'react';
+
+const tableData = {
+  cognitiveState: [
+    { task: "Humor Detection", dataset: "URFUNNY", size: "994", link: "https://aclanthology.org/D19-1211/" },
+    { task: "Sarcasm Detection", dataset: "MUSTARD", size: "690", link: "https://aclanthology.org/P19-1455/" },
+    { task: "Pragmatic Intent Detection", dataset: "SLURP", size: "753", link: "https://aclanthology.org/2020.emnlp-main.588/" },
+    { task: "Emotion Recognition", dataset: "IEMOCAP", size: "1023", link: "https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf" },
+    { task: "Emotion Recognition", dataset: "MELD", size: "2608", link: "https://arxiv.org/abs/1810.02508" }
+  ],
+  speakerIdentity: [
+    { task: "Language Identification", dataset: "Covost2-lan", size: "1000", link: "https://arxiv.org/abs/2402.07729" },
+    { task: "Gender Classification", dataset: "Commonvoice", size: "1258", link: "https://arxiv.org/abs/1912.06670" },
+    { task: "Age Classification", dataset: "FairSpeech", size: "1000", link: "https://arxiv.org/abs/2408.12734" },
+    { task: "Age Classification", dataset: "Commonvoice", size: "1258", link: "https://arxiv.org/abs/1912.06670" },
+    { task: "Gender Classification", dataset: "FairSpeech", size: "1000", link: "https://arxiv.org/abs/2408.12734" },
+    { task: "Accent Classification", dataset: "Commonvoice", size: "1086", link: "https://arxiv.org/abs/1912.06670" }
+  ],
+  speechContent: [
+    { task: "Speech Grounding", dataset: "Librispeech-grounding", size: "1000", link: "https://arxiv.org/abs/2402.07729" },
+    { task: "Speech Entity Recognition", dataset: "SLURP-ent", size: "1000", link: "https://arxiv.org/abs/2402.07729" },
+    { task: "Instruction Following", dataset: "Alpaca-Audio", size: "100", link: "https://arxiv.org/abs/2406.16020" },
+    { task: "Instruction Following", dataset: "Openhermes-Audio", size: "100", link: "https://huggingface.co/datasets/teknium/OpenHermes-2.5" },
+    { task: "Speech QA", dataset: "CN-College-Listen", size: "2271", link: "https://arxiv.org/abs/2406.16020" },
+    { task: "Speech QA", dataset: "Public_sg_speech", size: "688", link: "https://arxiv.org/abs/2406.16020" }
+  ],
+  relationshipData: [
+    { task: "Relationship Classification", dataset: "CallHome", size: "24", link: "https://arxiv.org/abs/1912.06670" }
+  ]
+};
+
+export function ResearchTable() {
+  return (
+    <div className="w-full overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="p-2 border font-bold text-center">Category</th>
+            <th className="p-2 border font-bold text-center">Task</th>
+            <th className="p-2 border font-bold text-center">Dataset</th>
+            <th className="p-2 border font-bold text-center">Size</th>
+            <th className="p-2 border font-bold text-center">Category</th>
+            <th className="p-2 border font-bold text-center">Task</th>
+            <th className="p-2 border font-bold text-center">Dataset</th>
+            <th className="p-2 border font-bold text-center">Size</th>
+            <th className="p-2 border font-bold text-center">Category</th>
+            <th className="p-2 border font-bold text-center">Task</th>
+            <th className="p-2 border font-bold text-center">Dataset</th>
+            <th className="p-2 border font-bold text-center">Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* First 5 rows for Cognitive State */}
+          {tableData.cognitiveState.map((item, index) => (
+            <tr key={`cognitive-${index}`} className="bg-gray-50">
+              {index === 0 && (
+                <td rowSpan={5} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                  Cognitive State
+                </td>
+              )}
+              <td className="p-2 border text-center">{item.task}</td>
+              <td className="p-2 border text-center">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                  {item.dataset}
+                </a>
+              </td>
+              <td className="p-2 border text-center">{item.size}</td>
+              {index === 0 && (
+                <td rowSpan={6} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                  Speaker Identity
+                </td>
+              )}
+              {tableData.speakerIdentity[index] && (
+                <>
+                  <td className="p-2 border text-center">{tableData.speakerIdentity[index].task}</td>
+                  <td className="p-2 border text-center">
+                    <a href={tableData.speakerIdentity[index].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      {tableData.speakerIdentity[index].dataset}
+                    </a>
+                  </td>
+                  <td className="p-2 border text-center">{tableData.speakerIdentity[index].size}</td>
+                </>
+              )}
+              {index === 0 && (
+                <td rowSpan={6} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                  Speech Content
+                </td>
+              )}
+              {tableData.speechContent[index] && (
+                <>
+                  <td className="p-2 border text-center">{tableData.speechContent[index].task}</td>
+                  <td className="p-2 border text-center">
+                    <a href={tableData.speechContent[index].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      {tableData.speechContent[index].dataset}
+                    </a>
+                  </td>
+                  <td className="p-2 border text-center">{tableData.speechContent[index].size}</td>
+                </>
+              )}
             </tr>
-            <tr>
-                <td class="tg-yj5y"><span style="color:black">Sarcasm Detection</span></td>
-                <td class="tg-yj5y"><a href="https://aclanthology.org/P19-1455/" target="_blank" rel="noopener noreferrer">MUSTARD</a></td>
-                <td class="tg-yj5y">690</td>
-                <td class="tg-yj5y"><span style="color:black">Gender Classification</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/1912.06670" target="_blank" rel="noopener noreferrer">Commonvoice</a></td>
-                <td class="tg-yj5y">1258</td>
-                <td class="tg-yj5y"><span style="color:black">Speech Entity Recognition</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2402.07729" target="_blank" rel="noopener noreferrer">SLURP-ent</a></td>
-                <td class="tg-yj5y">1000</td>
-            </tr>
-            <tr>
-                <td class="tg-yj5y">  <span style="color:black">Pragmatic Intent Detection</span></td>
-                <td class="tg-yj5y"><a href="https://aclanthology.org/2020.emnlp-main.588/" target="_blank" rel="noopener noreferrer">SLURP</a></td>
-                <td class="tg-yj5y">753</td>
-                <td class="tg-yj5y"><span style="color:black">Age Classification</span>   </td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2408.12734" target="_blank" rel="noopener noreferrer">FairSpeech</a> </td>
-                <td class="tg-yj5y">1000</td>
-                <td class="tg-yj5y"><span style="color:black">Instruction Following</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2406.16020" target="_blank" rel="noopener noreferrer">Alpaca-Audio</a></td>
-                <td class="tg-yj5y">100</td>
-            </tr>
-            <tr>
-                <td class="tg-yj5y"><span style="color:black">Emotion Recognition</span></td>
-                <td class="tg-yj5y"><a href="https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf" target="_blank" rel="noopener noreferrer">IEMOCAP</a></td>
-                <td class="tg-yj5y">1023</td>
-                <td class="tg-yj5y"><span style="color:black">Age Classification</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/1912.06670" target="_blank" rel="noopener noreferrer">Commonvoice</a></td>
-                <td class="tg-yj5y">1258</td>
-                <td class="tg-yj5y"><span style="color:black">Instruction Following</span></td>
-                <td class="tg-yj5y"><a href="https://huggingface.co/datasets/teknium/OpenHermes-2.5" target="_blank" rel="noopener noreferrer">Openhermes-Audio</a></td>
-                <td class="tg-yj5y">100</td>
-            </tr>
-            <tr>
-                <td class="tg-yj5y"><span style="font-style:normal">Emotion Recognition</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/1810.02508" target="_blank" rel="noopener noreferrer">MELD</a></td>
-                <td class="tg-yj5y">2608</td>
-                <td class="tg-yj5y">Gender Classification</td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2408.12734" target="_blank" rel="noopener noreferrer">FairSpeech</a> </td>
-                <td class="tg-yj5y">1000</td>
-                <td class="tg-yj5y"><span style="color:black">Speech QA</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2406.16020" target="_blank" rel="noopener noreferrer">CN-College-Listen</a></td>
-                <td class="tg-yj5y">2271</td>
-            </tr>
-            <tr>
-                <td class="tg-yj5y"><span style="font-weight:bold">Speaker Identity</span></td>
-                <td class="tg-yj5y"><span style="color:black">Relationship Classification</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/1912.06670" target="_blank" rel="noopener noreferrer">CallHome</a></td>
-                <td class="tg-yj5y">24</td>
-                <td class="tg-yj5y"><span style="color:black">Accent Classification</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/1912.06670" target="_blank" rel="noopener noreferrer">Commonvoice</a></td>
-                <td class="tg-yj5y">1086</td>
-                <td class="tg-yj5y"><span style="color:black">Speech QA</span></td>
-                <td class="tg-yj5y"><a href="https://arxiv.org/abs/2406.16020" target="_blank" rel="noopener noreferrer">Public_sg_speech</a><span style="color:#156082">  </span></td>
-                <td class="tg-yj5y">688</td>
-            </tr>
-            </tbody></table>
-        </div></>
-    )
+          ))}
+          
+          {/* Relationship Classification row */}
+          <tr className="bg-gray-50">
+            <td className="p-2 border font-bold text-center align-middle bg-gray-50">
+              Speaker Identity
+            </td>
+            <td className="p-2 border text-center">{tableData.relationshipData[0].task}</td>
+            <td className="p-2 border text-center">
+              <a href={tableData.relationshipData[0].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                {tableData.relationshipData[0].dataset}
+              </a>
+            </td>
+            <td className="p-2 border text-center">{tableData.relationshipData[0].size}</td>
+            {/* Complete the row with Speaker Identity and Speech Content data */}
+            <td className="p-2 border text-center">{tableData.speakerIdentity[5].task}</td>
+            <td className="p-2 border text-center">
+              <a href={tableData.speakerIdentity[5].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                {tableData.speakerIdentity[5].dataset}
+              </a>
+            </td>
+            <td className="p-2 border text-center">{tableData.speakerIdentity[5].size}</td>
+            <td className="p-2 border text-center">{tableData.speechContent[5].task}</td>
+            <td className="p-2 border text-center">
+              <a href={tableData.speechContent[5].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                {tableData.speechContent[5].dataset}
+              </a>
+            </td>
+            <td className="p-2 border text-center">{tableData.speechContent[5].size}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
