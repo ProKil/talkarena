@@ -1,7 +1,15 @@
 {
     "index": {
         "type": "page",
-        "title": "Home",
+        "title": "Demo",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
+    "introduction": {
+        "type": "page",
+        "title": "Introduction",
         "theme": {
             "toc": true,
             "typesetting": "article"
@@ -23,5 +31,13 @@
             "toc": true,
             "typesetting": "article"
         }
-    }
+    },
+    "looking_forward": {
+        "type": "page",
+        "title": "Looking Forward",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
 }
