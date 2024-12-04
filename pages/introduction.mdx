@@ -1,1 +1,27 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Lumiflex } from 'uvcanvas'
+import { Button } from "../components/ui/button"
+import { MoveRight } from "lucide-react"
 
+import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ModelPerformanceChart from '../components/static_performance';
+import KendallTauDistanceChart from '../components/interactive_static_correlation';
+
+import { Hero } from "@/components/hero";
+import { GradioEmbed } from "@/components/gradio";
+import { ResearchTable } from "@/components/tablehero";
+import { Callout, Bleed } from 'nextra/components'
+
+# Overview
+
+![Comparison between Static Evaluation and Talk Arena](/overview_arena.png)
+
+Recent efforts towards creating multimodal models have resulted in LLMs capable of processing audio inputs such as speech. Speech is a low-friction interface which expands social and phonetic interaction opportunities with end users. Prior work has benchmarked audio models on a set of disjoint static audio tests such as sarcasm or humor detection. However such static benchmarks lack the complex dynamics of real user interactions and preferences. Inspired by arena-style evaluations for text LLMs we introduce Talk Arena, an open platform for evaluating Large Audio Models with pairwise human preferences. Talk Arena helps to reveal insights on:
+
+* What use cases users are exploring with large audio models? We can analyze user queries from the wild and compare the use case difference with traditional use cases of text LLMs.
+* Which Large Language Model users prefer the most? Users vote their preferences with self-initiated prompts, which better reflects the actual user experience.
+* Are static speech comprehension benchmarks predictive user preferences in interactive settings? It helps to reveal the gap between the mainstream evaluation method for audio models and actual user preferences.
