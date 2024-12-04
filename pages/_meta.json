@@ -15,18 +15,17 @@
             "typesetting": "article"
         }
     },
-    "static_evaluation": {
+    "interactive_evaluation": {
         "type": "page",
-        "title": "Static Evaluation",
+        "title": "Interactive Evaluation",
         "theme": {
             "toc": true,
             "typesetting": "article"
         }
-    }
-    ,
-    "interactive_evaluation": {
+    },
+    "static_evaluation": {
         "type": "page",
-        "title": "Interactive Evaluation",
+        "title": "Static Evaluation",
         "theme": {
             "toc": true,
             "typesetting": "article"
