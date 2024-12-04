@@ -13,8 +13,8 @@ import KendallTauDistanceChart from '../components/interactive_static_correlatio
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
-import { TableHero } from "@/components/tablehero";
-import { Callout } from 'nextra/components'
+import { ResearchTable } from "@/components/tablehero";
+import { Callout, Bleed } from 'nextra/components'
 
 <Hero />
 
@@ -46,16 +46,8 @@ Recent efforts towards creating multimodal models have resulted in LLMs capable 
 We select 18 speech comprehension benchmark and perform evaluation for 10 different large audio models.
 
 A wide range of tasks are covered, which include Humor Detection, Sarcasm Detection, Intent Detection, Relationship Classification, Gender Classification, Age Classification, Accent Classification, Speech Grounding, Language Identification, Speech Entity Recognition, Speech Question Answering, and Speech Instruction Following. They can be categorized into three broad categories of Speaker Cognitive State, Speaker Identity, and Speech Content Understanding.
-<TableHero />
 
-|           **Task**           | **Dataset** | **Size** |         **Task**        | **Dataset** | **Size** |          **Task**         |      **Dataset**      | **Size** |
-|:----------------------------:|:-----------:|:--------:|:-----------------------:|:-----------:|:--------:|:-------------------------:|:---------------------:|:--------:|
-|        Humor Detection       |   [URFUNNY](https://aclanthology.org/D19-1211/)   |    994   | Language Identification | [Covost2-lan](https://arxiv.org/abs/2402.07729) |   1000   |      Speech Grounding     | [Librispeech-grounding](https://arxiv.org/abs/2402.07729) |   1000   |
-|       Sarcasm Detection      |   [MUSTARD](https://aclanthology.org/P19-1455/)   |    690   |  Gender Classification  | [Commonvoice](https://arxiv.org/abs/1912.06670) |   1258   | Speech Entity Recognition |       [SLURP-ent](https://arxiv.org/abs/2402.07729)       |   1000   |
-|   Pragmatic Intent Detection |    [SLURP](https://aclanthology.org/2020.emnlp-main.588/)    |    753   |  Age Classification     | [FairSpeech](https://arxiv.org/abs/2408.12734)  |   1000   |   Instruction Following   |      [Alpaca-Audio](https://arxiv.org/abs/2406.16020)     |    100   |
-|      Emotion Recognition     |   [IEMOCAP](https://sail.usc.edu/iemocap/)   |   1023   |    Age Classification   | [Commonvoice](https://arxiv.org/abs/1912.06670) |   1258   |   Instruction Following   |    [Openhermes-Audio](https://arxiv.org/abs/2406.16020)   |    100   |
-|      Emotion Recognition     |     [MELD](https://arxiv.org/abs/1810.02508)    |   2608   |  Gender Classification  | [FairSpeech](https://arxiv.org/abs/2408.12734)  |   1000   |         Speech QA         |   [CN-College-Listen](https://arxiv.org/abs/2406.16020)   |   2271   |
-|  Relationship Classification |   [CallHome](https://aclanthology.org/L18-1592/)  |    24    |  Accent Classification  | [Commonvoice](https://arxiv.org/abs/1912.06670) |   1086   |         Speech QA         |   [Public_sg_speech](https://arxiv.org/abs/2406.16020)    |    688   |
+<ResearchTable />
 
 
 
@@ -121,19 +113,12 @@ Here are some observations:
 
 **Key Insights.** The observed **changes in model rankings** between static and interactive evaluations highlight the limitations of static audio benchmarks in capturing the complexities of real-world interactions. In contrast, interactive evaluations provide a more realistic measure of an audio model's capabilities, revealing strengths and weaknesses that static methods may overlook. **The discrepancies underscore the urgent need for an interactive evaluation platform like Talk Arena** to ensure models are assessed in contexts that reflect their actual use. We call on the research community to prioritize the development of interactive evaluation for audio models, enabling more reliable and actionable insights into performance of different Large Audio Models.
 
-**Moving Forward.** We are inspired by the ways that the Chatbot Arena has rapidly accelerated the research focus on real-world usage of Chatbot models. As we look ahead, we hope that we can similarly focus the development of Speech LLMs on what users want, rather than what current benchmarks can measure.
-- **Bringing Human Preferences to Audio** While the current platform does not store query data, we are excited to start discussions with the community about what data the general public is willing to contribute. Unlike text, speech data is inherently personally identifiable. This means that both consent to data contribution and the careful release of this data is especially important. By working in the open, we hope to find a way to bring a wide range of perspectives to make Large Audio Models useful for everyone who wants to use them.
-- **Free-Form Conversational Data** Unlike text chat, spoken conversations are often free-flowing. This means there can be many turns in a short period of time and speakers can interrupt one another! This is part of what makes the modality desirable, but it presents challenges for Arena-style evaluation. We're excited to dig into how we can extend this user-centric evaluation paradigm to all the new ways people are chatting to virtual assistants with speech.
-- **Building Better Static Benchmarks** Human evaluation is not a feasible way to guide model development. It is slow and often expensive. We hope that the insights derived from our interactive evaluation can help guide the creation of new static benchmarks that better correlate with real-world usage and user preference.
+**Moving Forward.** As next steps, we hope to: **1) Scale up the data collection.** We hope to collect more pairwise user preferences from the general public. This will allow us to get insights on user preference among different large audio models with more diverse perspectives. **2) Support multi-turn conversations in the system.** Multi-turn which requires higher adaptability to user feedback and dynamic environments. It also allows evaluation along more dimensions such as consistency of the flow, context handling across turns and so on. It can help us achieve a more comprehensive understanding of audio models’ conversational abilities, ensuring it meets the nuanced demands of real-world interactions. **3) Control data quality when scaling up.** When collecting user preferences from the wild, malicious users may deliberately introduce harmful, biased, or nonsensical inputs, compromising the quality of the evaluation. By identifying and mitigating malicious activity, we hope to maintain the reliability of our evaluation system.
 
 <Callout type="info">
 Ethics and Disclosure
 
-This study has been approved by the Institutional Review Board (IRB) at the researchers' institution, and we obtained participant consent with a standard institutional consent form. 
-
-For the Prolific study, we stored users queries as well as rationale about why they picked their votes. While our focus is on understanding model behaviours that are desirable, doing this analysis required storing this personally identifiable information. As such, this study was approved under Expedited Review Categories 6 and 7 for the collection of voice for research purposes and research employing survey methods. All participants were paid 15 dollars an hour on the prolific platform.
-
-The public platform, on the other hand, **does not store any information about you or your queries for further research** or release. All recordings are erased after you submit your votes and vote data are stored to understand model performance, but no information about your requests is stored. The public platform sends data to third-party APIs from OpenAI and Google. In both cases, we utilize paid APIs for which the terms of service dictate that your data will not be used for training or stored for more than 30 days. Based on the lack of identifiable information and the focus on model rankings, the Stanford IRB has determined that this public platform is not human subects research as defined in 45 CFR 46.102(e).
+This study has been approved by the Institutional Review Board (IRB) at the researchers' institution, and we obtained participant consent with a standard institutional consent form.
 
 </Callout>
 
