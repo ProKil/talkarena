@@ -1,7 +1,7 @@
 {
     "index": {
         "type": "page",
-        "title": "Demo",
+        "title": "Home",
         "theme": {
             "toc": true,
             "typesetting": "article"
