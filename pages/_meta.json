@@ -15,4 +15,13 @@
             "typesetting": "article"
         }
     }
+    ,
+    "interactive_evaluation": {
+        "type": "page",
+        "title": "Interactive Evaluation",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    }
 }
