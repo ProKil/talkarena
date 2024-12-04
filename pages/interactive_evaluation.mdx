@@ -1,1 +1,25 @@
+# Interactive Evaluation
 
+### User Preference
+
+As an initial effort, we collected a total 5000 votes using Talk Arena for pairwise comparisons among GPT4o,
+Gemini-1.5-pro, Typhoon, Qwen2-Audio and DiVA, which are top performing models from the results of static evaluation.
+For each of the ten combinations, we collect 500 votes from more than 50 different crowdworkers. A tie will be counted as half vote to both models.
+
+![User Study (tie cases counted as half vote)](/user_study_2.png)
+
+We applied Bradley Terry model to pariwise voting results to get a ranking for the five models tested.
+The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
+(most preferred to less preferred).
+![Bradley Terry](/bradley_terry.svg)
+
+### Comparison with Static Evaluation
+
+We compare the user preference result in interactive evaluation to that of static evaluation by computing the top-k Kendall Tau Distance between rank in static evaluation and that in interactive evaluation:
+
+<KendallTauDistanceChart />
+
+Here are some observations:
+1. **None** of the static bench reflects exactly the same rank in interactive eval
+2. Ranks on **emotion recognition** and **language detection** benchmarks are most similar to that in interactive eval
+3. Ranks on **gender detection** and **nuanced intent (humor, sarcasm) detection** are not so correlated with that in interactive eval
