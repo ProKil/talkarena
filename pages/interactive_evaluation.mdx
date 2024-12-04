@@ -1,3 +1,21 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Lumiflex } from 'uvcanvas'
+import { Button } from "../components/ui/button"
+import { MoveRight } from "lucide-react"
+
+import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ModelPerformanceChart from '../components/static_performance';
+import KendallTauDistanceChart from '../components/interactive_static_correlation';
+
+import { Hero } from "@/components/hero";
+import { GradioEmbed } from "@/components/gradio";
+import { ResearchTable } from "@/components/tablehero";
+import { Callout, Bleed } from 'nextra/components'
+
 # Interactive Evaluation
 
 ### User Preference
