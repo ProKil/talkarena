@@ -35,27 +35,50 @@ const COMPARISON_COLORS = {
   model2: '#4298B5'  // Custom blue
 } as const;
 
+const ROTATION_THRESHOLD = 15;
+
 interface LabelProps {
   name: string;
   votes: number;
 }
 
-const ModelLabel: FC<LabelProps> = ({
-  name,
-  votes,
-}) => (
-  <div className="flex flex-col items-center w-full text-white">
-    <span className="font-medium text-sm leading-tight text-center">{name}</span>
-    <span className="text-xs opacity-90 text-center">({votes} votes)</span>
-  </div>
-);
+const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
+  const shouldRotate = percentage < ROTATION_THRESHOLD;
+  
+  return (
+    <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
+      <style jsx>{`
+        .writing-mode-vertical {
+          writing-mode: vertical-lr;
+          text-orientation: mixed;
+          transform: rotate(180deg);
+          white-space: nowrap;
+        }
+      `}</style>
+      <span className="font-medium text-sm leading-tight text-center">{name}</span>
+      <span className="text-xs opacity-90 text-center">({votes})</span>
+    </div>
+  );
+};
 
-const TieLabel: FC<Pick<LabelProps, 'votes'>> = ({ votes }) => (
-  <div className="flex flex-col items-center w-full text-white">
-    <span className="text-sm leading-tight text-center">Tie</span>
-    <span className="text-xs opacity-90 text-center">({votes})</span>
-  </div>
-);
+const TieLabel: FC<Pick<LabelProps, 'votes' | 'percentage'>> = ({ votes, percentage }) => {
+  const shouldRotate = percentage < ROTATION_THRESHOLD;
+  
+  return (
+    <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
+      <style jsx>{`
+        .writing-mode-vertical {
+          writing-mode: vertical-lr;
+          text-orientation: mixed;
+          transform: rotate(180deg);
+          white-space: nowrap;
+        }
+      `}</style>
+      <span className="text-sm leading-tight text-center">Tie</span>
+      <span className="text-xs opacity-90 text-center">({votes})</span>
+    </div>
+  );
+};
 
 interface ComparisonRowProps extends ComparisonMetrics {}
 
