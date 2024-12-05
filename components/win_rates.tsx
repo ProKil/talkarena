@@ -111,17 +111,157 @@ const MODEL_ORDER: ReadonlyArray<ModelName> = ['DiVA', 'GPT4o', 'Gemini', 'Qwen2
 
 const ModelComparisonChart: FC = () => {
   const rawData: readonly RawComparison[] = useMemo(() => [
-    { Model1: 'DiVA', Model2: 'GPT4o', 'Model1-Win': 252, 'Model2-Win': 176, Tie: 72, total: 500 },
-    { Model1: 'DiVA', Model2: 'Gemini', 'Model1-Win': 313, 'Model2-Win': 130, Tie: 57, total: 500 },
-    { Model1: 'DiVA', Model2: 'Qwen2', 'Model1-Win': 322, 'Model2-Win': 103, Tie: 75, total: 500 },
-    { Model1: 'GPT4o', Model2: 'Gemini', 'Model1-Win': 186, 'Model2-Win': 213, Tie: 101, total: 500 },
-    { Model1: 'GPT4o', Model2: 'Qwen2', 'Model1-Win': 254, 'Model2-Win': 155, Tie: 91, total: 500 },
-    { Model1: 'Gemini', Model2: 'Qwen2', 'Model1-Win': 255, 'Model2-Win': 171, Tie: 74, total: 500 },
-    { Model1: 'Typhoon', Model2: 'DiVA', 'Model1-Win': 50, 'Model2-Win': 417, Tie: 33, total: 500 },
-    { Model1: 'Typhoon', Model2: 'GPT4o', 'Model1-Win': 19, 'Model2-Win': 447, Tie: 34, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Gemini', 'Model1-Win': 50, 'Model2-Win': 424, Tie: 26, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Qwen2', 'Model1-Win': 82, 'Model2-Win': 347, Tie: 71, total: 500 }
-  ] as const, []);
+  {
+    "Model1": "DiVA",
+    "Model2": "GPT4o",
+    "Model1-Win": 252,
+    "Model2-Win": 176,
+    "Tie": 72,
+    "total": 500,
+    "winRate": 0.576,
+    "confidenceInterval": [
+      0.536,
+      0.616
+    ],
+    "pValue": 0.0001,
+    "significant": true
+  },
+  {
+    "Model1": "DiVA",
+    "Model2": "Gemini",
+    "Model1-Win": 313,
+    "Model2-Win": 130,
+    "Tie": 57,
+    "total": 500,
+    "winRate": 0.683,
+    "confidenceInterval": [
+      0.644,
+      0.721
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "DiVA",
+    "Model2": "Qwen2",
+    "Model1-Win": 322,
+    "Model2-Win": 103,
+    "Tie": 75,
+    "total": 500,
+    "winRate": 0.719,
+    "confidenceInterval": [
+      0.683,
+      0.754
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "GPT4o",
+    "Model2": "Gemini",
+    "Model1-Win": 186,
+    "Model2-Win": 213,
+    "Tie": 101,
+    "total": 500,
+    "winRate": 0.527,
+    "confidenceInterval": [
+      0.488,
+      0.566
+    ],
+    "pValue": 0.088,
+    "significant": false
+  },
+  {
+    "Model1": "GPT4o",
+    "Model2": "Qwen2",
+    "Model1-Win": 254,
+    "Model2-Win": 155,
+    "Tie": 91,
+    "total": 500,
+    "winRate": 0.401,
+    "confidenceInterval": [
+      0.363,
+      0.44
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "Gemini",
+    "Model2": "Qwen2",
+    "Model1-Win": 255,
+    "Model2-Win": 171,
+    "Tie": 74,
+    "total": 500,
+    "winRate": 0.416,
+    "confidenceInterval": [
+      0.376,
+      0.456
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "Typhoon",
+    "Model2": "DiVA",
+    "Model1-Win": 50,
+    "Model2-Win": 417,
+    "Tie": 33,
+    "total": 500,
+    "winRate": 0.867,
+    "confidenceInterval": [
+      0.839,
+      0.894
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "Typhoon",
+    "Model2": "GPT4o",
+    "Model1-Win": 19,
+    "Model2-Win": 447,
+    "Tie": 34,
+    "total": 500,
+    "winRate": 0.928,
+    "confidenceInterval": [
+      0.908,
+      0.947
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "Typhoon",
+    "Model2": "Gemini",
+    "Model1-Win": 50,
+    "Model2-Win": 424,
+    "Tie": 26,
+    "total": 500,
+    "winRate": 0.874,
+    "confidenceInterval": [
+      0.846,
+      0.9
+    ],
+    "pValue": 0,
+    "significant": true
+  },
+  {
+    "Model1": "Typhoon",
+    "Model2": "Qwen2",
+    "Model1-Win": 82,
+    "Model2-Win": 347,
+    "Tie": 71,
+    "total": 500,
+    "winRate": 0.765,
+    "confidenceInterval": [
+      0.732,
+      0.797
+    ],
+    "pValue": 0,
+    "significant": true
+  }
+] as const, []);
 
   const processedData = useMemo(() => {
     const processed = rawData.map(row => ({
