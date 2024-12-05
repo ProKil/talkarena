@@ -35,7 +35,7 @@ const COMPARISON_COLORS = {
   model2: '#4298B5'  // Custom blue
 } as const;
 
-const ROTATION_THRESHOLD = 5;
+const ROTATION_THRESHOLD = 10;
 
 interface LabelProps {
   name: string;
