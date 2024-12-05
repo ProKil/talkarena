@@ -58,7 +58,7 @@ const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
         }
       `}</style>
       <span className="font-medium text-sm leading-tight text-center">{name}</span>
-      <span className="text-xs opacity-90 text-center">({votes})</span>
+      <span className="text-xs opacity-90 text-center">({votes} votes)</span>
     </div>
   );
 };
@@ -77,7 +77,7 @@ const TieLabel: FC<Pick<LabelProps, 'votes' | 'percentage'>> = ({ votes, percent
         }
       `}</style>
       <span className="text-sm leading-tight text-center">Tie</span>
-      <span className="text-xs opacity-90 text-center">({votes})</span>
+      <span className="text-xs opacity-90 text-center">({votes} votes)</span>
     </div>
   );
 };
