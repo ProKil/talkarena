@@ -38,5 +38,12 @@
             "toc": true,
             "typesetting": "article"
         }
+    },
+    "contact": {
+        "type": "page",
+        "title": "Contact Us",
+        "theme": {
+            "toc": true
+        }
     }
 }
