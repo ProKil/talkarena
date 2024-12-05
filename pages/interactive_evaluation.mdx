@@ -23,15 +23,13 @@ import { Callout, Bleed } from 'nextra/components'
 
 As an initial effort, we collected a total 5000 votes using Talk Arena for pairwise comparisons among GPT4o,
 Gemini-1.5-pro, Typhoon, Qwen2-Audio and DiVA, which are top performing models from the results of static evaluation.
-For each of the ten combinations, we collect 500 votes from more than 50 different crowdworkers. A tie will be counted as half vote to both models.
+For each of the ten combinations, we collect 500 votes from more than 50 different crowdworkers.
 
 <ModelComparisonChart />
-![User Study (tie cases counted as half vote)](/user_study_2.png)
 
 We applied Bradley Terry model to pariwise voting results to get a ranking for the five models tested.
 The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
 (most preferred to less preferred).
-![Bradley Terry](/bradley_terry.svg)
 |     Model     | Bradley Terry Score  |    Date    | Open-Sourced? | Site  |
 |:-------------:|:--------------------:|:----------:|:-------------:|:-----:|
 |     🏅DiVA     |         36.0         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ✅       |   [🔗](https://huggingface.co/WillHeld/DiVA-llama-3-v0-8b)   |
