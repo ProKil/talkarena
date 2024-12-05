@@ -99,6 +99,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
         <ModelLabel 
           name={model1.name}
           votes={model1.votes}
+          percentage={model1.percentage}
         />
       </div>
       
@@ -110,7 +111,8 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
           }}
           className="flex items-center justify-center px-2"
         >
-          <TieLabel votes={tie.votes} />
+          <TieLabel votes={tie.votes} 
+          percentage={tie.percentage} />
         </div>
       )}
       
@@ -124,6 +126,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
         <ModelLabel 
           name={model2.name}
           votes={model2.votes}
+          percentage={model2.percentage}
         />
       </div>
     </div>
