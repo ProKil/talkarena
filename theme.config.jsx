@@ -1,8 +1,8 @@
 import Link from "next/link"
 
 export default {
-    logo: <div className="flex items-center space-x-3"> 
-    	<img src="/talkarena-logo.svg" alt="Logo" className="h-[20px]"/>
+    logo: <div className="flex items-center"> 
+    	<img src="/talkarena-logo.svg" alt="Logo" style={{width: '3rem'}}/>
     	<span className="text-2xl font-bold">Talk Arena</span>
     </div>,
     project: {
@@ -31,8 +31,6 @@ export default {
         <span>
           CC-BY (SA) 4.0 &copy; 2024 <a href="https://talkarena.org">Talk Arena</a>
           <br />
-	      We appreciate the computing support provided by <a href="https://hai.stanford.edu/call-google-cloud-credit-proposals">Stanford HAI Google Cloud Credit Program</a>
-	      
         </span>
       )
   },
