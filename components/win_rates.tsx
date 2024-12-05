@@ -2,39 +2,62 @@
 
 import { FC, useMemo } from 'react';
 
-interface ModelData {
+type ModelName = 'Diva' | 'Gemini' | 'GPT4o' | 'Qwen2' | 'Typhoon';
+
+interface ModelMetrics {
   name: string;
   votes: number;
   percentage: number;
 }
 
-interface ComparisonData {
-  model1: ModelData;
-  model2: ModelData;
+interface ComparisonMetrics {
+  model1: ModelMetrics;
+  model2: ModelMetrics;
   tie: {
     votes: number;
     percentage: number;
   };
+  totalVotes: number;
 }
 
-const ModelLabel: FC<{ name: string; votes: number }> = ({
+interface RawComparison {
+  Model1: ModelName;
+  Model2: ModelName;
+  'Model1-Win': number;
+  'Model2-Win': number;
+  Tie: number;
+  total: number;
+}
+
+const COMPARISON_COLORS = {
+  model1: '#B83A4B', // Updated custom red
+  tie: '#53565A',    // Custom grey
+  model2: '#4298B5'  // Custom blue
+} as const;
+
+interface LabelProps {
+  name: string;
+  votes: number;
+}
+
+const ModelLabel: FC<LabelProps> = ({
   name,
   votes,
 }) => (
-  <div className="flex flex-col items-center w-full">
+  <div className="flex flex-col items-center w-full text-white">
     <span className="font-medium text-sm leading-tight text-center">{name}</span>
-    <span className="text-xs text-gray-600 text-center">({votes} votes)</span>
+    <span className="text-xs opacity-90 text-center">({votes} votes)</span>
   </div>
 );
 
-const TieLabel: FC<{ votes: number }> = ({ votes }) => (
-  <div className="flex flex-col items-center w-full">
+const TieLabel: FC<Pick<LabelProps, 'votes'>> = ({ votes }) => (
+  <div className="flex flex-col items-center w-full text-white">
     <span className="text-sm leading-tight text-center">Tie</span>
-    <span className="text-xs text-gray-600 text-center">({votes})</span>
+    <span className="text-xs opacity-90 text-center">({votes})</span>
   </div>
 );
 
-interface ComparisonRowProps extends ComparisonData {}
+interface ComparisonRowProps extends ComparisonMetrics {}
 
 const ComparisonRow: FC<ComparisonRowProps> = ({
   model1,
@@ -43,10 +66,12 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
 }) => (
   <div className="w-full h-14 mb-1 last:mb-0">
     <div className="flex w-full h-full rounded-md overflow-hidden">
-      {/* Model 1 Section */}
       <div 
-        className="bg-red-100 flex items-center justify-center min-w-[120px] px-3"
-        style={{ width: `${model1.percentage}%` }}
+        style={{ 
+          width: `${model1.percentage}%`,
+          backgroundColor: COMPARISON_COLORS.model1,
+        }}
+        className="flex items-center justify-center min-w-[120px] px-3"
       >
         <ModelLabel 
           name={model1.name}
@@ -54,20 +79,24 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
         />
       </div>
       
-      {/* Tie Section */}
       {tie.votes > 0 && (
         <div 
-          className="bg-gray-100 flex items-center justify-center min-w-[60px] px-2"
-          style={{ width: `${tie.percentage}%` }}
+          style={{ 
+            width: `${tie.percentage}%`,
+            backgroundColor: COMPARISON_COLORS.tie,
+          }}
+          className="flex items-center justify-center min-w-[60px] px-2"
         >
           <TieLabel votes={tie.votes} />
         </div>
       )}
       
-      {/* Model 2 Section */}
       <div 
-        className="bg-yellow-50 flex items-center justify-center min-w-[120px] px-3"
-        style={{ width: `${model2.percentage}%` }}
+        style={{ 
+          width: `${model2.percentage}%`,
+          backgroundColor: COMPARISON_COLORS.model2,
+        }}
+        className="flex items-center justify-center min-w-[120px] px-3"
       >
         <ModelLabel 
           name={model2.name}
@@ -78,22 +107,24 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
   </div>
 );
 
-const ModelComparisonChart: FC = () => {
-  const rawData = useMemo(() => [
-    { Model1: 'Qwen2', Model2: 'Diva', 'Model1-Win': 103, 'Model2-Win': 322, Tie: 75, total: 500 },
-    { Model1: 'Gemini', Model2: 'Diva', 'Model1-Win': 130, 'Model2-Win': 313, Tie: 57, total: 500 },
-    { Model1: 'Gemini', Model2: 'Qwen2', 'Model1-Win': 255, 'Model2-Win': 171, Tie: 74, total: 500 },
-    { Model1: 'Gpt4o', Model2: 'Qwen2', 'Model1-Win': 254, 'Model2-Win': 155, Tie: 91, total: 500 },
-    { Model1: 'Gpt4o', Model2: 'Diva', 'Model1-Win': 176, 'Model2-Win': 252, Tie: 72, total: 500 },
-    { Model1: 'Gpt4o', Model2: 'Gemini', 'Model1-Win': 186, 'Model2-Win': 213, Tie: 101, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Qwen2', 'Model1-Win': 82, 'Model2-Win': 347, Tie: 71, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Diva', 'Model1-Win': 50, 'Model2-Win': 417, Tie: 33, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Gemini', 'Model1-Win': 50, 'Model2-Win': 424, Tie: 26, total: 500 },
-    { Model1: 'Typhoon', Model2: 'GPT4o', 'Model1-Win': 19, 'Model2-Win': 447, Tie: 34, total: 500 }
-  ], []);
+const MODEL_ORDER: ReadonlyArray<ModelName> = ['Diva', 'GPT4o', 'Gemini', 'Qwen2', 'Typhoon'] as const;
 
-  const processedData = useMemo(() => 
-    rawData.map(row => ({
+const ModelComparisonChart: FC = () => {
+  const rawData: readonly RawComparison[] = useMemo(() => [
+    { Model1: 'Diva', Model2: 'GPT4o', 'Model1-Win': 252, 'Model2-Win': 176, Tie: 72, total: 500 },
+    { Model1: 'Diva', Model2: 'Gemini', 'Model1-Win': 313, 'Model2-Win': 130, Tie: 57, total: 500 },
+    { Model1: 'Diva', Model2: 'Qwen2', 'Model1-Win': 322, 'Model2-Win': 103, Tie: 75, total: 500 },
+    { Model1: 'GPT4o', Model2: 'Gemini', 'Model1-Win': 186, 'Model2-Win': 213, Tie: 101, total: 500 },
+    { Model1: 'GPT4o', Model2: 'Qwen2', 'Model1-Win': 254, 'Model2-Win': 155, Tie: 91, total: 500 },
+    { Model1: 'Gemini', Model2: 'Qwen2', 'Model1-Win': 255, 'Model2-Win': 171, Tie: 74, total: 500 },
+    { Model1: 'Typhoon', Model2: 'Diva', 'Model1-Win': 50, 'Model2-Win': 417, Tie: 33, total: 500 },
+    { Model1: 'Typhoon', Model2: 'GPT4o', 'Model1-Win': 19, 'Model2-Win': 447, Tie: 34, total: 500 },
+    { Model1: 'Typhoon', Model2: 'Gemini', 'Model1-Win': 50, 'Model2-Win': 424, Tie: 26, total: 500 },
+    { Model1: 'Typhoon', Model2: 'Qwen2', 'Model1-Win': 82, 'Model2-Win': 347, Tie: 71, total: 500 }
+  ] as const, []);
+
+  const processedData = useMemo(() => {
+    const processed = rawData.map(row => ({
       model1: {
         name: row.Model1,
         votes: row['Model1-Win'],
@@ -107,14 +138,24 @@ const ModelComparisonChart: FC = () => {
       tie: {
         votes: row.Tie,
         percentage: (row.Tie / row.total) * 100
-      }
-    })),
-    [rawData]
-  );
+      },
+      totalVotes: row.total
+    }));
+
+    return processed.sort((a, b) => {
+      const aIndex1 = MODEL_ORDER.indexOf(a.model1.name as ModelName);
+      const aIndex2 = MODEL_ORDER.indexOf(a.model2.name as ModelName);
+      const bIndex1 = MODEL_ORDER.indexOf(b.model1.name as ModelName);
+      const bIndex2 = MODEL_ORDER.indexOf(b.model2.name as ModelName);
+      
+      if (aIndex1 !== bIndex1) return aIndex1 - bIndex1;
+      return aIndex2 - bIndex2;
+    });
+  }, [rawData]);
 
   return (
     <div className="w-full max-w-4xl">
-      {processedData.map((comparison, index) => (
+      {processedData.map((comparison) => (
         <ComparisonRow 
           key={`${comparison.model1.name}-${comparison.model2.name}`}
           {...comparison}
