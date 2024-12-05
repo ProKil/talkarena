@@ -30,13 +30,15 @@ For each of the ten combinations, we collect 500 votes from more than 50 differe
 We applied Bradley Terry model to pariwise voting results to get a ranking for the five models tested.
 The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
 (most preferred to less preferred).
-|     Model     | Bradley Terry Score  |    Date    | Open-Sourced? | Site  |
-|:-------------:|:--------------------:|:----------:|:-------------:|:-----:|
-|     🏅DiVA     |         36.0         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ✅       |   [🔗](https://huggingface.co/WillHeld/DiVA-llama-3-v0-8b)   |
-|     🥈GPT4o    |         24.2         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ❌       |   🔗   |
-|    🥉Gemini    |         21.7         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ❌       |   🔗   |
-| 4️⃣ Qwen2 Audio |         14.5         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ✅       |   🔗   |
-|   5️⃣ Typhoon   |          3.6         | 2️⃣0️⃣2️⃣4️⃣-1️⃣2️⃣-0️⃣1️⃣ |       ✅       |   🔗   |
+<div align="center">
+|     Model     | Bradley Terry Score  | Open-Sourced? | Site  |
+|:-------------:|:--------------------:|:-------------:|:-----:|
+|     🏅DiVA     |         36.0         |       ✅       |   [🔗](https://huggingface.co/WillHeld/DiVA-llama-3-v0-8b)   |
+|     🥈GPT4o    |         24.2         |       ❌       |   🔗   |
+|    🥉Gemini    |         21.7         |       ❌       |   🔗   |
+| 4️⃣ Qwen2 Audio |         14.5         |       ✅       |   🔗   |
+|   5️⃣ Typhoon   |          3.6         |       ✅       |   🔗   |
+</div>
 ### Comparison with Static Evaluation
 
 We compare the user preference result in interactive evaluation to that of static evaluation by computing the top-k Kendall Tau Distance between rank in static evaluation and that in interactive evaluation:
