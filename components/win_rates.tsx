@@ -1,60 +1,84 @@
 "use client"
 
 import { FC, useMemo } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 
-type ModelComparison = {
-  Model1: string;
-  Model2: string;
-  'Model1-Win': number;
-  'Model2-Win': number;
-  Tie: number;
-  total: number;
-};
+interface ModelData {
+  name: string;
+  votes: number;
+  percentage: number;
+}
 
-type ProcessedComparison = {
-  model1Name: string;
-  model2Name: string;
-  model1Votes: number;
-  model2Votes: number;
-  model1Width: number;
-  model2Width: number;
-};
+interface ComparisonData {
+  model1: ModelData;
+  model2: ModelData;
+  tie: {
+    votes: number;
+    percentage: number;
+  };
+}
 
-const ComparisonRow: FC<ProcessedComparison> = ({
-  model1Name,
-  model2Name,
-  model1Votes,
-  model2Votes,
-  model1Width,
-  model2Width,
+const ModelLabel: FC<{ name: string; votes: number; align?: 'left' | 'right' }> = ({
+  name,
+  votes,
+  align = 'left'
 }) => (
-  <div className="w-full mb-2">
-    <div className="flex w-full rounded-lg overflow-hidden">
+  <div className={`flex flex-col ${align === 'right' ? 'items-end' : 'items-start'}`}>
+    <span className="font-medium text-sm leading-tight">{name}</span>
+    <span className="text-xs text-gray-600">({votes} votes)</span>
+  </div>
+);
+
+const TieLabel: FC<{ votes: number }> = ({ votes }) => (
+  <div className="flex flex-col items-center">
+    <span className="text-sm leading-tight">Tie</span>
+    <span className="text-xs text-gray-600">({votes})</span>
+  </div>
+);
+
+interface ComparisonRowProps extends ComparisonData {}
+
+const ComparisonRow: FC<ComparisonRowProps> = ({
+  model1,
+  model2,
+  tie
+}) => (
+  <div className="w-full h-14 mb-1 last:mb-0">
+    <div className="flex w-full h-full rounded-md overflow-hidden">
       <div 
-        className="bg-red-100 flex items-center justify-between px-4 py-3"
-        style={{ width: `${model1Width}%` }}
+        className="bg-red-100 flex items-center justify-between min-w-[120px] px-3"
+        style={{ width: `${model1.percentage}%` }}
       >
-        <div className="text-gray-600">
-          <div className="font-medium">{model1Name}</div>
-          <div className="text-sm">({model1Votes} votes)</div>
-        </div>
+        <ModelLabel 
+          name={model1.name}
+          votes={model1.votes}
+        />
       </div>
-      <div 
-        className="bg-yellow-50 flex items-center justify-between px-4 py-3"
-        style={{ width: `${model2Width}%` }}
-      >
-        <div className="text-gray-600 ml-auto">
-          <div className="font-medium">{model2Name}</div>
-          <div className="text-sm">({model2Votes} votes)</div>
+      
+      {tie.votes > 0 && (
+        <div 
+          className="bg-gray-100 flex items-center justify-center min-w-[60px] px-2"
+          style={{ width: `${tie.percentage}%` }}
+        >
+          <TieLabel votes={tie.votes} />
         </div>
+      )}
+      
+      <div 
+        className="bg-yellow-50 flex items-center justify-end min-w-[120px] px-3"
+        style={{ width: `${model2.percentage}%` }}
+      >
+        <ModelLabel 
+          name={model2.name}
+          votes={model2.votes}
+          align="right"
+        />
       </div>
     </div>
   </div>
 );
 
 const ModelComparisonChart: FC = () => {
-  const rawData: ModelComparison[] = useMemo(() => [
+  const rawData = useMemo(() => [
     { Model1: 'Qwen2', Model2: 'Diva', 'Model1-Win': 103, 'Model2-Win': 322, Tie: 75, total: 500 },
     { Model1: 'Gemini', Model2: 'Diva', 'Model1-Win': 130, 'Model2-Win': 313, Tie: 57, total: 500 },
     { Model1: 'Gemini', Model2: 'Qwen2', 'Model1-Win': 255, 'Model2-Win': 171, Tie: 74, total: 500 },
@@ -67,36 +91,35 @@ const ModelComparisonChart: FC = () => {
     { Model1: 'Typhoon', Model2: 'GPT4o', 'Model1-Win': 19, 'Model2-Win': 447, Tie: 34, total: 500 }
   ], []);
 
-  const processedData = useMemo(() => {
-    return rawData.map(row => {
-      const model1Votes = row['Model1-Win'] + row.Tie / 2;
-      const model2Votes = row['Model2-Win'] + row.Tie / 2;
-      const totalEffectiveVotes = model1Votes + model2Votes;
-      
-      return {
-        model1Name: row.Model1,
-        model2Name: row.Model2,
-        model1Votes: Number(model1Votes.toFixed(1)),
-        model2Votes: Number(model2Votes.toFixed(1)),
-        model1Width: (model1Votes / totalEffectiveVotes) * 100,
-        model2Width: (model2Votes / totalEffectiveVotes) * 100,
-      };
-    });
-  }, [rawData]);
+  const processedData = useMemo(() => 
+    rawData.map(row => ({
+      model1: {
+        name: row.Model1,
+        votes: row['Model1-Win'],
+        percentage: (row['Model1-Win'] / row.total) * 100
+      },
+      model2: {
+        name: row.Model2,
+        votes: row['Model2-Win'],
+        percentage: (row['Model2-Win'] / row.total) * 100
+      },
+      tie: {
+        votes: row.Tie,
+        percentage: (row.Tie / row.total) * 100
+      }
+    })),
+    [rawData]
+  );
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardContent className="p-6">
-        <div className="space-y-2">
-          {processedData.map((comparison, index) => (
-            <ComparisonRow 
-              key={`${comparison.model1Name}-${comparison.model2Name}`}
-              {...comparison}
-            />
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="w-full max-w-4xl">
+      {processedData.map((comparison, index) => (
+        <ComparisonRow 
+          key={`${comparison.model1.name}-${comparison.model2.name}`}
+          {...comparison}
+        />
+      ))}
+    </div>
   );
 };
 
