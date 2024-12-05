@@ -31,8 +31,6 @@ export default {
         <span>
           CC-BY (SA) 4.0 &copy; 2024 <a href="https://talkarena.org">Talk Arena</a>
           <br />
-	      We appreciate the computing support provided by <a href="https://hai.stanford.edu/call-google-cloud-credit-proposals">Stanford HAI Google Cloud Credit Program</a>
-	      
         </span>
       )
   },
