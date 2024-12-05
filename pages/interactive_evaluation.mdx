@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import ModelPerformanceChart from '../components/static_performance';
 import KendallTauDistanceChart from '../components/interactive_static_correlation';
+import ModelComparisonChart from '../components/win_rates';
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
@@ -24,6 +25,7 @@ As an initial effort, we collected a total 5000 votes using Talk Arena for pairw
 Gemini-1.5-pro, Typhoon, Qwen2-Audio and DiVA, which are top performing models from the results of static evaluation.
 For each of the ten combinations, we collect 500 votes from more than 50 different crowdworkers. A tie will be counted as half vote to both models.
 
+<ModelComparisonChart />
 ![User Study (tie cases counted as half vote)](/user_study_2.png)
 
 We applied Bradley Terry model to pariwise voting results to get a ranking for the five models tested.
