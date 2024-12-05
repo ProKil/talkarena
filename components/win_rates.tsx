@@ -17,21 +17,20 @@ interface ComparisonData {
   };
 }
 
-const ModelLabel: FC<{ name: string; votes: number; align?: 'left' | 'right' }> = ({
+const ModelLabel: FC<{ name: string; votes: number }> = ({
   name,
   votes,
-  align = 'left'
 }) => (
-  <div className={`flex flex-col ${align === 'right' ? 'items-end' : 'items-start'}`}>
-    <span className="font-medium text-sm leading-tight">{name}</span>
-    <span className="text-xs text-gray-600">({votes} votes)</span>
+  <div className="flex flex-col items-center w-full">
+    <span className="font-medium text-sm leading-tight text-center">{name}</span>
+    <span className="text-xs text-gray-600 text-center">({votes} votes)</span>
   </div>
 );
 
 const TieLabel: FC<{ votes: number }> = ({ votes }) => (
-  <div className="flex flex-col items-center">
-    <span className="text-sm leading-tight">Tie</span>
-    <span className="text-xs text-gray-600">({votes})</span>
+  <div className="flex flex-col items-center w-full">
+    <span className="text-sm leading-tight text-center">Tie</span>
+    <span className="text-xs text-gray-600 text-center">({votes})</span>
   </div>
 );
 
@@ -44,8 +43,9 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
 }) => (
   <div className="w-full h-14 mb-1 last:mb-0">
     <div className="flex w-full h-full rounded-md overflow-hidden">
+      {/* Model 1 Section */}
       <div 
-        className="bg-red-100 flex items-center justify-between min-w-[120px] px-3"
+        className="bg-red-100 flex items-center justify-center min-w-[120px] px-3"
         style={{ width: `${model1.percentage}%` }}
       >
         <ModelLabel 
@@ -54,6 +54,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
         />
       </div>
       
+      {/* Tie Section */}
       {tie.votes > 0 && (
         <div 
           className="bg-gray-100 flex items-center justify-center min-w-[60px] px-2"
@@ -63,14 +64,14 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
         </div>
       )}
       
+      {/* Model 2 Section */}
       <div 
-        className="bg-yellow-50 flex items-center justify-end min-w-[120px] px-3"
+        className="bg-yellow-50 flex items-center justify-center min-w-[120px] px-3"
         style={{ width: `${model2.percentage}%` }}
       >
         <ModelLabel 
           name={model2.name}
           votes={model2.votes}
-          align="right"
         />
       </div>
     </div>
