@@ -32,7 +32,11 @@ import {
           <AccordionContent>
             This study has been approved by the Institutional Review Board (IRB) at the researchers' institution, and we obtained participant consent with a standard institutional consent form.
             For the Prolific study, we stored users queries as well as rationale about why they picked their votes. While our focus is on understanding model behaviours that are desirable, doing this analysis required storing this personally identifiable information. As such, this study was approved under Expedited Review Categories 6 and 7 for the collection of voice for research purposes and research employing survey methods. All participants were paid 15 dollars an hour on the prolific platform.
-          </AccordionContent>
+            <br/>
+            Questions: If you have any questions, concerns or complaints about this research, its procedures, risks and benefits, contact the Diyi Yang, diyiy@cs.stanford.edu.
+
+            Independent Contact: If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at 650-723-2480 or toll free at 1-866-680-2906, or email at irbnonmed@stanford.edu. You can also write to the Stanford IRB, Stanford University, 1705 El Camino Real, Palo Alto, CA 94306.
+         </AccordionContent>
         </AccordionItem>
       </Accordion>
     )
