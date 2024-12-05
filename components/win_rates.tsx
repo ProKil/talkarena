@@ -71,7 +71,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
           width: `${model1.percentage}%`,
           backgroundColor: COMPARISON_COLORS.model1,
         }}
-        className="flex items-center justify-center min-w-[120px] px-3"
+        className="flex items-center justify-center px-3"
       >
         <ModelLabel 
           name={model1.name}
@@ -85,7 +85,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
             width: `${tie.percentage}%`,
             backgroundColor: COMPARISON_COLORS.tie,
           }}
-          className="flex items-center justify-center min-w-[60px] px-2"
+          className="flex items-center justify-center px-2"
         >
           <TieLabel votes={tie.votes} />
         </div>
@@ -96,7 +96,7 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
           width: `${model2.percentage}%`,
           backgroundColor: COMPARISON_COLORS.model2,
         }}
-        className="flex items-center justify-center min-w-[120px] px-3"
+        className="flex items-center justify-center px-3"
       >
         <ModelLabel 
           name={model2.name}
