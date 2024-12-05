@@ -5,7 +5,7 @@ export function Hero() {
             Interactive Evaluation of Large Audio Models
         </div>
         <div className="text-slate-600 text-center dark:text-slate-400 p-4">
-                Ella Minzhi Li<sup>* †</sup>, Will Held<sup>* †</sup>, Michael J. Ryan<sup>†</sup>, Hao Zhu<sup>†</sup>, Kunat Pipatanakul<sup>^</sup>, Potsawee Manakul<sup>^</sup>, Diyi Yang<sup>†</sup>
+                Ella Minzhi Li<sup>* †</sup>, Will Held<sup>* †</sup>, Michael J. Ryan<sup>†</sup>, Kunat Pipatanakul<sup>^</sup>, Potsawee Manakul<sup>^</sup>, Hao Zhu<sup>†</sup>, Diyi Yang<sup>†</sup>
         </div>
         <div className="text-slate-600 text-center dark:text-slate-400 p-4">
                 <sup>*</sup>Equal Contribution
