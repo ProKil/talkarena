@@ -35,7 +35,7 @@ const COMPARISON_COLORS = {
   model2: '#4298B5'  // Custom blue
 } as const;
 
-const ROTATION_THRESHOLD = 15;
+const ROTATION_THRESHOLD = 5;
 
 interface LabelProps {
   name: string;
@@ -50,9 +50,10 @@ const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
     <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
       <style jsx>{`
         .writing-mode-vertical {
-          writing-mode: vertical-lr;
+          writing-mode: vertical-rl;
+          padding-left: 2em;
           text-orientation: mixed;
-          transform: rotate(180deg);
+          transform: rotate(180deg) scale(0.8);
           white-space: nowrap;
         }
       `}</style>
