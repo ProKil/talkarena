@@ -40,6 +40,7 @@ const ROTATION_THRESHOLD = 15;
 interface LabelProps {
   name: string;
   votes: number;
+  percentage: number;
 }
 
 const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
