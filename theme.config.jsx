@@ -1,8 +1,8 @@
 import Link from "next/link"
 
 export default {
-    logo: <div className="flex items-center"> 
-    	<img src="/talkarena-logo.svg" alt="Logo" style={{width: '5vw'}}/>
+    logo: <div className="flex items-center space-x-3"> 
+    	<img src="/talkarena-logo.svg" alt="Logo" className="h-[20px]"/>
     	<span className="text-2xl font-bold">Talk Arena</span>
     </div>,
     project: {
