@@ -2,7 +2,7 @@
 
 import { FC, useMemo } from 'react';
 
-type ModelName = 'Diva' | 'Gemini' | 'GPT4o' | 'Qwen2' | 'Typhoon';
+type ModelName = 'DiVA' | 'Gemini' | 'GPT4o' | 'Qwen2' | 'Typhoon';
 
 interface ModelMetrics {
   name: string;
@@ -107,17 +107,17 @@ const ComparisonRow: FC<ComparisonRowProps> = ({
   </div>
 );
 
-const MODEL_ORDER: ReadonlyArray<ModelName> = ['Diva', 'GPT4o', 'Gemini', 'Qwen2', 'Typhoon'] as const;
+const MODEL_ORDER: ReadonlyArray<ModelName> = ['DiVA', 'GPT4o', 'Gemini', 'Qwen2', 'Typhoon'] as const;
 
 const ModelComparisonChart: FC = () => {
   const rawData: readonly RawComparison[] = useMemo(() => [
-    { Model1: 'Diva', Model2: 'GPT4o', 'Model1-Win': 252, 'Model2-Win': 176, Tie: 72, total: 500 },
-    { Model1: 'Diva', Model2: 'Gemini', 'Model1-Win': 313, 'Model2-Win': 130, Tie: 57, total: 500 },
-    { Model1: 'Diva', Model2: 'Qwen2', 'Model1-Win': 322, 'Model2-Win': 103, Tie: 75, total: 500 },
+    { Model1: 'DiVA', Model2: 'GPT4o', 'Model1-Win': 252, 'Model2-Win': 176, Tie: 72, total: 500 },
+    { Model1: 'DiVA', Model2: 'Gemini', 'Model1-Win': 313, 'Model2-Win': 130, Tie: 57, total: 500 },
+    { Model1: 'DiVA', Model2: 'Qwen2', 'Model1-Win': 322, 'Model2-Win': 103, Tie: 75, total: 500 },
     { Model1: 'GPT4o', Model2: 'Gemini', 'Model1-Win': 186, 'Model2-Win': 213, Tie: 101, total: 500 },
     { Model1: 'GPT4o', Model2: 'Qwen2', 'Model1-Win': 254, 'Model2-Win': 155, Tie: 91, total: 500 },
     { Model1: 'Gemini', Model2: 'Qwen2', 'Model1-Win': 255, 'Model2-Win': 171, Tie: 74, total: 500 },
-    { Model1: 'Typhoon', Model2: 'Diva', 'Model1-Win': 50, 'Model2-Win': 417, Tie: 33, total: 500 },
+    { Model1: 'Typhoon', Model2: 'DiVA', 'Model1-Win': 50, 'Model2-Win': 417, Tie: 33, total: 500 },
     { Model1: 'Typhoon', Model2: 'GPT4o', 'Model1-Win': 19, 'Model2-Win': 447, Tie: 34, total: 500 },
     { Model1: 'Typhoon', Model2: 'Gemini', 'Model1-Win': 50, 'Model2-Win': 424, Tie: 26, total: 500 },
     { Model1: 'Typhoon', Model2: 'Qwen2', 'Model1-Win': 82, 'Model2-Win': 347, Tie: 71, total: 500 }
