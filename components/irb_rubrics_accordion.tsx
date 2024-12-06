@@ -24,7 +24,7 @@ import {
         <AccordionItem value="item-2">
           <AccordionTrigger>Does this platform store my data?</AccordionTrigger>
           <AccordionContent>
-            This public platform does not store any information about you or your queries for further research or release. All recordings are erased after you submit your votes and vote data are stored to understand model performance, but no information about your requests is stored. The public platform sends data to third-party APIs from OpenAI and Google. In both cases, we utilize paid APIs for which the terms of service dictate that your data will not be used for training or stored for more than 30 days. Based on the lack of identifiable information and the focus on model rankings, the Stanford IRB has determined that this public platform is not human subects research as defined in 45 CFR 46.102(e).
+            This public platform does not store any information about you or your queries for further research or release. All recordings of what you said are erased after you submit your votes and vote data are stored to understand model performance, but no information about your requests is stored. The public platform sends data to third-party APIs from OpenAI and Google. In both cases, we utilize paid APIs for which the terms of service dictate that your data will not be used for training or stored for more than 30 days. Based on the lack of identifiable information and the focus on model rankings, the Stanford IRB has determined that this public platform is not human subects research as defined in 45 CFR 46.102(e).
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
