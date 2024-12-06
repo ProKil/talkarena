@@ -1,4 +1,12 @@
 import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const tableData = {
   cognitiveState: [
@@ -32,104 +40,133 @@ const tableData = {
 export function ResearchTable() {
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="p-2 border font-bold text-center">Category</th>
-            <th className="p-2 border font-bold text-center">Task</th>
-            <th className="p-2 border font-bold text-center">Dataset</th>
-            <th className="p-2 border font-bold text-center">Size</th>
-            <th className="p-2 border font-bold text-center">Category</th>
-            <th className="p-2 border font-bold text-center">Task</th>
-            <th className="p-2 border font-bold text-center">Dataset</th>
-            <th className="p-2 border font-bold text-center">Size</th>
-            <th className="p-2 border font-bold text-center">Category</th>
-            <th className="p-2 border font-bold text-center">Task</th>
-            <th className="p-2 border font-bold text-center">Dataset</th>
-            <th className="p-2 border font-bold text-center">Size</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* First 5 rows for Cognitive State */}
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted/50">
+            <TableHead className="text-center font-bold">Category</TableHead>
+            <TableHead className="text-center font-bold">Task</TableHead>
+            <TableHead className="text-center font-bold">Dataset</TableHead>
+            <TableHead className="text-center font-bold">Size</TableHead>
+            <TableHead className="text-center font-bold">Category</TableHead>
+            <TableHead className="text-center font-bold">Task</TableHead>
+            <TableHead className="text-center font-bold">Dataset</TableHead>
+            <TableHead className="text-center font-bold">Size</TableHead>
+            <TableHead className="text-center font-bold">Category</TableHead>
+            <TableHead className="text-center font-bold">Task</TableHead>
+            <TableHead className="text-center font-bold">Dataset</TableHead>
+            <TableHead className="text-center font-bold">Size</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {tableData.cognitiveState.map((item, index) => (
-            <tr key={`cognitive-${index}`} className="bg-gray-50">
+            <TableRow key={`cognitive-${index}`} className="hover:bg-muted/50">
               {index === 0 && (
-                <td rowSpan={5} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                <TableCell rowSpan={5} className="text-center align-middle font-semibold bg-muted/30">
                   Cognitive State
-                </td>
+                </TableCell>
               )}
-              <td className="p-2 border text-center">{item.task}</td>
-              <td className="p-2 border text-center">
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+              <TableCell className="text-center">{item.task}</TableCell>
+              <TableCell className="text-center">
+                <a 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-primary hover:underline"
+                >
                   {item.dataset}
                 </a>
-              </td>
-              <td className="p-2 border text-center">{item.size}</td>
+              </TableCell>
+              <TableCell className="text-center">{item.size}</TableCell>
               {index === 0 && (
-                <td rowSpan={6} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                <TableCell rowSpan={6} className="text-center align-middle font-semibold bg-muted/30">
                   Speaker Identity
-                </td>
+                </TableCell>
               )}
               {tableData.speakerIdentity[index] && (
                 <>
-                  <td className="p-2 border text-center">{tableData.speakerIdentity[index].task}</td>
-                  <td className="p-2 border text-center">
-                    <a href={tableData.speakerIdentity[index].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                  <TableCell className="text-center">{tableData.speakerIdentity[index].task}</TableCell>
+                  <TableCell className="text-center">
+                    <a 
+                      href={tableData.speakerIdentity[index].link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-primary hover:underline"
+                    >
                       {tableData.speakerIdentity[index].dataset}
                     </a>
-                  </td>
-                  <td className="p-2 border text-center">{tableData.speakerIdentity[index].size}</td>
+                  </TableCell>
+                  <TableCell className="text-center">{tableData.speakerIdentity[index].size}</TableCell>
                 </>
               )}
               {index === 0 && (
-                <td rowSpan={6} className="p-2 border font-bold text-center align-middle bg-gray-50">
+                <TableCell rowSpan={6} className="text-center align-middle font-semibold bg-muted/30">
                   Speech Content
-                </td>
+                </TableCell>
               )}
               {tableData.speechContent[index] && (
                 <>
-                  <td className="p-2 border text-center">{tableData.speechContent[index].task}</td>
-                  <td className="p-2 border text-center">
-                    <a href={tableData.speechContent[index].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                  <TableCell className="text-center">{tableData.speechContent[index].task}</TableCell>
+                  <TableCell className="text-center">
+                    <a 
+                      href={tableData.speechContent[index].link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-primary hover:underline"
+                    >
                       {tableData.speechContent[index].dataset}
                     </a>
-                  </td>
-                  <td className="p-2 border text-center">{tableData.speechContent[index].size}</td>
+                  </TableCell>
+                  <TableCell className="text-center">{tableData.speechContent[index].size}</TableCell>
                 </>
               )}
-            </tr>
+            </TableRow>
           ))}
           
-          {/* Relationship Classification row */}
-          <tr className="bg-gray-50">
-            <td className="p-2 border font-bold text-center align-middle bg-gray-50">
-              Speaker Identity
-            </td>
-            <td className="p-2 border text-center">{tableData.relationshipData[0].task}</td>
-            <td className="p-2 border text-center">
-              <a href={tableData.relationshipData[0].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+          <TableRow className="hover:bg-muted/50">
+            <TableCell className="text-center align-middle font-semibold bg-muted/30">
+              Relationship
+            </TableCell>
+            <TableCell className="text-center">{tableData.relationshipData[0].task}</TableCell>
+            <TableCell className="text-center">
+              <a 
+                href={tableData.relationshipData[0].link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
                 {tableData.relationshipData[0].dataset}
               </a>
-            </td>
-            <td className="p-2 border text-center">{tableData.relationshipData[0].size}</td>
-            {/* Complete the row with Speaker Identity and Speech Content data */}
-            <td className="p-2 border text-center">{tableData.speakerIdentity[5].task}</td>
-            <td className="p-2 border text-center">
-              <a href={tableData.speakerIdentity[5].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+            </TableCell>
+            <TableCell className="text-center">{tableData.relationshipData[0].size}</TableCell>
+            <TableCell className="text-center">{tableData.speakerIdentity[5].task}</TableCell>
+            <TableCell className="text-center">
+              <a 
+                href={tableData.speakerIdentity[5].link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
                 {tableData.speakerIdentity[5].dataset}
               </a>
-            </td>
-            <td className="p-2 border text-center">{tableData.speakerIdentity[5].size}</td>
-            <td className="p-2 border text-center">{tableData.speechContent[5].task}</td>
-            <td className="p-2 border text-center">
-              <a href={tableData.speechContent[5].link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+            </TableCell>
+            <TableCell className="text-center">{tableData.speakerIdentity[5].size}</TableCell>
+            <TableCell className="text-center">{tableData.speechContent[5].task}</TableCell>
+            <TableCell className="text-center">
+              <a 
+                href={tableData.speechContent[5].link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
                 {tableData.speechContent[5].dataset}
               </a>
-            </td>
-            <td className="p-2 border text-center">{tableData.speechContent[5].size}</td>
-          </tr>
-        </tbody>
-      </table>
+            </TableCell>
+            <TableCell className="text-center">{tableData.speechContent[5].size}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </div>
   );
 }
+
+export default ResearchTable;
