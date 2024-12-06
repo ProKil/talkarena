@@ -45,7 +45,7 @@ interface LabelProps {
 
 const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
   const shouldRotate = percentage < ROTATION_THRESHOLD;
-  const scale = percentage / 15;
+  const scale = percentage / 11;
   return (
     <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
       <style jsx>{`
@@ -65,7 +65,7 @@ const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
 
 const TieLabel: FC<Pick<LabelProps, 'votes' | 'percentage'>> = ({ votes, percentage }) => {
   const shouldRotate = percentage < ROTATION_THRESHOLD;
-  const scale = percentage / 15;
+  const scale = percentage / 11;
   return (
     <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
       <style jsx>{`
