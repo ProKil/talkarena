@@ -23,6 +23,13 @@
             "typesetting": "article"
         }
     },
+    "blog": {
+        "type": "page",
+        "title": "Blog",
+        "theme": {
+            "toc": true
+        }
+    },
     "interactive_evaluation": {
         "type": "page",
         "title": "Interactive Evaluation",
