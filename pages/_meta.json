@@ -7,14 +7,6 @@
             "typesetting": "article"
         }
     },
-    "background": {
-        "type": "page",
-        "title": "Background",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
-        }
-    },
     "leaderboard": {
         "type": "page",
         "title": "Leaderboard",
@@ -28,30 +20,6 @@
         "title": "Blog",
         "theme": {
             "toc": true
-        }
-    },
-    "interactive_evaluation": {
-        "type": "page",
-        "title": "Interactive Evaluation",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
-        }
-    },
-    "static_evaluation": {
-        "type": "page",
-        "title": "Static Evaluation",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
-        }
-    },
-    "looking_forward": {
-        "type": "page",
-        "title": "Looking Forward",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
         }
     }
 }

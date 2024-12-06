@@ -1,0 +1,30 @@
+{
+    "background": {
+        "title": "Background",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
+    "interactive_evaluation": {
+        "title": "Interactive Evaluation",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
+    "static_evaluation": {
+        "title": "Static Evaluation",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
+    "looking_forward": {
+        "title": "Looking Forward",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    }
+}
