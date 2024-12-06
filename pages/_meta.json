@@ -15,6 +15,14 @@
             "typesetting": "article"
         }
     },
+    "leaderboard": {
+        "type": "page",
+        "title": "Leaderboard",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    },
     "interactive_evaluation": {
         "type": "page",
         "title": "Interactive Evaluation",

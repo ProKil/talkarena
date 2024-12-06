@@ -20,9 +20,9 @@ import { Callout, Bleed } from 'nextra/components'
 
 ## Tasks and Datasets
 
-We select 18 speech comprehension benchmark and perform evaluation for 10 different large audio models.
+We select all speech comprehension benchmarks from existing holistic evaluation sets for audio models (namely [AudioBench](https://arxiv.org/abs/2406.16020) and [AIR-Bench](https://arxiv.org/abs/2402.07729)). There are **18** different datasets in total and we perform evaluation for **11** different large audio models.
 
-A wide range of tasks are covered, which include Humor Detection, Sarcasm Detection, Intent Detection, Relationship Classification, Gender Classification, Age Classification, Accent Classification, Speech Grounding, Language Identification, Speech Entity Recognition, Speech Question Answering, and Speech Instruction Following. They can be categorized into three broad categories of Speaker Cognitive State, Speaker Identity, and Speech Content Understanding.
+The datasets cover a wide range of tasks that evaluate models' knowledge of **Speaker Cognitive State**, **Speaker Identity**, and **Speech Content Understanding**. They include Humor Detection, Sarcasm Detection, Intent Detection, Relationship Classification, Gender Classification, Age Classification, Accent Classification, Speech Grounding, Language Identification, Speech Entity Recognition, Speech Question Answering, and Speech Instruction Following.
 
 <ResearchTable />
 
@@ -35,11 +35,8 @@ For `public_sg_speech`, `openhermes`, and `alpaca` datasets, we report the
 
 In general, close sourced models like <a href="https://arxiv.org/abs/2312.11805">Gemini</a> and
 <a href="https://arxiv.org/abs/2312.11805">GPT4o</a> generally top the leaderboard:
-<a href="https://arxiv.org/abs/2312.11805">Gemini</a> has the highest performance on SLURP intent classification,
-MELD emotion recognition, CN_college_listen and <a href="https://arxiv.org/abs/2312.11805">GPT4o</a>
-performs the best on MUSTARD, IEMOCAP, CallHome, Fairspeech (age classification), and
-Commonvoice (accent classification) datasets. They also perform relatively well despite not achieving best
-performance, showing <b>good generalization and transferability in them</b>.
+<a href="https://arxiv.org/abs/2312.11805">Gemini</a> has the highest performance on SLURP intent classification (F1: 91.4), MELD emotion recognition (F1: 26.9), CN_college_listen (F1: 66.1) and <a href="https://arxiv.org/abs/2312.11805">GPT4o</a>
+performs the best on MUSTARD sarcasm detection (F1: 53.6), IEMOCAP emotion recognition (F1: 31.5), CallHome relation classification (F1: 59.7), and Commonvoice accent classification (F1: 35.3).
 
 Among the open-sourced models, <Link href="https://arxiv.org/abs/2407.10759">Qwen2-Audio</Link> demonstrates outstanding
 performance on SpeechQA and Gender/Age classification tasks and <a href="https://arxiv.org/abs/2410.02678">DiVA</a>

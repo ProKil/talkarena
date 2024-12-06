@@ -1,0 +1,31 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Lumiflex } from 'uvcanvas'
+import { Button } from "../components/ui/button"
+import { MoveRight } from "lucide-react"
+
+import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ModelPerformanceChart from '../components/static_performance';
+import KendallTauDistanceChart from '../components/interactive_static_correlation';
+import ModelComparisonChart from '../components/win_rates';
+
+import { Hero } from "@/components/hero";
+import { GradioEmbed } from "@/components/gradio";
+import { ResearchTable } from "@/components/tablehero";
+import { Callout, Bleed } from 'nextra/components'
+
+We applied Bradley Terry model to pariwise voting results on Prolific to get a ranking for the five models tested.
+The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
+(most preferred to less preferred).
+<div align="center" style={{marginLeft: "auto", marginRight: "auto", width: "min(100vw, 600px)"}}>
+|     Model     | Bradley Terry Score  | Open-Sourced? | Site  |
+|:-------------|:--------------------:|:-------------:|:-----:|
+|     🏅DiVA     |         36.0         |       ✅       |   [🔗](https://huggingface.co/WillHeld/DiVA-llama-3-v0-8b)   |
+|     🥈GPT4o    |         24.2         |       ❌       |   [🔗](https://platform.openai.com/docs/guides/audio)   |
+|    🥉Gemini    |         21.7         |       ❌       |   [🔗](https://deepmind.google/technologies/gemini/pro/)   |
+| 4️⃣ Qwen2 Audio |         14.5         |       ✅       |   [🔗](https://github.com/QwenLM/Qwen2-Audio)   |
+|   5️⃣ Typhoon   |          3.6         |       ✅       |   [🔗](https://huggingface.co/scb10x/llama-3-typhoon-v1.5-8b-audio-preview)   |
+</div>
