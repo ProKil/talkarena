@@ -18,18 +18,11 @@ import { Callout, Bleed } from 'nextra/components'
 
 <Hero />
 
-As AI Assistants' capability expands beyond text into other modalities like audio,
-they enable new forms of interactions between humans and AI. On the other hand,
-most benchmarks for audio processing primarily focus on transcribing and analyzing user speech.
-We introduce **Talk Arena**, an interactive open platform to evaluate Large Audio Models through *interactions with
-users in real-world settings*. It helps to assess whether previous static benchmarks are valuable measures of model quality,
-or whether there is need for a new evaluation paradigm for Large Audio Models.
-We evaluate large audio models using *18 speech comprehension datasets* and **Talk Arena**.
+Talking is a natural and intuitive way for people to interact with AI assistants. However, most research evaluates Large Audio Models using a set of static benchmarks, which are effective for assessing isolated tasks but may not capture how well models can interact with people in real-world scenarios. Therefore, we introduce **Talk Arena**, an interactive open platform to evaluate Large Audio Models through **interactions with users in real-world settings**. We used **Talk Arena's dynamic evaluation** to benchmark five large audio models, and correlated these results to those on **18 static benchmarks in speech comprehension**.
 
 ![Comparison between Static Evaluation and Talk Arena](/overview_arena.png)
 
 Recent efforts towards creating multimodal models have resulted in LLMs capable of processing audio inputs such as speech. Speech is a low-friction interface which expands social and phonetic interaction opportunities with end users. Prior work has benchmarked audio models on a set of disjoint static audio tests such as sarcasm or humor detection. However such static benchmarks lack the complex dynamics of real user interactions and preferences. Inspired by arena-style evaluations for text LLMs we introduce Talk Arena, an open platform for evaluating Large Audio Models with pairwise human preferences. Talk Arena helps to reveal insights on:
 
-* What use cases users are exploring with large audio models? We can analyze user queries from the wild and compare the use case difference with traditional use cases of text LLMs.
-* Which Large Language Model users prefer the most? Users vote their preferences with self-initiated prompts, which better reflects the actual user experience.
-* Are static speech comprehension benchmarks predictive user preferences in interactive settings? It helps to reveal the gap between the mainstream evaluation method for audio models and actual user preferences.
+* **Which Large Audio Model users prefer the most?** Users vote their preferences with self-initiated prompts, which better reflects the actual user experience.
+* **Are static speech comprehension benchmarks predictive user preferences in interactive settings?** It helps to reveal the gap between the mainstream evaluation method for audio models and actual user preferences.
