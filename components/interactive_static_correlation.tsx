@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, Cell, Legend, Tooltip, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import { Payload } from "recharts/types/component/DefaultLegendContent"
 
 import {
@@ -141,6 +141,7 @@ export default function KendallTauDistanceChart() {
                 <CardDescription>Kendall Tau Rank Distance (lower is better correlated)</CardDescription>
             </CardHeader>
             <CardContent>
+                <ResponsiveContainer width="100%" height={700}>
                 <ChartContainer
                     config={config}
                 >
@@ -177,8 +178,8 @@ export default function KendallTauDistanceChart() {
                         payload={uniqueTasks}
                     />
                 </BarChart>
-
             </ChartContainer>
+            </ResponsiveContainer>
             
           </CardContent>
         </Card>
