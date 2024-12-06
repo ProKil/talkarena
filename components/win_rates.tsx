@@ -45,7 +45,7 @@ interface LabelProps {
 
 const ModelLabel: FC<LabelProps> = ({ name, votes, percentage }) => {
   const shouldRotate = percentage < ROTATION_THRESHOLD;
-  const scale = Math.min(percentage / 8, 0.9);
+  const scale = Math.min(percentage / 6.5, 0.9);
   return (
     <div className={`flex flex-col items-center w-full text-white ${shouldRotate ? 'writing-mode-vertical' : ''}`}>
       <style jsx>{`
