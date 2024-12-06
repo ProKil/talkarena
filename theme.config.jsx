@@ -6,7 +6,7 @@ export default {
     	<span className="text-2xl font-bold">Talk Arena</span>
     </div>,
     project: {
-      link: 'https://talkarena.org',
+      link: 'https://github.com/SALT-NLP/talk-arena/',
     },
     toc: {
       backToTop: true,
