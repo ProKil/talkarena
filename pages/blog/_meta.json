@@ -1,6 +1,6 @@
 {
-    "background": {
-        "title": "Background",
+    "index": {
+        "title": "Talk Arena",
         "theme": {
             "toc": true,
             "typesetting": "article"
