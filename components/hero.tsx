@@ -7,7 +7,12 @@ import {
 } from "@/components/ui/tooltip";
 import Link from 'next/link';
 
-const SuperscriptWithTooltip = ({ children, content }) => (
+interface SuperscriptWithTooltipProps {
+    children: React.ReactNode;
+    content: string;
+}
+
+const SuperscriptWithTooltip = ({ children, content }: SuperscriptWithTooltipProps) => (
   <Tooltip>
     <TooltipTrigger asChild>
       <sup>{children}</sup>
