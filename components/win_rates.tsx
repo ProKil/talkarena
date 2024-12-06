@@ -27,6 +27,7 @@ interface RawComparison {
   'Model2-Win': number;
   Tie: number;
   total: number;
+  pValue: number;
 }
 
 const COMPARISON_COLORS = {
