@@ -29,7 +29,7 @@ export function GradioEmbed() {
   }, []); // Empty dependency array means this runs once on mount
 
   return (
-      <div className="max-w-6xl mx-auto" style={{width: "min(900px, 95vw)", marginLeft: "calc((100% - min(900px, 100vw)) / 2)"}}>
+      <div className="max-w-6xl mx-auto" style={{width: "min(900px, 98vw)", marginLeft: "calc((100% - min(900px, 98vw)) / 2)"}}>
         <div className="bg-white rounded-lg shadow-lg">
           <gradio-app 
             title="gradio demo" 
