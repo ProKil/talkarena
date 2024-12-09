@@ -33,7 +33,7 @@ export function GradioEmbed() {
         <div className="bg-white rounded-lg shadow-lg">
           <gradio-app 
             title="gradio demo" 
-            src="https://4bb8b4c92fbd278fd0.gradio.live"
+            src="https://73d7718cfd7b0891e6.gradio.live/"
           />
         </div>
       </div>
