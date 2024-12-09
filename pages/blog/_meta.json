@@ -6,15 +6,15 @@
             "typesetting": "article"
         }
     },
-    "interactive_evaluation": {
-        "title": "Interactive Evaluation",
+    "static_evaluation": {
+        "title": "Static Evaluation",
         "theme": {
             "toc": true,
             "typesetting": "article"
         }
     },
-    "static_evaluation": {
-        "title": "Static Evaluation",
+    "interactive_evaluation": {
+        "title": "Interactive Evaluation",
         "theme": {
             "toc": true,
             "typesetting": "article"
