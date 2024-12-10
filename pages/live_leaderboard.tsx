@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-// Previous interfaces remain the same
 interface LatencyMetrics {
   time_to_first_token: number;
   total_time: number;
@@ -22,7 +21,6 @@ interface ApiResponse {
   };
 }
 
-// Update ModelStats to include confidence intervals
 interface ModelStats {
   wins: number;
   losses: number;
@@ -52,13 +50,116 @@ interface ModelPerformance {
   [key: string]: ModelStats;
 }
 
+// Seeded random number generator
+class SeededRandom {
+  private seed: number;
+
+  constructor(seed: number = 0) {
+    this.seed = seed;
+  }
+
+  // Implementation of xoshiro128** algorithm
+  next(): number {
+    let a = this.seed;
+    let b = 362436069;
+    let c = 521288629;
+    let d = 88675123;
+    
+    const t = b << 9;
+    const r = a * 5; 
+    const result = ((r << 7) | (r >>> 25)) * 9;
+    
+    c = c ^ a;
+    d = d ^ b;
+    b = b ^ c;
+    a = a ^ d;
+    c = c ^ t;
+    
+    this.seed = a;
+    return (result >>> 0) / 4294967296;
+  }
+}
+
+const rng = new SeededRandom(0);
+
+const logit = (x: number): number => Math.log(x / (1 - x));
+const expit = (x: number): number => 1 / (1 + Math.exp(-x));
+
+const btLossAndGrad = (
+  ratings: number[],
+  matchups: number[][],
+  outcomes: number[],
+  weights: number[],
+  alpha: number = 1.0
+): [number, number[]] => {
+  const n = ratings.length;
+  const matchupRatings = matchups.map(m => [ratings[m[0]], ratings[m[1]]]);
+  const logits = matchupRatings.map((m, i) => alpha * (m[0] - m[1]));
+  const probs = logits.map(expit);
+  
+  const loss = -weights.reduce((sum, w, i) => {
+    const p = probs[i];
+    const o = outcomes[i];
+    return sum + w * (o * Math.log(p) + (1 - o) * Math.log(1 - p));
+  }, 0);
+
+  const modelGrad = new Array(n).fill(0);
+  matchups.forEach((m, i) => {
+    const grad = -alpha * (outcomes[i] - probs[i]) * weights[i];
+    modelGrad[m[0]] += grad;
+    modelGrad[m[1]] -= grad;
+  });
+
+  return [loss, modelGrad];
+};
+
+const lbfgsMinimize = (
+  f: (x: number[]) => [number, number[]],
+  x0: number[],
+  maxIter: number = 100,
+  tol: number = 1e-6
+): number[] => {
+  let x = [...x0];
+  let prevLoss = Infinity;
+  
+  for (let iter = 0; iter < maxIter; iter++) {
+    const [loss, grad] = f(x);
+    const stepSize = 0.1;
+    x = x.map((xi, i) => xi - stepSize * grad[i]);
+    const mean = x.reduce((a, b) => a + b, 0) / x.length;
+    x = x.map(xi => xi - mean);
+    
+    if (Math.abs(loss - prevLoss) < tol) break;
+    prevLoss = loss;
+  }
+  
+  return x;
+};
+
+const scaleAndOffset = (
+  ratings: number[],
+  models: string[],
+  scale: number = 400,
+  initRating: number = 1000,
+  baselineModel: string = "pipe_l3.0",
+  baselineRating: number = 1100
+): number[] => {
+  let scaledRatings = ratings.map(r => r * scale + initRating);
+  
+  const baselineIdx = models.indexOf(baselineModel);
+  if (baselineIdx !== -1) {
+    const offset = baselineRating - scaledRatings[baselineIdx];
+    scaledRatings = scaledRatings.map(r => r + offset);
+  }
+  
+  return scaledRatings;
+};
+
 const ModelPerformanceTable: React.FC = () => {
-  // ... Previous state declarations remain the same
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // ... Previous useEffect remains the same
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -88,129 +189,71 @@ const ModelPerformanceTable: React.FC = () => {
 
   const calculateBradleyTerryScores = (modelStats: ModelPerformance): void => {
     const models = Object.keys(modelStats);
-    const numModels = models.length;
-    const base = 10.0;
-    const scale = 400.0;
-    const initRating = 1000.0;
-    const tol = 1e-6;
-    const numBootstrapRounds = 100;
-    
-    interface Battle {
-      model_a: string;
-      model_b: string;
+    const n_models = models.length;
+    const alpha = Math.log(10.0);
+
+    interface MatchupOutcome {
+      model_a_idx: number;
+      model_b_idx: number;
       outcome: number;
       weight: number;
     }
     
-    const battles: Battle[] = [];
+    const matchupOutcomes: MatchupOutcome[] = [];
     Object.values(modelStats).forEach(modelA => {
       Object.entries(modelA.opponents).forEach(([modelB, record]) => {
-        const total = record.total;
-        if (total > 0) {
-          battles.push({
-            model_a: modelA.model_a,
-            model_b: modelB,
-            outcome: (record.wins + record.ties * 0.5) / total,
-            weight: total
+        if (record.total > 0) {
+          matchupOutcomes.push({
+            model_a_idx: models.indexOf(modelA.model_a),
+            model_b_idx: models.indexOf(modelB),
+            outcome: (record.wins + record.ties * 0.5) / record.total,
+            weight: record.total
           });
         }
       });
     });
 
-    const fitBradleyTerry = (weights: number[]): number[] => {
-      const ratings = new Array(numModels).fill(1.0);
-      const alpha = Math.log(base);
-      
-      for (let iter = 0; iter < 1000; iter++) {
-        const newRatings = new Array(numModels).fill(0.0);
-        let maxDiff = 0;
-        
-        battles.forEach((battle, idx) => {
-          const weight = weights[idx];
-          if (weight === 0) return;
-          
-          const i = models.indexOf(battle.model_a);
-          const j = models.indexOf(battle.model_b);
-          const outcome = battle.outcome;
-          
-          const ri = ratings[i];
-          const rj = ratings[j];
-          const sum = ri + rj;
-          
-          newRatings[i] += weight * outcome / sum;
-          newRatings[j] += weight * (1 - outcome) / sum;
-        });
-        
-        const sum = newRatings.reduce((a, b) => a + b, 0);
-        for (let i = 0; i < numModels; i++) {
-          newRatings[i] = newRatings[i] * numModels / sum;
-          maxDiff = Math.max(maxDiff, Math.abs(newRatings[i] - ratings[i]));
-          ratings[i] = newRatings[i];
-        }
-        
-        if (maxDiff < tol) break;
-      }
-      
-      return ratings;
+    const matchups = matchupOutcomes.map(m => [m.model_a_idx, m.model_b_idx]);
+    const outcomes = matchupOutcomes.map(m => m.outcome);
+    const weights = matchupOutcomes.map(m => m.weight);
+
+    const initialRatings = new Array(n_models).fill(0);
+    
+    const fitBradleyTerry = (bootWeights: number[]) => {
+      const f = (x: number[]) => btLossAndGrad(x, matchups, outcomes, bootWeights, alpha);
+      return lbfgsMinimize(f, initialRatings, 100, 1e-6);
     };
 
-    const totalWeight = battles.reduce((sum, b) => sum + b.weight, 0);
+    const numBootstrapRounds = 100;
     const bootstrapResults: number[][] = [];
+    const totalWeight = weights.reduce((a, b) => a + b, 0);
     
     for (let round = 0; round < numBootstrapRounds; round++) {
-      const weights = battles.map(b => {
-        const p = b.weight / totalWeight;
-        const n = battles.length;
-        const mean = n * p;
-        const std = Math.sqrt(n * p * (1 - p));
-        return Math.max(0, mean + std * Math.sqrt(-2 * Math.log(Math.random())) * Math.cos(2 * Math.PI * Math.random()));
+      const bootWeights = weights.map(w => {
+        const p = w / totalWeight;
+        const n = weights.length;
+        return Math.max(0, n * p * rng.next());
       });
       
-      const weightSum = weights.reduce((a, b) => a + b, 0);
-      const normalizedWeights = weights.map(w => w / weightSum);
+      const weightSum = bootWeights.reduce((a, b) => a + b, 0);
+      const normalizedWeights = bootWeights.map(w => w / weightSum);
       
-      bootstrapResults.push(fitBradleyTerry(normalizedWeights));
+      const ratings = fitBradleyTerry(normalizedWeights);
+      const scaledRatings = scaleAndOffset(ratings, models);
+      bootstrapResults.push(scaledRatings);
     }
 
-    // Calculate median and confidence intervals for each model
-    models.forEach((model, modelIndex) => {
-      const ratings = bootstrapResults.map(result => result[modelIndex]).sort((a, b) => a - b);
-      const median = ratings[Math.floor(ratings.length / 2)];
+    models.forEach((model, i) => {
+      const modelRatings = bootstrapResults.map(r => r[i]).sort((a, b) => a - b);
+      const median = modelRatings[Math.floor(modelRatings.length / 2)];
       
-      // Calculate 95% confidence interval indices
-      const lowerIndex = Math.floor(0.025 * ratings.length);
-      const upperIndex = Math.floor(0.975 * ratings.length);
+      const lowerIndex = Math.floor(0.025 * modelRatings.length);
+      const upperIndex = Math.floor(0.975 * modelRatings.length);
       
-      // Store raw interval bounds
-      const lowerBound = ratings[lowerIndex];
-      const upperBound = ratings[upperIndex];
-
-      // Store for normalization
       modelStats[model].bradley_terry_score = median;
       modelStats[model].confidence_interval = {
-        lower: lowerBound,
-        upper: upperBound
-      };
-    });
-
-    // Scale all scores and intervals
-    const allValues = models.flatMap(model => [
-      modelStats[model].bradley_terry_score,
-      modelStats[model].confidence_interval.lower,
-      modelStats[model].confidence_interval.upper
-    ]);
-    
-    const minRating = Math.min(...allValues);
-    const maxRating = Math.max(...allValues);
-    
-    models.forEach(model => {
-      const normalizeValue = (value: number) => 
-        initRating + scale * ((value - minRating) / (maxRating - minRating));
-
-      modelStats[model].bradley_terry_score = normalizeValue(modelStats[model].bradley_terry_score);
-      modelStats[model].confidence_interval = {
-        lower: normalizeValue(modelStats[model].confidence_interval.lower),
-        upper: normalizeValue(modelStats[model].confidence_interval.upper)
+        lower: modelRatings[lowerIndex],
+        upper: modelRatings[upperIndex]
       };
     });
   };
@@ -220,7 +263,6 @@ const ModelPerformanceTable: React.FC = () => {
     
     const performances: ModelPerformance = {};
     
-    // Initialize model statistics
     Object.values(data._default).forEach((comparison: ComparisonData) => {
       [comparison.model_a, comparison.model_b].forEach(model => {
         if (!performances[model]) {
@@ -241,7 +283,6 @@ const ModelPerformanceTable: React.FC = () => {
         }
       });
 
-      // Initialize head-to-head records if needed
       if (!performances[comparison.model_a].opponents[comparison.model_b]) {
         performances[comparison.model_a].opponents[comparison.model_b] = {
           wins: 0, losses: 0, ties: 0, total: 0
@@ -253,7 +294,6 @@ const ModelPerformanceTable: React.FC = () => {
         };
       }
 
-      // Update head-to-head records
       if (comparison.outcome === 0) {
         performances[comparison.model_a].wins++;
         performances[comparison.model_b].losses++;
@@ -271,7 +311,6 @@ const ModelPerformanceTable: React.FC = () => {
         performances[comparison.model_b].opponents[comparison.model_a].ties++;
       }
 
-      // Update total games and latency metrics
       performances[comparison.model_a].total_games++;
       performances[comparison.model_b].total_games++;
       performances[comparison.model_a].opponents[comparison.model_b].total++;
@@ -293,7 +332,6 @@ const ModelPerformanceTable: React.FC = () => {
     });
 
     calculateBradleyTerryScores(performances);
-
     return performances;
   }, [data]);
 
@@ -333,7 +371,7 @@ const ModelPerformanceTable: React.FC = () => {
             <thead>
               <tr>
                 <th className="p-2 border text-left font-semibold">Model</th>
-                <th className="p-2 border text-right font-semibold">Bradley-Terry Score (95% CI)</th>
+                <th className="p-2 border text-right font-semibold">Bradley-Terry Score</th>
                 <th className="p-2 border text-right font-semibold">Win Rate</th>
                 <th className="p-2 border text-right font-semibold">Avg First Token (s)</th>
                 <th className="p-2 border text-right font-semibold">Avg Total Time (s)</th>
@@ -346,9 +384,6 @@ const ModelPerformanceTable: React.FC = () => {
                   <td className="p-2 border">{model}</td>
                   <td className="p-2 border text-right">
                     {stats.bradley_terry_score.toFixed(1)} 
-                    <span className="text-gray-500 text-sm">
-                      {" "}({stats.confidence_interval.lower.toFixed(1)} - {stats.confidence_interval.upper.toFixed(1)})
-                    </span>
                   </td>
                   <td className="p-2 border text-right">
                     {((stats.wins + stats.ties * 0.5) / stats.total_games * 100).toFixed(1)}%
