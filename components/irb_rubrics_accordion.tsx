@@ -28,6 +28,23 @@ import {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
+          <AccordionTrigger>Why Audio-In, Text-Out evaluation rather than Audio-In, Audio-Out?</AccordionTrigger>
+          <AccordionContent>
+            As discussed in our <a href="https://talkarena.org/blog/looking_forward">Looking Forward</a> section, we plan to extend Talk Arena to include conversational AI similar to advanced voice models.
+
+            However, spoken conversations present challenges for traditional arena-style evaluations:
+            <ul className="list-disc list-inside">
+                <li>1) Voice model outputs are inherently identifiable, which breaks the "anonymity" constraints of most arenas.</li>
+                <li>2) The fluidity of spoken conversations makes simultaneous comparison difficult - you can't listen to two speech streams at once or interrupt both simultaneously.</li>
+            </ul>
+            Additionally, practical considerations make Audio-Input, Text-Output evaluation worthwhile currently:
+            <ul className="list-disc list-inside">
+                <li>1) Audio-Input, Text-Output language models are more prevalent, providing enough capable models for meaningful Arena rankings.</li>
+                <li>2) Audio-Input, Text-Output evaluations have more established benchmarks. For models handling both audio input and output, focusing on high-quality static evaluations and metrics is likely the better investment now.</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
           <AccordionTrigger>Ethics disclosure</AccordionTrigger>
           <AccordionContent>
             This study has been approved by the Institutional Review Board (IRB) at the researchers' institution, and we obtained participant consent with a standard institutional consent form.
