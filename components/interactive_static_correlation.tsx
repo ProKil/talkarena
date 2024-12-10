@@ -137,8 +137,8 @@ export default function KendallTauDistanceChart() {
         <div className="flex items-center justify-center p-4">
         <Card className="w-full max-w-4xl">
             <CardHeader>
-                <CardTitle>Kendall Tau Distance between Rankings on Static Datasets and Talk Arena</CardTitle>
-                <CardDescription>(lower is better correlated)</CardDescription>
+                <CardTitle>Distance between Rankings on Static Datasets and Talk Arena</CardTitle>
+                <CardDescription>Top-k Kendall Tau Ranking Distance (lower is better correlated)</CardDescription>
             </CardHeader>
             <CardContent>
                 <ResponsiveContainer width="100%" height={700}>
