@@ -32,7 +32,7 @@ export function LeaderboardEmbed() {
       <div className="max-w-6xl mx-auto" style={{width: "min(900px, 98vw)", marginLeft: "calc((100% - min(900px, 98vw)) / 2)"}}>
         <gradio-app 
           title="gradio leaderboard" 
-          src="https://dd9be0bed77694bd00.gradio.live"
+          src="https://8448afe9d9261a07d6.gradio.live/"
         />
       </div>
   );
