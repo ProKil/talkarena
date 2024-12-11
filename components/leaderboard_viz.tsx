@@ -17,7 +17,7 @@ export function LeaderboardEmbed() {
     // Create script element
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = 'https://gradio.s3-us-west-2.amazonaws.com/5.0.2/gradio.js';
+    script.src = 'https://gradio.s3-us-west-2.amazonaws.com/5.8.0/gradio.js';
     
     // Append script to document head
     document.head.appendChild(script);
@@ -32,7 +32,7 @@ export function LeaderboardEmbed() {
       <div className="max-w-6xl mx-auto" style={{width: "min(900px, 98vw)", marginLeft: "calc((100% - min(900px, 98vw)) / 2)"}}>
         <gradio-app 
           title="gradio leaderboard" 
-          src="https://7ee923c6c628e609ed.gradio.live"
+          src="https://4ed6e882937ccf9443.gradio.live"
         />
       </div>
   );

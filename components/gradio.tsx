@@ -17,7 +17,7 @@ export function GradioEmbed() {
     // Create script element
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = 'https://gradio.s3-us-west-2.amazonaws.com/5.0.2/gradio.js';
+    script.src = 'https://gradio.s3-us-west-2.amazonaws.com/5.8.0/gradio.js';
     
     // Append script to document head
     document.head.appendChild(script);
