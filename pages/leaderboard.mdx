@@ -11,13 +11,18 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import ModelPerformanceChart from '../components/static_performance';
 import KendallTauDistanceChart from '../components/interactive_static_correlation';
 import ModelComparisonChart from '../components/win_rates';
+import LeaderboardEmbed from '../components/leaderboard_viz';
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
 import { Callout, Bleed } from 'nextra/components'
 
-# Leaderboard (updated: Dec 6th 2024)
+# Public Leaderboard
+
+<LeaderboardEmbed/>
+
+# Prolific Study Leaderboard (Paid Participants)
 
 <div align="center" style={{marginLeft: "auto", marginRight: "auto", width: "min(100vw, 600px)"}}>
 |     Model     | Bradley Terry Score  | Open-Sourced? | Site  |
