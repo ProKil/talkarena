@@ -9,32 +9,39 @@ const GradioPlotlyChart = ({ api_endpoint }) => {
   useEffect(() => {
     const fetchPlotData = async () => {
       try {
-        const result = await fetch('https://648547ce11878a534b.gradio.live/gradio_api/call/${api_endpoint}', {
-	method: 'POST', 
-	headers: {'Content-Type': 'application/json'}, 
-	body: JSON.stringify({data: []})
-	})
-	.then(r => r.json())
-	.then(j => fetch(`https://648547ce11878a534b.gradio.live/gradio_api/call/${api_endpoint}/${j.event_id}`))
-	.then(r => r.body.getReader())
-	.then(reader => {
-	let result = '';
-	return reader.read().then(function process({done, value}) {
-	if(done) return result;
-	result += new TextDecoder().decode(value);
-	return reader.read().then(process);
-	});
-	})
-	.then(text => {
-	// Parse the SSE data format
-	const sseData = text.split('data: ')[1];
-	// Parse the string into a list
-	const dataList = JSON.parse(sseData);
-	// Parse the first element as JSON
-	return JSON.parse(dataList[0]);
-	})
+        const result = await fetch(`https://648547ce11878a534b.gradio.live/gradio_api/call/${api_endpoint}`, {
+          method: 'POST', 
+          headers: {'Content-Type': 'application/json'}, 
+          body: JSON.stringify({data: []})
+        })
+        .then(r => r.json())
+        .then(j => fetch(`https://648547ce11878a534b.gradio.live/gradio_api/call/${api_endpoint}/${j.event_id}`))
+        .then(r => r.body.getReader())
+        .then(reader => {
+          let result = '';
+          return reader.read().then(function process({done, value}) {
+            if(done) return result;
+            result += new TextDecoder().decode(value);
+            return reader.read().then(process);
+          });
+        })
+        .then(text => {
+          // Parse the SSE data format
+          const sseData = text.split('data: ')[1];
+          // Parse the string into a list
+          const dataList = JSON.parse(sseData);
+          // Parse the first element as JSON
+          return JSON.parse(dataList[0]);
+        });
 
-	setData(result)
+        setPlotData(result);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
     if (api_endpoint) {
       fetchPlotData();
     } else {
