@@ -1,26 +1,45 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { Lumiflex } from 'uvcanvas'
-import { Button } from "../components/ui/button"
-import { MoveRight } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import { Lumiflex } from "uvcanvas";
+import { Button } from "../components/ui/button";
+import { MoveRight } from "lucide-react";
 
-import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import ModelPerformanceChart from '../components/static_performance';
-import KendallTauDistanceChart from '../components/interactive_static_correlation';
-import ModelComparisonChart from '../components/win_rates';
-import LeaderboardEmbed from "@/components/leaderboard_viz";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
+import ModelPerformanceChart from "../components/static_performance";
+import KendallTauDistanceChart from "../components/interactive_static_correlation";
+import ModelComparisonChart from "../components/win_rates";
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
-import { Callout, Bleed } from 'nextra/components'
+import { Callout, Bleed } from "nextra/components";
+
+export const LeaderboardEmbed = dynamic(
+  () => import("@/components/leaderboard_viz"),
+  { ssr: false },
+);
 
 # Public Leaderboard
 
-<LeaderboardEmbed/>
+<LeaderboardEmbed />
 
 # Prolific Study Leaderboard (Paid Participants)
 
@@ -35,10 +54,10 @@ import { Callout, Bleed } from 'nextra/components'
 </div>
 
 We applied Bradley Terry model to pariwise voting results on Prolific to get a ranking for the five models tested. The final result shows a ranking of DiVA, GPT4o, Gemini-1.5-pro, Qwen2-Audio, Typhoon-1.5
-(from most to least preferred). 
+(from most to least preferred).
 
 Talk Arena's leaderboard reflects how models perform across unconstrained user interaction, not just audio-specific tasks. Users are free to engage with models for any purpose, from general conversation to specialized audio processing. This means our rankings show which models excel at what people use them for, even if that usage could be reasonably well served by a text-only language model, rather than focusing solely on audio capabilities.
 
 While we consider this usage-based approach a feature instead of a bug, we understand some may prefer focused audio-only evaluation metrics. For those interested in pure audio processing performance, we recommend reviewing our [static benchmark results](/blog/static_evaluation), which include evaluations of many speech capabilities that are more audio-specific!
 
-**Why does DiVA beat GPT4o?** GPT4o voice mode is optimized for *speech-in speech-out*.  We are testing *speech-in text-out*.  The GPT4o outputs tend to be short and direct, while DiVA often writes longer form texts that users prefer.  This suggests speech AI providers should consider adapting model outputs based on the target output modality.
+**Why does DiVA beat GPT4o?** GPT4o voice mode is optimized for _speech-in speech-out_. We are testing _speech-in text-out_. The GPT4o outputs tend to be short and direct, while DiVA often writes longer form texts that users prefer. This suggests speech AI providers should consider adapting model outputs based on the target output modality.
