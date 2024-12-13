@@ -3,11 +3,18 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Noto_Sans } from "next/font/google";
-
-// customizable method: use your own `Plotly` object
 import createPlotlyComponent from "react-plotly.js/factory";
 
-var Plot;
+// Define types for Plotly data and layout
+interface PlotlyData {
+  data: any[];
+  layout: any;
+  frames?: any[];
+  config?: any;
+}
+
+// Declare Plot variable with proper type
+let Plot: React.ComponentType<any>;
 
 const API_URL = "https://5acd977c37c4bc9140.gradio.live";
 
@@ -16,11 +23,14 @@ const notoSans = Noto_Sans({
   display: "swap",
 });
 
-const GradioUpdateTime = ({ api_endpoint }) => {
-  const [timeData, setTimeData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState(false);
+interface GradioComponentProps {
+  api_endpoint: string;
+}
+
+const GradioUpdateTime: React.FC<GradioComponentProps> = ({ api_endpoint }) => {
+  const [timeData, setTimeData] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchTime = async () => {
@@ -37,28 +47,25 @@ const GradioUpdateTime = ({ api_endpoint }) => {
           .then((j) =>
             fetch(`${API_URL}/gradio_api/call/${api_endpoint}/${j.event_id}`),
           )
-          .then((r) => r.body.getReader())
+          .then((r) => r.body!.getReader())
           .then((reader) => {
             let result = "";
-            return reader.read().then(function process({ done, value }) {
-              if (done) return result;
+            return reader.read().then(function process({ done, value }): Promise<string> {
+              if (done) return Promise.resolve(result);
               result += new TextDecoder().decode(value);
               return reader.read().then(process);
             });
           })
           .then((text) => {
-            // Parse the SSE data format
             const sseData = text.split("data: ")[1];
-            // Parse the string into a list
             const dataList = JSON.parse(sseData);
-            // Parse the first element as JSON
             return dataList[0]["value"];
           });
 
         setTimeData(result);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : "Unknown error occurred");
         setLoading(false);
       }
     };
@@ -98,11 +105,10 @@ const GradioUpdateTime = ({ api_endpoint }) => {
   );
 };
 
-const GradioPlotlyChart = ({ api_endpoint }) => {
-  const [plotData, setPlotData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState(false);
+const GradioPlotlyChart: React.FC<GradioComponentProps> = ({ api_endpoint }) => {
+  const [plotData, setPlotData] = useState<PlotlyData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPlotData = async () => {
@@ -119,28 +125,25 @@ const GradioPlotlyChart = ({ api_endpoint }) => {
           .then((j) =>
             fetch(`${API_URL}/gradio_api/call/${api_endpoint}/${j.event_id}`),
           )
-          .then((r) => r.body.getReader())
+          .then((r) => r.body!.getReader())
           .then((reader) => {
             let result = "";
-            return reader.read().then(function process({ done, value }) {
-              if (done) return result;
+            return reader.read().then(function process({ done, value }): Promise<string> {
+              if (done) return Promise.resolve(result);
               result += new TextDecoder().decode(value);
               return reader.read().then(process);
             });
           })
           .then((text) => {
-            // Parse the SSE data format
             const sseData = text.split("data: ")[1];
-            // Parse the string into a list
             const dataList = JSON.parse(sseData);
-            // Parse the first element as JSON
             return JSON.parse(dataList[0]);
           });
 
         setPlotData(result);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : "Unknown error occurred");
         setLoading(false);
       }
     };
@@ -186,7 +189,7 @@ const GradioPlotlyChart = ({ api_endpoint }) => {
           ...plotData.layout,
           margin: { l: 0, r: 0, t: 50, b: 10 },
           title: {
-            ...(plotData.layout?.title || {}), // Preserve existing title properties
+            ...(plotData.layout?.title || {}),
             y: 0.95,
             x: 0.5,
             xanchor: "center",
@@ -213,28 +216,27 @@ const GradioPlotlyChart = ({ api_endpoint }) => {
   );
 };
 
-function scriptExists(src) {
+function scriptExists(src: string): boolean {
   return Array.from(document.getElementsByTagName("script")).some(
     (el) => el.src === src,
   );
 }
 
-const LeaderboardEmbed = () => {
+const LeaderboardEmbed: React.FC = () => {
   useEffect(() => {
     if (!scriptExists("https://cdn.plot.ly/plotly-2.35.2.min.js")) {
-      // Create script element
       const script = document.createElement("script");
       script.src = "https://cdn.plot.ly/plotly-2.35.2.min.js";
       script.charset = "utf-8";
 
-      // Append script to document head
       document.head.appendChild(script);
 
       script.onload = () => {
+        // @ts-ignore - Plotly will be available globally after script loads
         Plot = createPlotlyComponent(Plotly);
       };
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto">
