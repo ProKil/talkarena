@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { Lumiflex } from "uvcanvas";
 import { Button } from "../components/ui/button";
 import { MoveRight } from "lucide-react";
@@ -32,10 +31,7 @@ import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
 import { Callout, Bleed } from "nextra/components";
 
-export const LeaderboardEmbed = dynamic(
-  () => import("@/components/leaderboard_viz"),
-  { ssr: false },
-);
+import LeaderboardEmbed from "@/components/leaderboard_viz"
 
 # Talk Arena Leaderboard
 

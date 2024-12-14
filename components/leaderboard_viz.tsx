@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Noto_Sans } from "next/font/google";
-import createPlotlyComponent from "react-plotly.js/factory";
+
 import type { PlotParams } from "react-plotly.js";
 
 // Plotly types
@@ -137,7 +137,9 @@ const fetchGradioData = async <T,>(endpoint: string): Promise<T> => {
   const lastDataLine = await processSSEResponse(dataResponse);
   const dataList = safeJSONParse<GradioResponse<T>[]>(lastDataLine);
 
-  const result = dataList?.[0]?.value ?? JSON.parse(typeof dataList?.[0] === 'string' ? dataList[0] : "{}");
+  const result =
+    dataList?.[0]?.value ??
+    JSON.parse(typeof dataList?.[0] === "string" ? dataList[0] : "{}");
   return result;
 };
 
@@ -293,7 +295,10 @@ const LeaderboardEmbed: React.FC = () => {
           setScriptError("Failed to load Plotly script");
         };
 
-        script.onload = () => {
+        script.onload = async () => {
+          const createPlotlyComponent = (
+            await import("react-plotly.js/factory")
+          ).default;
           Plot = createPlotlyComponent(window.Plotly);
         };
 
