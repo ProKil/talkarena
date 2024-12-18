@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Noto_Sans } from "next/font/google";
+import Script from "next/script";
 
 import type { PlotParams } from "react-plotly.js";
 
@@ -34,7 +35,7 @@ const notoSans = Noto_Sans({
 });
 
 // Constants
-const API_URL = "https://e63c71894de13469ab.gradio.live";
+const API_URL = "https://talkarena-viz.williamheld.com";
 const FETCH_TIMEOUT = 30000; // 30 seconds timeout
 const PLOTLY_SCRIPT_URL = "https://cdn.plot.ly/plotly-2.35.2.min.js";
 
@@ -44,6 +45,13 @@ interface PlotData {
   layout?: any;
   frames?: any[];
   config?: any;
+}
+
+interface UpdateTime {
+  timestamp: string;
+  total_votes: string;
+  public_votes: string;
+  prolific_votes: string;
 }
 
 interface GradioProps {
@@ -80,67 +88,13 @@ const fetchWithTimeout = async (
   }
 };
 
-const safeJSONParse = <T,>(str: string): T | null => {
-  try {
-    return JSON.parse(str) as T;
-  } catch (e) {
-    console.error("JSON Parse error:", e);
-    return null;
-  }
-};
-
-const processSSEResponse = async (response: Response): Promise<string> => {
-  if (!response.body) {
-    throw new Error("Response body is null");
-  }
-
-  const reader = response.body.getReader();
-  let result = "";
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    result += new TextDecoder().decode(value);
-  }
-
-  const lines = result.split("\n");
-  const lastDataLine = lines
-    .find((line) => line.startsWith("data: "))
-    ?.slice(6);
-
-  if (!lastDataLine) {
-    throw new Error("No data found in response");
-  }
-
-  return lastDataLine;
-};
-
-const fetchGradioData = async <T,>(endpoint: string): Promise<T> => {
-  const initialResponse = await fetchWithTimeout(
-    `${API_URL}/gradio_api/call/${endpoint}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [] }),
-    },
-  );
+const fetchAPIData = async <T,>(endpoint: string): Promise<T> => {
+  const initialResponse = await fetchWithTimeout(`${API_URL}/api/${endpoint}`, {
+    method: "GET",
+  });
 
   const initialJson = await initialResponse.json();
-  if (!initialJson?.event_id) {
-    throw new Error("Invalid response format");
-  }
-
-  const dataResponse = await fetchWithTimeout(
-    `${API_URL}/gradio_api/call/${endpoint}/${initialJson.event_id}`,
-  );
-
-  const lastDataLine = await processSSEResponse(dataResponse);
-  const dataList = safeJSONParse<GradioResponse<T>[]>(lastDataLine);
-
-  const result =
-    dataList?.[0]?.value ??
-    JSON.parse(typeof dataList?.[0] === "string" ? dataList[0] : "{}");
-  return result;
+  return initialJson;
 };
 
 // Components
@@ -157,14 +111,14 @@ const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
 );
 
 const GradioUpdateTime: React.FC<GradioProps> = ({ api_endpoint }) => {
-  const [timeData, setTimeData] = useState<string | null>(null);
+  const [timeData, setTimeData] = useState<UpdateTime | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const data = await fetchGradioData<string>(api_endpoint);
+        const data = await fetchAPIData<UpdateTime>(api_endpoint);
         setTimeData(data);
       } catch (err) {
         console.error("Error fetching time data:", err);
@@ -183,10 +137,15 @@ const GradioUpdateTime: React.FC<GradioProps> = ({ api_endpoint }) => {
 
   return (
     <div className="flex items-center justify-center h-auto">
-      <div
-        className="text-center"
-        dangerouslySetInnerHTML={{ __html: timeData }}
-      />
+      <div className="text-center">
+        <h4 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-text-xl">
+          Last Refresh: {timeData.timestamp} PST
+        </h4>
+        <h6 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-text-base">
+          Total Votes: {timeData.total_votes}, Public Votes:{" "}
+          {timeData.public_votes}, Prolific Votes: {timeData.prolific_votes}
+        </h6>
+      </div>
     </div>
   );
 };
@@ -200,7 +159,7 @@ const GradioPlotlyChart: React.FC<GradioProps> = ({ api_endpoint }) => {
   useEffect(() => {
     const fetchPlotData = async () => {
       try {
-        const data = await fetchGradioData<PlotData>(api_endpoint);
+        const data = await fetchAPIData<PlotData>(api_endpoint);
         if (!data?.data) {
           throw new Error("Invalid plot data format");
         }
@@ -274,54 +233,25 @@ const GradioPlotlyChart: React.FC<GradioProps> = ({ api_endpoint }) => {
   );
 };
 
-const scriptExists = (src: string): boolean => {
-  return Array.from(document.getElementsByTagName("script")).some(
-    (el): el is HTMLScriptElement =>
-      el instanceof HTMLScriptElement && el.src === src,
-  );
-};
-
 const LeaderboardEmbed: React.FC = () => {
-  const [scriptError, setScriptError] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      if (!scriptExists(PLOTLY_SCRIPT_URL)) {
-        const script = document.createElement("script");
-        script.src = PLOTLY_SCRIPT_URL;
-        script.charset = "utf-8";
-
-        script.onerror = () => {
-          setScriptError("Failed to load Plotly script");
-        };
-
-        script.onload = async () => {
+  return (
+    <div className="max-w-4xl mx-auto">
+      <Script
+        src={PLOTLY_SCRIPT_URL}
+        onError={(e) => {
+          console.log("Failed to load Plotly script");
+        }}
+        onLoad={async () => {
           const createPlotlyComponent = (
             await import("react-plotly.js/factory")
           ).default;
           Plot = createPlotlyComponent(window.Plotly);
-        };
-
-        document.head.appendChild(script);
-      }
-    } catch (err) {
-      console.error("Error loading script:", err);
-      setScriptError(
-        err instanceof Error ? err.message : "Failed to initialize Plotly",
-      );
-    }
-  }, []);
-
-  if (scriptError) {
-    return <ErrorMessage message={scriptError} />;
-  }
-
-  return (
-    <div className="max-w-4xl mx-auto">
-      <GradioUpdateTime api_endpoint="get_update_time" />
-      <GradioPlotlyChart api_endpoint="get_wr_plot" />
+        }}
+      />
+      <GradioUpdateTime api_endpoint="update-time" />
+      <GradioPlotlyChart api_endpoint="win-rate-plot" />
       <br />
-      <GradioPlotlyChart api_endpoint="get_bt_plot" />
+      <GradioPlotlyChart api_endpoint="bt-plot" />
     </div>
   );
 };
