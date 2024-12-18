@@ -34,7 +34,7 @@ const notoSans = Noto_Sans({
 });
 
 // Constants
-const API_URL = "https://eead82ea9a6e1f5569.gradio.live";
+const API_URL = "https://e63c71894de13469ab.gradio.live";
 const FETCH_TIMEOUT = 30000; // 30 seconds timeout
 const PLOTLY_SCRIPT_URL = "https://cdn.plot.ly/plotly-2.35.2.min.js";
 
