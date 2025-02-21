@@ -197,6 +197,7 @@ const GradioPlotlyChart: React.FC<GradioProps> = ({ api_endpoint }) => {
   if (error) return <ErrorMessage message={error} />;
   if (!plotData) return <ErrorMessage message="No plot data available" />;
 
+  plotData.layout.sliders[0]["y"] = -0.2;
   return (
     <div className="w-full" style={{ height: "max(min(425px, 47vw), 50vh)" }}>
       <Plot
@@ -204,7 +205,7 @@ const GradioPlotlyChart: React.FC<GradioProps> = ({ api_endpoint }) => {
         layout={{
           autosize: true,
           ...plotData.layout,
-          margin: { l: 0, r: 0, t: 50, b: 10 },
+          margin: { l: 0, r: 0, t: 50, b: 50 },
           title: {
             ...(plotData.layout?.title || {}),
             y: 0.95,
