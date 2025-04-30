@@ -1,7 +1,19 @@
 import React from 'react';
 
+// Define the prop types interface
+interface CAVAExampleProps {
+  taskName: string;
+  description: string;
+  prompt: string;
+  inputText: string;
+  expectedOutput: string;
+  audioUrl?: string;
+  outputAudioUrl?: string;
+  hasAudioOutput?: boolean;
+}
+
 // Simple component to display a CAVA benchmark task example
-const CAVAExample = ({ 
+const CAVAExample: React.FC<CAVAExampleProps> = ({ 
   taskName, 
   description, 
   prompt, 
