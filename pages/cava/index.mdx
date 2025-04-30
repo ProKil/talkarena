@@ -1,0 +1,91 @@
+## **CAVA: Comprehensive Assessment for Voice Assistants**
+
+**Lead:** Will Held\*, Michael Ryan\*, Diyi Yang  
+**Task Leads:** Aditya Shrivastava, Ali Sartaz Khan, Ella Li, Michael Sun, Tan Li, Woody Gan  
+**Other Contributors:** Caleb Ziems, Steven Dillmann, Martijn Bartelds,   
+**Data Processing and Inference Code: [https://github.com/SALT-NLP/CAVA](https://github.com/SALT-NLP/CAVA)** 
+
+## Introduction
+
+From pop culture AI such as HAL and Jarvis to early consumer-facing systems such as Watson, Siri, and Alexa \- the canonical image of an AI assistant engages with users through speech rather than text. This is, in many ways, unsurprising as written language is generally learned later than spoken, and people can communicate [faster](https://dl.acm.org/doi/10.1145/3161187) through speech. However, to deliver on this long-standing vision of an effective voice assistant, we need standard ways to measure progress across the range of capabilities which a voice assistant needs to be safe, effective, and enjoyable to use. 
+
+Existing benchmarks focus either primarily on the analytical use cases of speech AI, such as classifying emotions or demographics from speech, or solely on information seeking tasks, such as question answering. Instead of focusing on audio processing broadly or the analysis of speech, we set out to create and curate benchmarks which assess Large Audio Models (LAMs) capabilities in dimensions necessary for supporting high-quality and safe voice assistants[^1]. 
+
+## CAVA Benchmark
+
+The most significant distinguishing feature of a voice assistant from auditory AI more broadly is the focus on providing efficient, task-oriented assistance to the user through voice interaction. In order to provide a high quality user experience, a foundation model for voice assistants requires capabilities across each of the following six domains:
+
+- **Turn Taking:** The model needs to be able to understand conversational turn taking dynamics so that the assistant can engage with the user(s) at appropriate times.  
+- **Instruction Following:** The model needs to be able to follow instructions so that the assistant can adhere to both user and system designer prompts.  
+- **Function Calling:** The model needs to be able to map user requests to function calls so that the assistant can retrieve information and execute actions on the user(s) behalf.  
+- **Tone Awareness:** The model needs to be able to recognize paralinguistic information communicated through speech and modify responses so that the assistant can respond appropriately.  
+- **Safety:** The model needs to be able to recognize jailbreaking and deceptive intents in users so that the assistant can adhere to safety and ethical guidelines.  
+- **Latency:** The model needs to respond with low latency so that the assistant can maintain natural conversational pacing.
+
+
+Both historically and at present, many of these capabilities have been handled by separate models and pipelined together by practitioners to create voice assistants. Tone awareness can be delegated to separate classifiers for paralinguistic information, function calling to semantic parsers, and turn taking to voice activity detection models. However, realtime APIs and the models designed to support them indicate a shift towards these capabilities becoming part of more monolithic models which will need to meet these multifaceted, and at times conflicting, capability needs. 
+
+CAVA is based on the idea that measuring these capabilities separately can produce metrics which are misaligned with the downstream utility of a model. For example, a model which achieves strong performance but high latency is likely to prove frustrating to users in real time spoken conversations. As such, benchmarks which omit latency could incentivize models to create worse user experiences to maximize benchmark results. While there exist multitask benchmarks along separate capabilities, CAVA is the first designed to test which systems are likely to serve as the overall best foundation for voice assistant developers.
+
+## Results
+
+|  |  | \# Data Points | GPT-4o | GPT Pipeline | Gemini 2.0 | Gemini 2.5 |
+| :---- | :---- | :---- | :---- | :---- | :---- | :---- |
+| **Latency** | **Jeopardy (Win Rate % ↑)** | 1k | 73.00% | 15.40% | 6.00% | No Speech Output |
+| **Function Calling** | **Function Calling (Function Calls Match ↑)** | 1k | 24% | 27% | N/A | N/A |
+| **Instruction Following** | **System Prompt Following (Adhere % ↑)** | 1k | 64.6% | 64.7% | 69.7% | 70.2% |
+|  | **Pronunciation Control (OED % Correct ↑)** | 283 | 58% | 45% | 32% | No  Speech Output |
+| **Tone Awareness** | **Counterfactual Response (Likert Scale Score / 5 ↑)** | 1.5k | 3.37 | 3.27 | 3.3 | 3.32 |
+| **Turn-Taking** | **Turn Prediction (Accuracy ↑)** | 1k | 40.70% | 37.00% | 38.3 | 47.50% |
+| **Safety** | **Deception Detection (Accuracy ↑)** | 151 | \[REFUSES\] | 14.57% | 26% | 12.58% |
+|  | **Speech Jailbreaking (Success Rate ↓)** | 520 | 68.27% | 79.04% | 79.23% | 49.04% |
+
+### 
+
+### **Details about CAVA Benchmark**
+
+### **Latency**
+
+#### **Jeopardy (Ali Sartaz Khan)**
+
+To evaluate how quickly and accurately large audio models can respond to user queries, we introduce the Jeopardy task. This benchmark measures the ability of different models to process and respond to audio questions with both speed and accuracy, simulating time-sensitive interactions typical in voice assistant scenarios.
+
+### **Function Calling**
+
+#### **STOP Function Calling (Tan Li & Will Held)**
+
+One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of Large Audio Models (LAMs), which are increasingly used in agentic applications. To measure function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise function calls.
+
+### **Instruction Following**
+
+#### **System Prompt Following (Aditya Shrivastava)**
+
+For LAMs to serve effectively as assistants and agents, they must consistently follow user-specified instructions provided through both text and audio. Using a set of verifiable instructions such as "answer in fewer than 50 words" or "do not use the word X in your response," we benchmark how consistently models adhere to instructions within a spoken question-answering context.
+
+#### **Pronunciation Control (Michael Ryan)**
+
+When LAMs encounter unfamiliar terms or neologisms, they must adapt their pronunciation quickly when guided or corrected. This test evaluates how well models can adjust their pronunciation when given either a sounded-out spelling of a word or an audio recording demonstrating the novel pronunciation.
+
+### **Tone Awareness**
+
+#### **Emotion Counterfactual Response Generation (Will Held)**
+
+To ensure large audio models (LAMs) can recognize social cues and respond appropriately, we introduce the task of tone-aware response generation. This evaluates the model's ability to generate appropriate responses that adapt to the same text input delivered with different emotional tones. This capability is essential for voice assistants to maintain natural conversation flow and demonstrate appropriate social awareness during interactions.
+
+### **Turn-Taking**
+
+#### **AMI Turn Prediction (Woody Gan)**
+
+For LAMs to integrate into group conversations and collaborative work, they must understand when it's appropriate to contribute. Using the AMI corpus of meeting recordings, we evaluate turn prediction capabilities by assessing whether models can accurately predict who should speak next given the entire context of a conversation.
+
+### **Safety**
+
+#### **Deception Detection (Michael Sun)**
+
+We test whether LAMs can understand complex social interactions and detect deceptive communication by examining their performance on scenarios similar to One Night Ultimate Werewolf games. Models must identify deceptive intent in audio recordings of structured role-playing discussions, allowing us to better understand vulnerabilities in LAMs' social reasoning capabilities.
+
+#### **Speech Jailbreaking (Ella Minzhi Li)**
+
+Building on previous work exploring simple perturbations like volume adjustments to bypass security measures, we investigate how persuasive vocal delivery can be used to attack LAMs. We vocalize persuasive prompts and convert them to audio input using text-to-speech, then examine how LAMs respond to these persuasive vocal characteristics to help strengthen safeguards against manipulation attempts.
+
+[^1]:  https://voiceaiandvoiceagents.com/\#llms-for-voice
