@@ -87,7 +87,7 @@ export function Hero() {
     return (
         <>
           <div className="text-primary font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-center p-4 mt-8 flex items-center justify-center space-x-4">
-              <img src="/talkarena-logo.svg" alt="CAVA Logo" className="w-24 h-24" />
+              <img src="/CAVA-logo.svg" alt="CAVA Logo" className="w-24 h-24" />
               CAVA: Comprehensive Assessment for Voice Assistants
           </div>
           <AuthorList />
