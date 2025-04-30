@@ -21,5 +21,16 @@
         "theme": {
             "toc": true
         }
+    },
+        "cava": {
+        "type": "page",
+        "title": "CAVA",
+        "display": "hidden",
+        "theme": {
+            "toc": true,
+            "typesetting": "article",
+            "sidebar": false,
+            "navbar": false
+        }
     }
 }
