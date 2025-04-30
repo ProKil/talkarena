@@ -1,0 +1,11 @@
+{
+    "index": {
+        "type": "page",
+        "title": "CAVA",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    }
+}
+   
