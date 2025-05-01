@@ -1,23 +1,43 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { Lumiflex } from 'uvcanvas'
-import { Button } from "../components/ui/button"
-import { MoveRight } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Lumiflex } from "uvcanvas";
+import { Button } from "../components/ui/button";
+import { MoveRight } from "lucide-react";
 
-import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import ModelPerformanceChart from '../components/static_performance';
-import KendallTauDistanceChart from '../components/interactive_static_correlation';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
+import ModelPerformanceChart from "../components/static_performance";
+import KendallTauDistanceChart from "../components/interactive_static_correlation";
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
 import { IrbRubricsAccordion } from "@/components/irb_rubrics_accordion";
-import { Callout, Bleed } from 'nextra/components'
+import { Callout, Bleed } from "nextra/components";
 
-<h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100" style={{fontSize : "2rem", fontWeight: "400"}}>Judge Large Audio Models on <span style={{fontWeight: "600"}}>Talk Arena</span>!</h1>
+<h1
+  className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100"
+  style={{ fontSize: "2rem", fontWeight: "400" }}
+>
+  Judge Large Audio Models on{" "}
+  <span style={{ fontWeight: "600" }}>Talk Arena</span>!
+</h1>
 
 - **Ask Anything:** From general conversation to specialized audio processing, use the models how you want!
 - **Get State-of-the-Art Responses:** Currently, we serve from GPT-4o, Gemini, Qwen2-Audio, DiVA-Llama 3 and Typhoon-Audio. We currently support an audio-in, text-out format.
@@ -25,11 +45,11 @@ import { Callout, Bleed } from 'nextra/components'
 
 <GradioEmbed />
 
-
 <IrbRubricsAccordion />
 
 ## Acknowledgements
-This platform is made possible thanks to computing support provided by SCB 10X, SCBX Group through Stanford HAI and credit support provided by Google Gemini. We also would like to thank Qwen team for their help with building a model API endpoint.  Finally, thanks to the many early testers who helped us refine Talk Arena!
+
+This platform is made possible thanks to computing support provided by SCB 10X, SCBX Group through Stanford HAI and credit support provided by Google Gemini. We also would like to thank Qwen team for their help with building a model API endpoint. Finally, thanks to the many early testers who helped us refine Talk Arena!
 
 ## Cite us
 
@@ -42,6 +62,3 @@ If you find this work useful, please cite us:
       year={2024}
     }
 ```
-
-
-	

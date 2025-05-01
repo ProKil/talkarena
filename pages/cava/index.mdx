@@ -3,14 +3,12 @@ import { Hero } from "@/components/cava_hero";
 import CAVATable from "@/components/cava_table";
 
 <Hero />
-**Data Processing and Inference Code:
-[https://github.com/SALT-NLP/CAVA](https://github.com/SALT-NLP/CAVA)**
 
 ## Introduction
 
-From pop culture AI such as HAL and Jarvis to early consumer-facing systems such as Watson, Siri, and Alexa \- the canonical image of an AI assistant engages with users through speech rather than text. This is, in many ways, unsurprising as written language is generally learned later than spoken, and people can communicate [faster](https://dl.acm.org/doi/10.1145/3161187) through speech. However, to deliver on this long-standing vision of an effective voice assistant, we need standard ways to measure progress across the range of capabilities which a voice assistant needs to be safe, effective, and enjoyable to use.
+From pop culture AI such as HAL and Jarvis to early consumer-facing systems such as Watson, Siri, and Alexa \- the canonical image of an AI assistant engages with users through speech rather than text. This is, in many ways, unsurprising as written language is generally learned later than spoken, and people can communicate faster[^1] through speech. However, to deliver on this long-standing vision of an effective voice assistant, we need standard ways to measure progress across the range of capabilities which a voice assistant needs to be safe, effective, and enjoyable to use.
 
-Existing benchmarks focus either primarily on the analytical use cases of speech AI, such as classifying emotions or demographics from speech, or solely on information seeking tasks, such as question answering. Instead of focusing on audio processing broadly or the analysis of speech, we set out to create and curate benchmarks which assess Large Audio Models (LAMs) capabilities in dimensions necessary for product developers to produce high-quality and safe voice assistants[^1].
+Existing benchmarks[^2]<sup>,</sup>[^3]<sup>,</sup>[^4]<sup>,</sup>[^5]<sup>,</sup>[^6]<sup>,</sup>[^7]<sup>,</sup>[^8]<sup>,</sup>[^9]<sup>,</sup>[^10]<sup>,</sup>[^11] focus either primarily on the analytical use cases of speech AI, such as classifying emotions or demographics from speech, or solely on information seeking tasks, such as question answering. Instead of focusing on audio processing broadly or the analysis of speech, we set out to create and curate benchmarks which assess Large Audio Models (LAMs) capabilities in dimensions necessary for product developers to produce high-quality and safe voice assistants[^12].
 
 ## CAVA Benchmark
 
@@ -47,7 +45,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 ### **Function Calling**
 
 <CAVAExample
-  taskName="Spoken Task Oriented Parsing (Tan Li & Will Held)"
+  taskName="Spoken Task Oriented Parsing[^13] (Tan Li & Will Held)"
   description="One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of Large Audio Models (LAMs), which are increasingly used in agentic applications. To measure function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise function calls."
   prompt="Execute all necessary function calls before responding."
   expectedOutput='function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})'
@@ -86,7 +84,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 ### **Turn-Taking**
 
 <CAVAExample 
-  taskName="AMI Turn Prediction (Woody Gan)"
+  taskName="AMI[^14] Turn Prediction (Woody Gan)"
   description="For LAMs to integrate into group conversations and collaborative work, they must understand when it's appropriate to contribute. Using the AMI corpus of meeting recordings, we evaluate turn prediction capabilities by assessing whether models can accurately predict who should speak next given the entire context of a conversation."
   prompt="You will analyze the following **meeting audio** to determine **who will speak next**.
 
@@ -126,4 +124,36 @@ audioUrl="/audio/ami.wav"
   audioUrl="/audio/jailbreak.wav"
 />
 
-[^1]: https://voiceaiandvoiceagents.com/#llms-for-voice
+## How to Add A Model to CAVA?
+
+TO-ADD
+
+## Citations
+
+[^1]: https://dl.acm.org/doi/10.1145/3161187
+
+[^2]: https://arxiv.org/abs/2309.09510
+
+[^3]: https://openreview.net/forum?id=s7lzZpAW7T
+
+[^4]: https://arxiv.org/abs/2410.19168
+
+[^5]: https://arxiv.org/abs/2410.13268
+
+[^6]: https://arxiv.org/abs/2406.16020
+
+[^7]: https://arxiv.org/html/2502.17239v1
+
+[^8]: https://arxiv.org/abs/2412.02611
+
+[^9]: https://arxiv.org/abs/2406.13340
+
+[^10]: https://arxiv.org/abs/2410.17196
+
+[^11]: https://arxiv.org/abs/2402.07729
+
+[^12]: https://voiceaiandvoiceagents.com/#llms-for-voice
+
+[^13]: https://facebookresearch.github.io/spoken_task_oriented_parsing/docs/semantic_parsing/
+
+[^14]: https://groups.inf.ed.ac.uk/ami/corpus/

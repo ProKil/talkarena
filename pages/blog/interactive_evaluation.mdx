@@ -1,21 +1,35 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { Lumiflex } from 'uvcanvas'
-import { Button } from "@/components/ui/button"
-import { MoveRight } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Lumiflex } from "uvcanvas";
+import { Button } from "@/components/ui/button";
+import { MoveRight } from "lucide-react";
 
-import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import ModelPerformanceChart from '@/components/static_performance';
-import KendallTauDistanceChart from '@/components/interactive_static_correlation';
-import ModelComparisonChart from '@/components/win_rates';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
+import ModelPerformanceChart from "@/components/static_performance";
+import KendallTauDistanceChart from "@/components/interactive_static_correlation";
+import ModelComparisonChart from "@/components/win_rates";
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
-import { Callout, Bleed } from 'nextra/components'
+import { Callout, Bleed } from "nextra/components";
 
 # Interactive Evaluation
 
@@ -33,6 +47,7 @@ We compare the user preference result in interactive evaluation to that of stati
 <KendallTauDistanceChart />
 
 Here are some observations:
+
 1. **None** of the static bench reflects exactly the same rank in interactive eval
 2. Ranks on **emotion recognition** and **language detection** benchmarks are most similar to that in interactive eval
 3. Ranks on **gender detection** and **nuanced intent (humor, sarcasm) detection** are not very correlated with that in interactive eval

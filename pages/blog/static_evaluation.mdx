@@ -1,20 +1,34 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { Lumiflex } from 'uvcanvas'
-import { Button } from "@/components/ui/button"
-import { MoveRight } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Lumiflex } from "uvcanvas";
+import { Button } from "@/components/ui/button";
+import { MoveRight } from "lucide-react";
 
-import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import ModelPerformanceChart from '@/components/static_performance';
-import KendallTauDistanceChart from '@/components/interactive_static_correlation';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
+import ModelPerformanceChart from "@/components/static_performance";
+import KendallTauDistanceChart from "@/components/interactive_static_correlation";
 
 import { Hero } from "@/components/hero";
 import { GradioEmbed } from "@/components/gradio";
 import { ResearchTable } from "@/components/tablehero";
-import { Callout, Bleed } from 'nextra/components'
+import { Callout, Bleed } from "nextra/components";
 
 # Static Evaluation
 
@@ -26,25 +40,36 @@ The datasets cover a wide range of tasks that evaluate models' knowledge of **Sp
 
 <ResearchTable />
 
-
-
 ## Result Analysis
+
 To ensure robustness, we report the average of model performance using three different prompt variations.
 For `public_sg_speech`, `openhermes`, and `alpaca` datasets, we report the
-<a href="https://arxiv.org/html/2402.11161v4">cfm</a> metric. For other tasks, we report the macro F1 scores.
+
+<a href="https://arxiv.org/html/2402.11161v4">cfm</a> metric. For other tasks,
+we report the macro F1 scores.
 
 In general, close sourced models like <a href="https://arxiv.org/abs/2312.11805">Gemini</a> and
-<a href="https://arxiv.org/abs/2312.11805">GPT4o</a> generally top the leaderboard:
-<a href="https://arxiv.org/abs/2312.11805">Gemini</a> has the highest performance on SLURP intent classification (F1: 91.4), MELD emotion recognition (F1: 26.9), CN_college_listen (F1: 66.1) and <a href="https://arxiv.org/abs/2312.11805">GPT4o</a>
-performs the best on MUSTARD sarcasm detection (F1: 53.6), IEMOCAP emotion recognition (F1: 31.5), CallHome relation classification (F1: 59.7), and Commonvoice accent classification (F1: 35.3).
+
+<a href="https://arxiv.org/abs/2312.11805">GPT4o</a> generally top the
+leaderboard:
+<a href="https://arxiv.org/abs/2312.11805">Gemini</a> has the highest
+performance on SLURP intent classification (F1: 91.4), MELD emotion recognition
+(F1: 26.9), CN_college_listen (F1: 66.1) and
+<a href="https://arxiv.org/abs/2312.11805">GPT4o</a>
+performs the best on MUSTARD sarcasm detection (F1: 53.6), IEMOCAP emotion
+recognition (F1: 31.5), CallHome relation classification (F1: 59.7), and
+Commonvoice accent classification (F1: 35.3).
 
 Among the open-sourced models, <Link href="https://arxiv.org/abs/2407.10759">Qwen2-Audio</Link> demonstrates outstanding
 performance on SpeechQA and Gender/Age classification tasks and <a href="https://arxiv.org/abs/2410.02678">DiVA</a>
 shows excellent humor detection and speech instruction following capability that outperforms all other models.
 These two open-sourced models also show relatively good performance on other tasks, demonstrating <b>good generalizability</b>.
-<a href="https://arxiv.org/pdf/2309.05519">NextGPT</a> and <a href="https://arxiv.org/abs/2305.16355">PandaGPT</a>
-perform relatively worse, especially for tasks like intent and emotion recognition, accent recognition,
-and instruction following. They share similar encoder architecture (ImageBind) and this suggests
+
+<a href="https://arxiv.org/pdf/2309.05519">NextGPT</a> and
+<a href="https://arxiv.org/abs/2305.16355">PandaGPT</a>
+perform relatively worse, especially for tasks like intent and emotion
+recognition, accent recognition, and instruction following. They share similar
+encoder architecture (ImageBind) and this suggests
 <b>the limitation of using ImageBind for encoding audio features</b>.
 
 We also perform evaluation for the sequential pipeline of <a href="https://arxiv.org/abs/2212.04356">Whisper</a>
@@ -52,7 +77,7 @@ plus <a href="https://arxiv.org/abs/2407.21783">Llama3-8B-Instruct</a>.
 It shows relatively good performance for tasks like emotion recognition and speech QA, which means some of the data
 instances can be inferred from content only. However, for each and every task there are speech models outperforming
 the whisper+llama3 pipeline. This suggests that some information like emotion, relationship, and sarcasm can be
-<b>embedded in vocal cues</b> and <b>requires understanding beyond content</b>.
 
+<b>embedded in vocal cues</b> and <b>requires understanding beyond content</b>.
 
 <ModelPerformanceChart />

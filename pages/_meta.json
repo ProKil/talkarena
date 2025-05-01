@@ -1,35 +1,35 @@
 {
-    "index": {
-        "type": "page",
-        "title": "Home",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
-        }
-    },
-    "leaderboard": {
-        "type": "page",
-        "title": "Leaderboard",
-        "theme": {
-            "toc": true,
-            "typesetting": "article"
-        }
-    },
-    "blog": {
-        "type": "page",
-        "title": "Blog",
-        "theme": {
-            "toc": true
-        }
-    },
-        "cava": {
-        "type": "page",
-        "title": "CAVA",
-        "display": "hidden",
-        "theme": {
-            "toc": true,
-            "typesetting": "article",
-            "navbar": false
-        }
+  "index": {
+    "type": "page",
+    "title": "Home",
+    "theme": {
+      "toc": true,
+      "typesetting": "article"
     }
+  },
+  "leaderboard": {
+    "type": "page",
+    "title": "Leaderboard",
+    "theme": {
+      "toc": true,
+      "typesetting": "article"
+    }
+  },
+  "blog": {
+    "type": "page",
+    "title": "Blog",
+    "theme": {
+      "toc": true
+    }
+  },
+  "cava": {
+    "type": "page",
+    "title": "CAVA",
+    "display": "hidden",
+    "theme": {
+      "toc": true,
+      "typesetting": "article",
+      "navbar": false
+    }
+  }
 }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import React, { useState, useEffect, useMemo } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface LatencyMetrics {
   time_to_first_token: number;
@@ -36,13 +36,13 @@ interface ModelStats {
     upper: number;
   };
   model_a: string;
-  opponents: { 
-    [key: string]: { 
-      wins: number; 
-      losses: number; 
-      ties: number; 
-      total: number 
-    } 
+  opponents: {
+    [key: string]: {
+      wins: number;
+      losses: number;
+      ties: number;
+      total: number;
+    };
   };
 }
 
@@ -64,17 +64,17 @@ class SeededRandom {
     let b = 362436069;
     let c = 521288629;
     let d = 88675123;
-    
+
     const t = b << 9;
-    const r = a * 5; 
+    const r = a * 5;
     const result = ((r << 7) | (r >>> 25)) * 9;
-    
+
     c = c ^ a;
     d = d ^ b;
     b = b ^ c;
     a = a ^ d;
     c = c ^ t;
-    
+
     this.seed = a;
     return (result >>> 0) / 4294967296;
   }
@@ -90,13 +90,13 @@ const btLossAndGrad = (
   matchups: number[][],
   outcomes: number[],
   weights: number[],
-  alpha: number = 1.0
+  alpha: number = 1.0,
 ): [number, number[]] => {
   const n = ratings.length;
-  const matchupRatings = matchups.map(m => [ratings[m[0]], ratings[m[1]]]);
+  const matchupRatings = matchups.map((m) => [ratings[m[0]], ratings[m[1]]]);
   const logits = matchupRatings.map((m, i) => alpha * (m[0] - m[1]));
   const probs = logits.map(expit);
-  
+
   const loss = -weights.reduce((sum, w, i) => {
     const p = probs[i];
     const o = outcomes[i];
@@ -117,22 +117,22 @@ const lbfgsMinimize = (
   f: (x: number[]) => [number, number[]],
   x0: number[],
   maxIter: number = 100,
-  tol: number = 1e-6
+  tol: number = 1e-6,
 ): number[] => {
   let x = [...x0];
   let prevLoss = Infinity;
-  
+
   for (let iter = 0; iter < maxIter; iter++) {
     const [loss, grad] = f(x);
     const stepSize = 0.1;
     x = x.map((xi, i) => xi - stepSize * grad[i]);
     const mean = x.reduce((a, b) => a + b, 0) / x.length;
-    x = x.map(xi => xi - mean);
-    
+    x = x.map((xi) => xi - mean);
+
     if (Math.abs(loss - prevLoss) < tol) break;
     prevLoss = loss;
   }
-  
+
   return x;
 };
 
@@ -142,16 +142,16 @@ const scaleAndOffset = (
   scale: number = 400,
   initRating: number = 1000,
   baselineModel: string = "pipe_l3.0",
-  baselineRating: number = 1100
+  baselineRating: number = 1100,
 ): number[] => {
-  let scaledRatings = ratings.map(r => r * scale + initRating);
-  
+  let scaledRatings = ratings.map((r) => r * scale + initRating);
+
   const baselineIdx = models.indexOf(baselineModel);
   if (baselineIdx !== -1) {
     const offset = baselineRating - scaledRatings[baselineIdx];
-    scaledRatings = scaledRatings.map(r => r + offset);
+    scaledRatings = scaledRatings.map((r) => r + offset);
   }
-  
+
   return scaledRatings;
 };
 
@@ -163,15 +163,18 @@ const ModelPerformanceTable: React.FC = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const proxyUrl = 'https://api.allorigins.win/raw?url=' + 
-          encodeURIComponent('https://raw.githubusercontent.com/SALT-NLP/talk-arena/refs/heads/main/live_votes.json');
-        
+        const proxyUrl =
+          "https://api.allorigins.win/raw?url=" +
+          encodeURIComponent(
+            "https://raw.githubusercontent.com/SALT-NLP/talk-arena/refs/heads/main/live_votes.json",
+          );
+
         const response = await fetch(proxyUrl);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const jsonData: ApiResponse = await response.json();
         setData(jsonData);
         setLoading(false);
@@ -198,73 +201,76 @@ const ModelPerformanceTable: React.FC = () => {
       outcome: number;
       weight: number;
     }
-    
+
     const matchupOutcomes: MatchupOutcome[] = [];
-    Object.values(modelStats).forEach(modelA => {
+    Object.values(modelStats).forEach((modelA) => {
       Object.entries(modelA.opponents).forEach(([modelB, record]) => {
         if (record.total > 0) {
           matchupOutcomes.push({
             model_a_idx: models.indexOf(modelA.model_a),
             model_b_idx: models.indexOf(modelB),
             outcome: (record.wins + record.ties * 0.5) / record.total,
-            weight: record.total
+            weight: record.total,
           });
         }
       });
     });
 
-    const matchups = matchupOutcomes.map(m => [m.model_a_idx, m.model_b_idx]);
-    const outcomes = matchupOutcomes.map(m => m.outcome);
-    const weights = matchupOutcomes.map(m => m.weight);
+    const matchups = matchupOutcomes.map((m) => [m.model_a_idx, m.model_b_idx]);
+    const outcomes = matchupOutcomes.map((m) => m.outcome);
+    const weights = matchupOutcomes.map((m) => m.weight);
 
     const initialRatings = new Array(n_models).fill(0);
-    
+
     const fitBradleyTerry = (bootWeights: number[]) => {
-      const f = (x: number[]) => btLossAndGrad(x, matchups, outcomes, bootWeights, alpha);
+      const f = (x: number[]) =>
+        btLossAndGrad(x, matchups, outcomes, bootWeights, alpha);
       return lbfgsMinimize(f, initialRatings, 100, 1e-6);
     };
 
     const numBootstrapRounds = 100;
     const bootstrapResults: number[][] = [];
     const totalWeight = weights.reduce((a, b) => a + b, 0);
-    
+
     for (let round = 0; round < numBootstrapRounds; round++) {
-      const bootWeights = weights.map(w => {
+      const bootWeights = weights.map((w) => {
         const p = w / totalWeight;
         const n = weights.length;
         return Math.max(0, n * p * rng.next());
       });
-      
+
       const weightSum = bootWeights.reduce((a, b) => a + b, 0);
-      const normalizedWeights = bootWeights.map(w => w / weightSum);
-      
+      const normalizedWeights = bootWeights.map((w) => w / weightSum);
+
       const ratings = fitBradleyTerry(normalizedWeights);
       const scaledRatings = scaleAndOffset(ratings, models);
       bootstrapResults.push(scaledRatings);
     }
 
     models.forEach((model, i) => {
-      const modelRatings = bootstrapResults.map(r => r[i]).sort((a, b) => a - b);
+      const modelRatings = bootstrapResults
+        .map((r) => r[i])
+        .sort((a, b) => a - b);
       const median = modelRatings[Math.floor(modelRatings.length / 2)];
-      
+
       const lowerIndex = Math.floor(0.025 * modelRatings.length);
       const upperIndex = Math.floor(0.975 * modelRatings.length);
-      
+
       modelStats[model].bradley_terry_score = median;
       modelStats[model].confidence_interval = {
         lower: modelRatings[lowerIndex],
-        upper: modelRatings[upperIndex]
+        upper: modelRatings[upperIndex],
       };
     });
   };
 
   const modelPerformance = useMemo(() => {
     if (!data) return {};
-    
+
     const performances: ModelPerformance = {};
-    
+
     Object.values(data._default).forEach((comparison: ComparisonData) => {
-      [comparison.model_a, comparison.model_b].forEach(model => {
+      [comparison.model_a, comparison.model_b].forEach((model) => {
         if (!performances[model]) {
           performances[model] = {
             wins: 0,
@@ -278,19 +284,25 @@ const ModelPerformanceTable: React.FC = () => {
             bradley_terry_score: 0,
             confidence_interval: { lower: 0, upper: 0 },
             model_a: model,
-            opponents: {}
+            opponents: {},
           };
         }
       });
 
       if (!performances[comparison.model_a].opponents[comparison.model_b]) {
         performances[comparison.model_a].opponents[comparison.model_b] = {
-          wins: 0, losses: 0, ties: 0, total: 0
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          total: 0,
         };
       }
       if (!performances[comparison.model_b].opponents[comparison.model_a]) {
         performances[comparison.model_b].opponents[comparison.model_a] = {
-          wins: 0, losses: 0, ties: 0, total: 0
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          total: 0,
         };
       }
 
@@ -317,16 +329,22 @@ const ModelPerformanceTable: React.FC = () => {
       performances[comparison.model_b].opponents[comparison.model_a].total++;
 
       if (comparison.model_a_latency) {
-        performances[comparison.model_a].first_token_total += comparison.model_a_latency.time_to_first_token;
-        performances[comparison.model_a].total_time_total += comparison.model_a_latency.total_time;
-        performances[comparison.model_a].response_length_total += comparison.model_a_latency.response_length;
+        performances[comparison.model_a].first_token_total +=
+          comparison.model_a_latency.time_to_first_token;
+        performances[comparison.model_a].total_time_total +=
+          comparison.model_a_latency.total_time;
+        performances[comparison.model_a].response_length_total +=
+          comparison.model_a_latency.response_length;
         performances[comparison.model_a].comparison_count++;
       }
-      
+
       if (comparison.model_b_latency) {
-        performances[comparison.model_b].first_token_total += comparison.model_b_latency.time_to_first_token;
-        performances[comparison.model_b].total_time_total += comparison.model_b_latency.total_time;
-        performances[comparison.model_b].response_length_total += comparison.model_b_latency.response_length;
+        performances[comparison.model_b].first_token_total +=
+          comparison.model_b_latency.time_to_first_token;
+        performances[comparison.model_b].total_time_total +=
+          comparison.model_b_latency.total_time;
+        performances[comparison.model_b].response_length_total +=
+          comparison.model_b_latency.response_length;
         performances[comparison.model_b].comparison_count++;
       }
     });
@@ -357,8 +375,9 @@ const ModelPerformanceTable: React.FC = () => {
     );
   }
 
-  const sortedModels = Object.entries(modelPerformance)
-    .sort(([, a], [, b]) => b.bradley_terry_score - a.bradley_terry_score);
+  const sortedModels = Object.entries(modelPerformance).sort(
+    ([, a], [, b]) => b.bradley_terry_score - a.bradley_terry_score,
+  );
 
   return (
     <Card className="w-full">
@@ -371,11 +390,21 @@ const ModelPerformanceTable: React.FC = () => {
             <thead>
               <tr>
                 <th className="p-2 border text-left font-semibold">Model</th>
-                <th className="p-2 border text-right font-semibold">Bradley-Terry Score</th>
-                <th className="p-2 border text-right font-semibold">Win Rate</th>
-                <th className="p-2 border text-right font-semibold">Avg First Token (s)</th>
-                <th className="p-2 border text-right font-semibold">Avg Total Time (s)</th>
-                <th className="p-2 border text-right font-semibold">Avg Response Length</th>
+                <th className="p-2 border text-right font-semibold">
+                  Bradley-Terry Score
+                </th>
+                <th className="p-2 border text-right font-semibold">
+                  Win Rate
+                </th>
+                <th className="p-2 border text-right font-semibold">
+                  Avg First Token (s)
+                </th>
+                <th className="p-2 border text-right font-semibold">
+                  Avg Total Time (s)
+                </th>
+                <th className="p-2 border text-right font-semibold">
+                  Avg Response Length
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -383,19 +412,29 @@ const ModelPerformanceTable: React.FC = () => {
                 <tr key={model}>
                   <td className="p-2 border">{model}</td>
                   <td className="p-2 border text-right">
-                    {stats.bradley_terry_score.toFixed(1)} 
+                    {stats.bradley_terry_score.toFixed(1)}
                   </td>
                   <td className="p-2 border text-right">
-                    {((stats.wins + stats.ties * 0.5) / stats.total_games * 100).toFixed(1)}%
+                    {(
+                      ((stats.wins + stats.ties * 0.5) / stats.total_games) *
+                      100
+                    ).toFixed(1)}
+                    %
                   </td>
                   <td className="p-2 border text-right">
-                    {(stats.first_token_total / stats.comparison_count).toFixed(2)}
+                    {(stats.first_token_total / stats.comparison_count).toFixed(
+                      2,
+                    )}
                   </td>
                   <td className="p-2 border text-right">
-                    {(stats.total_time_total / stats.comparison_count).toFixed(2)}
+                    {(stats.total_time_total / stats.comparison_count).toFixed(
+                      2,
+                    )}
                   </td>
                   <td className="p-2 border text-right">
-                    {Math.round(stats.response_length_total / stats.comparison_count)}
+                    {Math.round(
+                      stats.response_length_total / stats.comparison_count,
+                    )}
                   </td>
                 </tr>
               ))}
