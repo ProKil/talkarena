@@ -111,7 +111,7 @@ export function Hero(): JSX.Element {
       role: "Project Coordinator",
     },
     {
-      name: "Michael Ryan",
+      name: "Michael J. Ryan",
       href: "https://michryan.com",
       role: "Project Coordinator",
     },
