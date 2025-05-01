@@ -194,7 +194,7 @@ export default function TableWithTypedStyles(): JSX.Element {
     <table style={styles.tableStyle}>
       <thead>
         <tr>
-          <th colSpan={2} style={styles.thStyle}></th>
+          <th colSpan={2} ></th>
           <th style={styles.thStyle}># Data Points</th>
           <th style={styles.thStyle}>GPT-4o</th>
           <th style={styles.thStyle}>GPT Pipeline</th>
