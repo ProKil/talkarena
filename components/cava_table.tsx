@@ -40,12 +40,10 @@ export default function TableWithTypedStyles(): JSX.Element {
   // Define common styles as objects for reuse
   const styles: TableStyles = {
     tableStyle: {
-      width: "min(1200px, 98vw)",
-      marginLeft: "calc((100% - min(1200px, 98vw)) / 2)",
-      borderCollapse: "collapse",
+      width: "100%",
+      //width: "min(1200px, 98vw)",
+      //marginLeft: "calc((100% - min(1200px, 98vw)) / 2)",
       fontFamily: "system-ui, -apple-system, sans-serif",
-      border: "1px solid #e2e8f0",
-      borderRadius: "6px",
       overflow: "hidden",
     },
 
@@ -54,15 +52,11 @@ export default function TableWithTypedStyles(): JSX.Element {
       padding: "12px 16px",
       fontWeight: "600",
       textAlign: "center",
-      borderBottom: "2px solid #e2e8f0",
-      borderRight: "1px solid #e2e8f0",
     },
 
     tdStyle: {
       padding: "12px 16px",
       textAlign: "center",
-      borderBottom: "1px solid #e2e8f0",
-      borderRight: "1px solid #e2e8f0",
     },
 
     categoryStyle: {
@@ -193,13 +187,14 @@ export default function TableWithTypedStyles(): JSX.Element {
   return (
     <table style={styles.tableStyle}>
       <thead>
-        <tr>
-          <th colSpan={2} ></th>
+        <tr >
+          <th style={styles.thStyle}>Category</th>
+          <th style={styles.thStyle}>Task</th>
           <th style={styles.thStyle}># Data Points</th>
           <th style={styles.thStyle}>GPT-4o</th>
           <th style={styles.thStyle}>GPT Pipeline</th>
           <th style={styles.thStyle}>Gemini 2.0</th>
-          <th style={{ ...styles.thStyle, borderRight: "none" }}>Gemini 2.5</th>
+          <th style={styles.thStyle}>Gemini 2.5</th>
         </tr>
       </thead>
       <tbody>
@@ -220,10 +215,7 @@ export default function TableWithTypedStyles(): JSX.Element {
                 </td>
               ) : null}
               <td
-                style={{
-                  ...styles.metricStyle,
-                  borderTop: rowIndex === 0 ? "1px solid #e2e8f0" : undefined,
-                }}
+                style={styles.metricStyle}
               >
                 {row.metric}
               </td>

@@ -141,15 +141,20 @@ export function Hero(): JSX.Element {
           <img
             src="/CAVA-logo.svg"
             alt="CAVA Logo"
-            className="w-16 sm:w-20 lg:w-24 h-auto"
+	    style={{height: "min(10vw, 200px)"}}
           />
           <span>Comprehensive Assessment for Voice Assistants</span>
+          <img
+	      src="/SALT-logo.svg"
+              alt="SALT Logo"
+	      style={{height: "min(10vw, 200px)"}}
+	  />
         </div>
 
         {/* Team Information */}
         <div>
-          <TeamSection title="Leads" members={leaders} />
-          <TeamSection title="Team Members" members={teamMembers} />
+	    <TeamSection title="Leads" members={leaders} />
+	    <TeamSection title="Team Members" members={teamMembers} />
 	  {/* Legend */}
           <div className="text-sm mt-6 text-center">
             <span className="inline-flex items-center mr-4">

@@ -1,4 +1,5 @@
 import CAVAExample from "@/components/cava_example";
+import PairwiseCAVAExample from "@/components/pairwise_cava_example";
 import { Hero } from "@/components/cava_hero";
 import CAVATable from "@/components/cava_table";
 
@@ -29,7 +30,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 <CAVATable />
 
-### **Details about CAVA Subtasks**
+## **Details about CAVA Subtasks**
 
 ### **Latency**
 
@@ -48,7 +49,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
   taskName="Spoken Task Oriented Parsing (Tan Li & Will Held)"
   description="One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of Large Audio Models (LAMs), which are increasingly used in agentic applications. To measure function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise function calls."
   prompt="Execute all necessary function calls before responding."
-  expectedOutput='function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})'
+  expectedOutput={`function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})`}
   audioUrl="/audio/function_calling.wav"
 />
 [^13]
@@ -72,13 +73,16 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 />
 
 ### **Tone Awareness**
-
-<CAVAExample
-  taskName="Emotion Counterfactual Response Generation (Will Held)"
-  description="To ensure large audio models (LAMs) can recognize social cues and respond appropriately, we introduce the task of tone-aware response generation. This evaluates the model's ability to generate appropriate responses that adapt to the same text input delivered with different emotional tones. This capability is essential for voice assistants to maintain natural conversation flow and demonstrate appropriate social awareness during interactions."
-  prompt="Reply conversationally. Pay attention to the tone in which the user speaks and respond appropriately."
-  expectedOutput="I didn't think you knew I was going to dance tonight! I just decided to let loose and have some fun."
-  audioUrl="/audio/emo_surprise.wav"
+<PairwiseCAVAExample
+    taskName="Emotion Counterfactual Response Generation (Will Held)"
+    description="To ensure large audio models (LAMs) can recognize social cues and respond appropriately, we introduce the task of tone-aware response generation. This evaluates the model's ability to generate appropriate responses that adapt to the same text input delivered with different emotional tones. This capability is essential for voice assistants to maintain natural conversation flow and demonstrate appropriate social awareness during interactions."
+    prompt={`Reply conversationally. Pay attention to the tone in which the user speaks and respond appropriately.`}
+    expectedOutput1="I didn't think you knew I was going to dance tonight! I just decided to let loose and have some fun."
+    audioUrl1="/audio/emo_surprise.wav"
+    label1="Surprised Tone"
+    label2="Neutral Tone"
+    expectedOutput2="Yes, I am dancing. What kind of music do you think this is?"
+    audioUrl2="/audio/emo_neutral.wav"
 />
 
 ### **Turn-Taking**
@@ -86,21 +90,22 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 <CAVAExample 
   taskName="AMI Turn Prediction (Woody Gan)"
   description="For LAMs to integrate into group conversations and collaborative work, they must understand when it's appropriate to contribute. Using the AMI corpus of meeting recordings, we evaluate turn prediction capabilities by assessing whether models can accurately predict who should speak next given the entire context of a conversation."
-  prompt="You will analyze the following **meeting audio** to determine **who will speak next**.
+  prompt={`You will analyze the following **meeting audio** to determine **who will speak next**.
 
-            **Context:**
-            - The meeting has multiple speakers: {formatted_speaker_list}.
-            - Below is the transcription of the audio context so far:
-            {transcription}
+**Context:**
+- The meeting has multiple speakers: {formatted_speaker_list}.
+- Below is the transcription of the audio context so far:
+{transcription}
 
-            **Task:**
-            - Based on the transcription and audio, predict who will speak next after the current audio ends.
-            - Only consider meaningful contributions as 'next speaker' - defined as utterances that:
-            * Are not minor or filler phrases
-            * Contain at least 5 words
-            - You must **only choose from the following list of speakers**:
-                            {formatted_speaker_list}
-            Please answer in the following format: \nReasoning: [Your reasoning here]. \nSpeaker: [The speaker's label here(e.g., 'A','B')]."
+**Task:**
+- Based on the transcription and audio, predict who will speak next after the current audio ends.
+- Only consider meaningful contributions as 'next speaker' - defined as utterances that:
+* Are not minor or filler phrases
+* Contain at least 5 words
+- You must **only choose from the following list of speakers**:
+                {formatted_speaker_list}
+
+Please answer in the following format: \nReasoning: [Your reasoning here]. \nSpeaker: [The speaker's label here(e.g., 'A','B')].`}
 
 expectedOutput="Reasoning: Based on the context, Speaker B was interrupted mid-sentence and is likely to continue. Speaker: A"
 audioUrl="/audio/ami.wav"
@@ -112,7 +117,7 @@ audioUrl="/audio/ami.wav"
 <CAVAExample
   taskName="Deception Detection (Michael Sun)"
   description="We test whether LAMs can understand complex social interactions and detect deceptive communication by examining their performance on scenarios similar to One Night Ultimate Werewolf games. Models must identify deceptive intent in audio recordings of structured role-playing discussions, allowing us to better understand vulnerabilities in LAMs' social reasoning capabilities."
-  prompt="Listen to the following audio of a One Night Ultimate Werewolf game being played. Some of the players may be the Werewolf. Name which player you think is most likely the Werewolf. Respond using a single word by stating the name of the player you think is the Werewolf. If you think nobody is the Werewolf, respond with: None."
+  prompt={`Listen to the following audio of a One Night Ultimate Werewolf game being played. Some of the players may be the Werewolf. Name which player you think is most likely the Werewolf. Respond using a single word by stating the name of the player you think is the Werewolf. If you think nobody is the Werewolf, respond with: None.`}
   expectedOutput="Alana"
   audioUrl="/audio/werewolf.wav"
 />

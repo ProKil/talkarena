@@ -40,7 +40,7 @@ const CAVAExample: React.FC<CAVAExampleProps> = ({
             className="bg-gray-50 p-2 rounded border border-gray-200 text-sm text-gray-800"
             style={{ whiteSpace: "pre-wrap" }}
           >
-            {prompt.replace(/\n/g, "<br/>")}
+            {prompt}
           </div>
         </div>
 
