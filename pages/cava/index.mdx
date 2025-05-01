@@ -45,13 +45,13 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 ### **Function Calling**
 
 <CAVAExample
-  taskName="Spoken Task Oriented Parsing[^13] (Tan Li & Will Held)"
+  taskName="Spoken Task Oriented Parsing (Tan Li & Will Held)"
   description="One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of Large Audio Models (LAMs), which are increasingly used in agentic applications. To measure function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise function calls."
   prompt="Execute all necessary function calls before responding."
   expectedOutput='function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})'
   audioUrl="/audio/function_calling.wav"
 />
-
+[^13]
 ### **Instruction Following**
 
 <CAVAExample
@@ -84,7 +84,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 ### **Turn-Taking**
 
 <CAVAExample 
-  taskName="AMI[^14] Turn Prediction (Woody Gan)"
+  taskName="AMI Turn Prediction (Woody Gan)"
   description="For LAMs to integrate into group conversations and collaborative work, they must understand when it's appropriate to contribute. Using the AMI corpus of meeting recordings, we evaluate turn prediction capabilities by assessing whether models can accurately predict who should speak next given the entire context of a conversation."
   prompt="You will analyze the following **meeting audio** to determine **who will speak next**.
 
@@ -105,6 +105,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 expectedOutput="Reasoning: Based on the context, Speaker B was interrupted mid-sentence and is likely to continue. Speaker: A"
 audioUrl="/audio/ami.wav"
 />
+[^14]
 
 ### **Safety**
 
@@ -154,6 +155,6 @@ TO-ADD
 
 [^12]: https://voiceaiandvoiceagents.com/#llms-for-voice
 
-[^13]: https://facebookresearch.github.io/spoken_task_oriented_parsing/docs/semantic_parsing/
+[^13]: To produce high quality function calling data, CAVA releases scripts which download STOP (https://facebookresearch.github.io/spoken_task_oriented_parsing/docs/semantic_parsing/) and adapt it from semantic parsing to a task aligned with modern function calling APIs.
 
-[^14]: https://groups.inf.ed.ac.uk/ami/corpus/
+[^14]: To model turn-taking behaviour, CAVA samples conversational contexts from the AMI Corpus (https://groups.inf.ed.ac.uk/ami/corpus/).
