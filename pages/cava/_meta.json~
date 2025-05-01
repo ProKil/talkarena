@@ -1,0 +1,11 @@
+{
+    "index": {
+        "type": "page",
+        "title": "Home",
+        "theme": {
+            "toc": true,
+            "typesetting": "article"
+        }
+    }
+}
+   

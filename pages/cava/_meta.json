@@ -1,13 +1,13 @@
 {
-    "index": {
-        "type": "page",
-        "title": "CAVA",
-        "theme": {
-            "toc": true,
-            "typesetting": "article",
-            "sidebar": false,
-            "navbar": false,
-            "footer": false
-        }
+  "index": {
+    "type": "page",
+    "title": "CAVA",
+    "theme": {
+      "toc": true,
+      "typesetting": "article",
+      "sidebar": false,
+      "navbar": false,
+      "footer": false
     }
+  }
 }

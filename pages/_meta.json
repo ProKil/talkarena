@@ -29,7 +29,6 @@
         "theme": {
             "toc": true,
             "typesetting": "article",
-            "sidebar": false,
             "navbar": false
         }
     }
