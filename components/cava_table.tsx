@@ -40,7 +40,6 @@ export default function TableWithTypedStyles(): JSX.Element {
   // Define common styles as objects for reuse
   const styles: TableStyles = {
     tableStyle: {
-      width: "100%",
       width: "min(1000px, 98vw)",
       //marginLeft: "calc((100% - min(1200px, 98vw)))",
       overflow: "hidden",
