@@ -41,9 +41,8 @@ export default function TableWithTypedStyles(): JSX.Element {
   const styles: TableStyles = {
     tableStyle: {
       width: "100%",
-      //width: "min(1200px, 98vw)",
-      //marginLeft: "calc((100% - min(1200px, 98vw)) / 2)",
-      fontFamily: "system-ui, -apple-system, sans-serif",
+      width: "min(1000px, 98vw)",
+      //marginLeft: "calc((100% - min(1200px, 98vw)))",
       overflow: "hidden",
     },
 
@@ -77,7 +76,7 @@ export default function TableWithTypedStyles(): JSX.Element {
 
     highlightStyle: {
       fontWeight: "600",
-      backgroundColor: "rgba(236, 253, 245, 0.4)",
+      backgroundColor: "#8AB8A7",
     },
   };
 
@@ -187,7 +186,7 @@ export default function TableWithTypedStyles(): JSX.Element {
   return (
     <table style={styles.tableStyle}>
       <thead>
-        <tr >
+        <tr>
           <th style={styles.thStyle}>Category</th>
           <th style={styles.thStyle}>Task</th>
           <th style={styles.thStyle}># Data Points</th>
@@ -214,11 +213,7 @@ export default function TableWithTypedStyles(): JSX.Element {
                   {row.category}
                 </td>
               ) : null}
-              <td
-                style={styles.metricStyle}
-              >
-                {row.metric}
-              </td>
+              <td style={styles.metricStyle}>{row.metric}</td>
               <td style={styles.dataPointStyle}>{row.dataPoints}</td>
               <td
                 style={

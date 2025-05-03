@@ -59,7 +59,7 @@ const Author: React.FC<AuthorProps> = ({
             ? "†"
             : role === "Task Lead"
               ? "‡"
-              : role === "Project Coordinator"
+              : role === "Project Lead"
                 ? "*"
                 : role === "Contributor"
                   ? "§"
@@ -108,12 +108,12 @@ export function Hero(): JSX.Element {
     {
       name: "Will Held",
       href: "https://williamheld.com",
-      role: "Project Coordinator",
+      role: "Project Lead",
     },
     {
       name: "Michael J. Ryan",
       href: "https://michryan.com",
-      role: "Project Coordinator",
+      role: "Project Lead",
     },
     {
       name: "Diyi Yang",
@@ -137,25 +137,54 @@ export function Hero(): JSX.Element {
     <TooltipProvider>
       <div className="max-w-5xl mx-auto">
         {/* Logo and Title */}
-        <div className="text-primary font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-center p-4 mt-8 mb-6 flex items-center justify-center gap-4">
-          <img
-            src="/CAVA-logo.svg"
-            alt="CAVA Logo"
-	    style={{height: "min(10vw, 200px)"}}
-          />
-          <span>Comprehensive Assessment for Voice Assistants</span>
-          <img
-	      src="/SALT-logo.svg"
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-4 text-primary font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-center p-4 mt-8 mb-6">
+          {/* For medium screens and larger - horizontal layout (original) */}
+          <div className="hidden md:block">
+            <img
+              src="/CAVA-logo.svg"
+              alt="CAVA Logo"
+              style={{ width: "min(20vh, 500px)" }}
+            />
+          </div>
+
+          {/* For small screens - images in the same row */}
+          <div className="flex md:hidden flex-row justify-center gap-4 w-full">
+            <img
+              src="/CAVA-logo.svg"
+              alt="CAVA Logo"
+              style={{ height: "min(15vh, 200px)" }}
+              className="object-contain"
+            />
+            <img
+              src="/SALT-logo.svg"
+              style={{ height: "min(15vh, 200px)" }}
               alt="SALT Logo"
-	      style={{height: "min(10vw, 200px)"}}
-	  />
+              className="object-contain"
+            />
+          </div>
+
+          <span className="text-center md:flex-grow">
+            Comprehensive Assessment for Voice Assistants
+          </span>
+
+          {/* For medium screens and larger - horizontal layout (original) */}
+          <div
+            className="hidden md:block"
+            style={{
+              width: "min(30vh, 500px)",
+              marginLeft: "-5vh",
+              marginRight: "-5vh",
+            }}
+          >
+            <img src="/SALT-logo.svg" alt="SALT Logo" />
+          </div>
         </div>
 
         {/* Team Information */}
         <div>
-	    <TeamSection title="Leads" members={leaders} />
-	    <TeamSection title="Team Members" members={teamMembers} />
-	  {/* Legend */}
+          <TeamSection title="Leads" members={leaders} />
+          <TeamSection title="Team Members" members={teamMembers} />
+          {/* Legend */}
           <div className="text-sm mt-6 text-center">
             <span className="inline-flex items-center mr-4">
               <SuperscriptWithTooltip content="Stanford University">
@@ -164,10 +193,10 @@ export function Hero(): JSX.Element {
               <span className="ml-1">Principal Investigator</span>
             </span>
             <span className="inline-flex items-center mr-4">
-              <SuperscriptWithTooltip content="Project Coordinator">
+              <SuperscriptWithTooltip content="Project Lead">
                 *
               </SuperscriptWithTooltip>
-              <span className="ml-1">Project Coordinator</span>
+              <span className="ml-1">Project Lead</span>
             </span>
             <span className="inline-flex items-center mr-4">
               <SuperscriptWithTooltip content="Task Lead">

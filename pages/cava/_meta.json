@@ -2,10 +2,10 @@
   "index": {
       "title": "CAVA",
       "theme": {
-	  "toc": true,
+	  "toc": false,
 	  "typesetting": "article",
-	  "sidebar": false,
-	  "layout": "full"
+	  "sidebar": true
+	  
     }
   }
 }

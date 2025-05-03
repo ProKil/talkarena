@@ -10,6 +10,8 @@ export default {
     },
     toc: {
       backToTop: true,
+      float: false
+      
     },
     sidebar: {
       toggleButton: true,
