@@ -43,7 +43,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
   hasAudioOutput={true}
 />
 
-### **Function Calling**
+### **Function Calling** [^13]
 
 <CAVAExample
   taskName="Spoken Task Oriented Parsing"
@@ -52,7 +52,8 @@ CAVA is based on the idea that measuring these capabilities separately can produ
   expectedOutput={`function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})`}
   audioUrl="/audio/function_calling.wav"
 />
-[^13] ### **Instruction Following**
+ 
+### **Instruction Following**
 
 <CAVAExample
   taskName="System Prompt Following"
@@ -85,7 +86,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
   audioUrl2="/audio/emo_neutral.wav"
 />
 
-### **Turn-Taking**
+### **Turn-Taking** [^14]
 
 <CAVAExample 
   taskName="AMI Turn Prediction"
@@ -114,7 +115,6 @@ Please answer in the following format: \nReasoning: [Your reasoning here]. \nSpe
 expectedOutput="Reasoning: Based on the context, Speaker B was interrupted mid-sentence and is likely to continue. Speaker: A"
 audioUrl="/audio/ami.wav"
 />
-[^14]
 
 ### **Safety**
 
