@@ -33,7 +33,7 @@ export default {
           <br />
         </span>
       )
-  },
+    },
     useNextSeoProps() {
       return {
         titleTemplate: 'Talk Arena',
@@ -57,7 +57,9 @@ export default {
             image: 'https://talkarena.org/preview.png',
         },
       }
-      
-  },
-    // ... other theme options
-  }
+    },
+    darkMode: false,
+    nextThemes: {
+      forcedTheme: 'light'
+    }
+}

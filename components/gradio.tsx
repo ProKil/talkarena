@@ -10,6 +10,9 @@ declare global {
       > & {
         title?: string;
         src?: string;
+        theme?: string;
+        class?: string;
+        className?: string;
       };
     }
   }
@@ -21,15 +24,26 @@ export function GradioEmbed() {
     const script = document.createElement("script");
     script.type = "module";
     script.src = "https://gradio.s3-us-west-2.amazonaws.com/5.8.0/gradio.js";
-
-    // Append script to document head
     document.head.appendChild(script);
 
-    // Cleanup function to remove script when component unmounts
+    let attempts = 0;
+    const maxAttempts = 10;
+    function fixClass() {
+      const gradioApp = document.querySelector("gradio-app");
+      if (gradioApp) {
+        gradioApp.className = "light";
+      }
+      attempts += 1;
+      if (attempts < maxAttempts) {
+        setTimeout(fixClass, 100);
+      }
+    }
+    fixClass();
+
     return () => {
       document.head.removeChild(script);
     };
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   return (
     <div
@@ -42,7 +56,7 @@ export function GradioEmbed() {
       <div className="bg-white rounded-lg shadow-lg">
         <gradio-app
           title="gradio demo"
-          src="https://talkarena-green.williamheld.com/"
+          src="https://talkarena-green.williamheld.com/?__theme=light"
         />
       </div>
     </div>
