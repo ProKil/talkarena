@@ -41,7 +41,7 @@ export default {
       const { asPath } = useRouter()
       if (asPath && asPath.includes('cava')) {
 	return {
-          titleTemplate: 'Talk Arena',
+          titleTemplate: 'CAVA',
           description: '',
           openGraph: {
             type: 'website',
