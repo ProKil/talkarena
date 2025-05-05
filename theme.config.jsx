@@ -54,7 +54,7 @@ export default {
             url: 'https://talkarena.org/cava',
             siteName: 'Comprehensive Assessment for Voice Assistants',
             title: 'Comprehensive Assessment for Voice Assistants',
-            description: 'CAVA is a new benchmark for assessing whether Large Audio Models can support general purpose voice assistants.',
+            description: 'CAVA is a new benchmark for assessing how well Large Audio Models support voice assistant capabilities.',
           },
           twitter: {
             cardType: 'summary_large_image',
