@@ -28,15 +28,21 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 ## Results
 
+In our initial comparison, we evaluate four commercial LAM systems, two of these are from OpenAI while the other two are from Google. From OpenAI, we evaluate the most recent (as of May 2025) GPT-4o Audio end-to-end audio model. We then compare this to the combination of GPT models designed for each part of the speech processing pipeline using GPT-4o-mini-transcribe, GPT-4o (text only version), and GPT-4o-mini-tts (GPT Pipeline in the table). From Google, we compare to their two recently released general purpose LLMs, both of which have audio input support, Gemini 2.0 Flash and Gemini 2.5 Pro. Notably, Gemini 2.5 Pro does not support audio outputs at this point, while Gemini 2.0 Flash only supports audio output via the Gemini Live API. If you are interested in what exactly CAVA data looks like, please jump to the [Examples section](#details-about-cava-tasks)!
+
 <CAVATable />
 
-## **Details about CAVA Subtasks**
+Notably, many of the performance aspects we measure in CAVA (such as latency and function calling) move beyond core model capabilities and into system dimensions. API driven models are especially opaque into the system design, so some metrics are likely to change as system engineering improves for these models even if the underlying weights stay the same. However, we think these system level performance metrics are important, especially for application and product developers trying to pick which API to rely on for their voice assistant deployments.
+
+## **Details about CAVA Tasks**
+
+In our initial release of CAVA, we focus on covering the space of dimensions listed in the introduction and construct one or more representative tasks to cover each domain. This provides application developers at least on reference point for each capabilitie domain to help guide decision making around model adoption! However, we are certainly interested in hearing from product developers to understand whether there are specific tasks they test on which feel generalizable to the broader space of voice assistant deployments!
 
 ### **Latency**
 
 <CAVAExample
   taskName="Jeopardy"
-  description="To evaluate how quickly and accurately large audio models can respond to user queries, we return to the classic task of Jeopardy. This benchmark measures the ability of different models to process and respond to audio questions with both speed and accuracy, simulating time-sensitive interactions typical in voice assistant scenarios."
+  description="To evaluate how quickly and accurately LAMs can respond to user queries, we return to the classic task of Jeopardy. This benchmark measures the ability of different models to process and respond to audio questions with both speed and accuracy, simulating time-sensitive interactions typical in voice assistant scenarios."
   prompt="You are answering Jeopardy clues. For each clue given, respond with ONLY the answer phrased as a question."
   audioUrl="/audio/jeopardy.wav"
   outputAudioUrl="/audio/jeopardy_answer.wav"
@@ -47,12 +53,11 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 <CAVAExample
   taskName="Spoken Task Oriented Parsing"
-  description="One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of Large Audio Models (LAMs), which are increasingly used in agentic applications. While current models are highly accurate at single turn function calls, even relatively simple queries can require more complex compositional function calls in order to deal with real world ambiguity. For example, when a user asks to 'navigate to my house' a model might need to first obtain the location of the user's house using an initial tool, then get directions to that specific location using a second tool. To measure this function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise and compositional function calls."
+  description="One of the original use cases for voice assistants like Siri and Alexa was device control. This capability remains crucial in the era of LAMs, which are increasingly used in agentic applications. While current models are highly accurate at single turn function calls, even relatively simple queries can require more complex compositional function calls in order to deal with real world ambiguity. For example, when a user asks to 'navigate to my house' a model might need to first obtain the location of the user's house using an initial tool, then get directions to that specific location using a second tool. To measure this function-calling ability, we adapted the STOP dataset, a popular spoken semantic parsing dataset, and created a unified API encompassing all intents and purposes in the benchmark. We then evaluate how effectively modern LAMs can parse user intents into precise and compositional function calls."
   prompt="Execute all necessary function calls before responding."
   expectedOutput={`function_call({"name": "GET_EVENT", "arguments": {"location": {"function_call": {"name": "GET_LOCATION", "arguments": {"point_on_map": "Boone Hall"}}}, "category_event": "Wine and Bluegrass nights", "date_time": "next month"}})`}
   audioUrl="/audio/function_calling.wav"
 />
- 
 ### **Instruction Following**
 
 <CAVAExample
@@ -65,7 +70,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 <CAVAExample
   taskName="Pronunciation Prompt Following"
-  description="When LAMs encounter unfamiliar terms or neologisms, they must adapt their pronunciation quickly when guided or corrected. This test evaluates how well models can adjust their pronunciation when given either a sounded-out spelling of a word or an audio recording demonstrating the novel pronunciation."
+  description="Models which serve as the backbone for voice assistants ideally can follow instructions multi-modally. For example, users might have specific desired pronunciation of their name that the model fails at to begin with and commercial voice assistants might need to be able to pronounce non-standard product or company names. A general purpose model for voice assistants should be instructable in these concrete dimensions of spoken language, not just in text. While these instructable aspects of LAMs extend even to more subtle features of vocal generation quality such as emotion, we focus on pronunciation control, a domain with objective expectations for output! Here, the model is given examples of words mined from Wiktionary with pronunciations we found models did not know a priori along with an Oxford English Dictionary pronunciation guide for the word, testing whether the LAM can adapt it's pronunciation based on the text instruction."
   prompt="Generate a high-quality audio pronunciation of the given word in English."
   inputText='The word "Ceará" using US pronunciation: "say-uh-RAH"'
   outputAudioUrl="/audio/pronounce.wav"
@@ -76,7 +81,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 <PairwiseCAVAExample
   taskName="Emotion Counterfactual Response Generation"
-  description="To ensure large audio models (LAMs) can recognize social cues and respond appropriately, we introduce the task of tone-aware response generation. This evaluates the model's ability to generate appropriate responses that adapt to the same text input delivered with different emotional tones. This capability is essential for voice assistants to maintain natural conversation flow and demonstrate appropriate social awareness during interactions."
+  description="To ensure LAMs can recognize social cues and respond appropriately, we introduce the task of tone-aware response generation. This evaluates the model's ability to generate appropriate responses that adapt to the same text input delivered with different emotional tones. This capability is essential for voice assistants to maintain natural conversation flow and demonstrate appropriate social awareness during interactions."
   prompt={`Reply conversationally. Pay attention to the tone in which the user speaks and respond appropriately.`}
   expectedOutput1="I didn't think you knew I was going to dance tonight! I just decided to let loose and have some fun."
   audioUrl1="/audio/emo_surprise.wav"
@@ -112,7 +117,7 @@ CAVA is based on the idea that measuring these capabilities separately can produ
 
 Please answer in the following format: \nReasoning: [Your reasoning here]. \nSpeaker: [The speaker's label here(e.g., 'A','B')].`}
 
-expectedOutput="Reasoning: Based on the context, Speaker B was interrupted mid-sentence and is likely to continue. Speaker: A"
+expectedOutput="Reasoning: Based on the context, Speaker B interrupted Speaker A mid-sentence. Speaker A is therefore likely to continue speaking. Speaker: A"
 audioUrl="/audio/ami.wav"
 />
 
@@ -138,7 +143,7 @@ audioUrl="/audio/ami.wav"
 
 Our goal with CAVA is to make model evaluation as straightforward as possible. Adding your model is simple:
 
-As long as VLLM supports your model, CAVA supports your model without any additional code. Just prefix your model path on HuggingFace with `vllm/` when running the evaluation:
+As long as [VLLM](https://docs.vllm.ai/en/stable/contributing/model/registration.html) supports your model, CAVA supports your model without any additional code. Just prefix your model path on HuggingFace with `vllm/` when running the evaluation:
 
 ```bash
 python -m cava.inference --task jeopardy --models vllm/YourOrganization/YourModel
@@ -168,7 +173,7 @@ We're happy improve the framework and welcome your feedback if you find it diffi
 - Aditya Shrivastava designed the system prompt following task.
 - Ali Sartaz Khan developed the Jeopardy task for latency measurement.
 - Caleb Ziems ran the Prolific data collection for the emotion counterfactual task.
-- Ella Minzhi Li developed the speech jailbreaking task.
+- Minzhi Ella Li developed the speech jailbreaking task.
 - Martijn Bartelds gave various insights into speech evaluation, project framing, and metric selection.
 - Michael Sun designed the deception detection task for safety testing.
 - Tan Li and Will Held adapted the function calling task from STOP.

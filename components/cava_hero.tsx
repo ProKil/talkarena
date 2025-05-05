@@ -123,14 +123,42 @@ export function Hero(): JSX.Element {
   ];
 
   const teamMembers: TeamMember[] = [
-    { name: "Aditya Shrivastava", href: "#", role: "Task Lead" },
-    { name: "Ali Sartaz Khan", href: "#", role: "Task Lead" },
-    { name: "Caleb Ziems", href: "#", role: "Contributor" },
-    { name: "Ella Li", href: "https://yocodeyo.github.io", role: "Task Lead" },
-    { name: "Martijn Bartelds", href: "#", role: "Contributor" },
-    { name: "Michael Sun", href: "#", role: "Task Lead" },
-    { name: "Tan Li", href: "#", role: "Task Lead" },
-    { name: "Woody Gan", href: "#", role: "Task Lead" },
+    {
+      name: "Aditya Shrivastava",
+      href: "https://www.aditya-shrivastava.com/",
+      role: "Task Lead",
+    },
+    {
+      name: "Ali Sartaz Khan",
+      href: "https://profiles.stanford.edu/ali-sartaz-khan",
+      role: "Task Lead",
+    },
+    {
+      name: "Caleb Ziems",
+      href: "https://calebziems.com/",
+      role: "Contributor",
+    },
+    {
+      name: "Minzhi Ella Li",
+      href: "https://yocodeyo.github.io",
+      role: "Task Lead",
+    },
+    {
+      name: "Martijn Bartelds",
+      href: "https://martijnbartelds.nl/",
+      role: "Contributor",
+    },
+    {
+      name: "Michael Sun",
+      href: "https://bases.stanford.edu/about-us-michael",
+      role: "Task Lead",
+    },
+    { name: "Tan Li", href: "https://tanli.dev/", role: "Task Lead" },
+    {
+      name: "Woody Gan",
+      href: "https://realai.usc.edu/pages/curve.html#:~:text=for%20social%20good.-,Woody%20Gan,-Woody%20Gan%20is",
+      role: "Task Lead",
+    },
   ];
 
   return (
