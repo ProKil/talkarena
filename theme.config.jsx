@@ -41,7 +41,7 @@ export default {
       const { asPath } = useRouter()
       if (asPath && asPath.includes('cava')) {
 	return {
-          titleTemplate: 'CAVA Benchmark',
+          titleTemplate: 'Talk Arena',
           description: '',
           openGraph: {
             type: 'website',
@@ -52,9 +52,9 @@ export default {
             ],
             locale: 'en_US',
             url: 'https://talkarena.org/cava',
-            siteName: 'CAVA Benchmark',
-            title: 'CAVA Benchmark',
-            description: 'Comprehensive Assessment of Voice Assistants',
+            siteName: 'Comprehensive Assessment for Voice Assistants',
+            title: 'Comprehensive Assessment for Voice Assistants',
+            description: 'CAVA is a new benchmark for assessing whether Large Audio Models can support general purpose voice assistants.',
           },
           twitter: {
             cardType: 'summary_large_image',
