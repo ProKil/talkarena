@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useRouter } from 'next/router'
 
 export default {
     logo: <div className="flex items-center"> 
@@ -36,7 +37,32 @@ export default {
         </span>
       )
     },
-    useNextSeoProps() {
+  useNextSeoProps() {
+      const { asPath } = useRouter()
+      if (asPath && asPath.includes('cava')) {
+	return {
+          titleTemplate: 'CAVA Benchmark',
+          description: '',
+          openGraph: {
+            type: 'website',
+            images: [
+              {
+                url: 'https://talkarena.org/cava_preview.png',
+              }
+            ],
+            locale: 'en_US',
+            url: 'https://talkarena.org/cava',
+            siteName: 'CAVA Benchmark',
+            title: 'CAVA Benchmark',
+            description: 'Comprehensive Assessment of Voice Assistants',
+          },
+          twitter: {
+            cardType: 'summary_large_image',
+            title: 'CAVA Benchmark',
+            image: 'https://talkarena.org/cava_preview.png',
+          },
+	}
+      }
       return {
         titleTemplate: 'Talk Arena',
         description: '',
