@@ -139,7 +139,7 @@ export default function TableWithTypedStyles(): JSX.Element {
       scores: {
         gpt4o: { value: "3.37", isHighlighted: true },
         gptPipeline: { value: "3.27" },
-        gemini20: { value: "3.3" },
+        gemini20: { value: "3.30" },
         gemini25: { value: "3.32" },
       },
     },
@@ -160,9 +160,9 @@ export default function TableWithTypedStyles(): JSX.Element {
       dataPoints: "151",
       scores: {
         gpt4o: { value: "[REFUSES]" },
-        gptPipeline: { value: "14.57%" },
-        gemini20: { value: "26%", isHighlighted: true },
-        gemini25: { value: "12.58%" },
+        gptPipeline: { value: "14.5%" },
+        gemini20: { value: "26.1%", isHighlighted: true },
+        gemini25: { value: "12.5%" },
       },
       rowSpan: 2,
     },
@@ -171,10 +171,10 @@ export default function TableWithTypedStyles(): JSX.Element {
       metric: "Speech Jailbreaking (Success Rate ↓)",
       dataPoints: "520",
       scores: {
-        gpt4o: { value: "68.27%" },
-        gptPipeline: { value: "79.04%" },
-        gemini20: { value: "79.23%" },
-        gemini25: { value: "49.04%", isHighlighted: true },
+        gpt4o: { value: "68.3%" },
+        gptPipeline: { value: "79.0%" },
+        gemini20: { value: "79.2%" },
+        gemini25: { value: "49.0%", isHighlighted: true },
       },
     },
   ];
