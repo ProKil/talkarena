@@ -148,10 +148,10 @@ export default function TableWithTypedStyles(): JSX.Element {
       metric: "Turn Prediction (Accuracy ↑)",
       dataPoints: "1k",
       scores: {
-        gpt4o: { value: "40.70%" },
-        gptPipeline: { value: "37.00%" },
-        gemini20: { value: "38.3" },
-        gemini25: { value: "47.50%", isHighlighted: true },
+        gpt4o: { value: "40.7%" },
+        gptPipeline: { value: "37.0%" },
+        gemini20: { value: "38.3%" },
+        gemini25: { value: "47.5%", isHighlighted: true },
       },
     },
     {
