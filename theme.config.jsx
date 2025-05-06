@@ -74,7 +74,7 @@ export default {
               }
             ],
             locale: 'en_US',
-            url: 'https://talkarena.org',
+            url: 'https://talkarena.org/',
             siteName: 'Talk Arena',
             title: 'Talk Arena',
             description: 'Interactive evaluation for audio models',
