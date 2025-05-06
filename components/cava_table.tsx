@@ -92,9 +92,9 @@ export default function TableWithTypedStyles(): JSX.Element {
       metric: "Jeopardy (Win Rate % ↑)",
       dataPoints: "1k",
       scores: {
-        gpt4o: { value: "73.00%", isHighlighted: true },
-        gptPipeline: { value: "15.40%" },
-        gemini20: { value: "6.00%" },
+        gpt4o: { value: "73.0%", isHighlighted: true },
+        gptPipeline: { value: "15.4%" },
+        gemini20: { value: "6.0%" },
         gemini25: { value: "No Speech Output" },
       },
     },
