@@ -13,7 +13,7 @@ Existing benchmarks[^2]<sup>,</sup>[^3]<sup>,</sup>[^4]<sup>,</sup>[^5]<sup>,</s
 
 ## CAVA Benchmark
 
-The most significant distinguishing feature of a voice assistant from auditory AI more broadly is the focus on providing efficient, task-oriented assistance to the user through voice interaction. In order to provide a high quality user experience, a foundation model for voice assistants requires capabilities across each of the following six domains:
+The most significant distinguishing feature of a voice assistant from auditory AI more broadly is the focus on providing efficient, task-oriented assistance to the user through voice interaction. In order to provide a high quality user experience, a foundation model for voice assistants requires (at a minimum) capabilities across each of the following six domains.
 
 - **Turn Taking:** The model needs to be able to understand conversational turn taking dynamics so that the assistant can engage with the user(s) at appropriate times.
 - **Instruction Following:** The model needs to be able to follow instructions so that the assistant can adhere to both user and system designer prompts.
@@ -22,7 +22,7 @@ The most significant distinguishing feature of a voice assistant from auditory A
 - **Safety:** The model needs to be able to recognize jailbreaking and deceptive intents in users so that the assistant can adhere to safety and ethical guidelines.
 - **Latency:** The model needs to respond with low latency so that the assistant can maintain natural conversational pacing.
 
-Both historically and at present, many of these capabilities have been handled by separate models and pipelined together by practitioners to create voice assistants. Tone awareness can be delegated to separate classifiers for paralinguistic information, function calling to semantic parsers, and turn taking to voice activity detection models. However, realtime APIs and the models designed to support them indicate a shift towards these capabilities becoming part of more monolithic models which will need to meet these multifaceted, and at times conflicting, capability needs.
+Both historically and at present, many of these capabilities have been handled by separate models and pipelined together by practitioners to create voice assistants. Tone awareness can be delegated to separate classifiers for paralinguistic information, function calling to semantic parsers, and turn taking to voice activity detection models. However, realtime APIs and the models designed to support them indicate a shift towards these capabilities becoming part of more monolithic models which will need to meet these multifaceted, and at times conflicting, capability needs. To address this, we set out in January to construct a set of benchmarks which broadly covered these capability domains, which we are releasing now as a **C**omprehensive **A**ssessment of **V**oice **A**ssistants (**CAVA**).
 
 CAVA is based on the idea that measuring these capabilities separately can produce metrics which are misaligned with the downstream utility of a model. For example, a model which achieves strong performance but high latency is likely to prove frustrating to users in real time spoken conversations. As such, benchmarks which omit latency could incentivize models to create worse user experiences to maximize benchmark results. While there exist multitask benchmarks along separate capabilities, CAVA is the first designed to test which systems are likely to serve as the overall best foundation for voice assistant developers.
 
