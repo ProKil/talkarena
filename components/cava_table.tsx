@@ -60,6 +60,7 @@ export default function TableWithTypedStyles(): JSX.Element {
     categoryStyle: {
       backgroundColor: "black",
       color: "white",
+      border: "2px solid white",
       fontWeight: "600",
       textAlign: "center",
       width: "160px",
